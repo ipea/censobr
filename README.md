@@ -95,6 +95,8 @@ If you would like to contribute to **{censobr}**, you're welcome to open an issu
 As far as we know, **{censobr}** is the only R package that provides fast and convenient access to the complete data sets and documentation of Brazilian censuses. The [microdadosBrasil](https://github.com/lucasmation/microdadosBrasil) package used to provide access to microdata of several public data sets, but unfortunately, it has been discontinued.
 
 #### **Similar packages for other countries**
+
+- Bolivia: [censosbo](https://lab-tecnosocial.github.io/censosbo/)
 - Canada: [cancensus](https://mountainmath.github.io/cancensus/)
 - Chile: [censo2017](https://docs.ropensci.org/censo2017/)
 - US: [tidycensus](https://walker-data.com/tidycensus/)
