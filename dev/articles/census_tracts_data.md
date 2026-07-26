@@ -43,6 +43,7 @@ and *Domicilio03*. So the names of the columns in this dataset are
 organized as follows:
 
 ``` r
+
 library(censobr)
 
 dom <- read_tracts(
@@ -68,6 +69,7 @@ dataset. The dictionary file is either an `.html`, a `.pdf` or an
 `.xlsx` file, depending on the data set and year.
 
 ``` r
+
 data_dictionary(
   year = 2022, 
   dataset = 'tracts'
@@ -82,6 +84,7 @@ with census tract-level data. First, we need to load the libraries we’ll
 be using in this vignette.
 
 ``` r
+
 library(arrow)
 library(dplyr)
 library(geobr)
@@ -96,13 +99,18 @@ and then keep only the ones in the municipality of Belo Horizonte. We’ll
 also download the municipality borders of BH.
 
 ``` r
+
 muni_bh <- geobr::read_municipality(
   code_muni = 'MG', 
   year = 2010, 
   showProgress = FALSE
   ) |>
   filter(name_muni == "Belo Horizonte")
-#> Using year/date 2010
+#> ℹ Using year/date 2010
+#> duckdb is keeping downloaded extensions in a temporary directory:
+#> ℹ /tmp/RtmpGTcj32/duckdb/extensions
+#> This is removed when the R session ends, so extensions are re-downloaded each session.
+#> ℹ To keep them, point `options(duckdb.extension_directory =)` or the `DUCKDB_EXTENSION_DIRECTORY` environment variable at a permanent path.
 
 tracts_sf <- geobr::read_census_tract(
   code_tract = "MG",
@@ -110,7 +118,7 @@ tracts_sf <- geobr::read_census_tract(
   year = 2010,
   showProgress = FALSE
   )
-#> Using year/date 2010
+#> ℹ Using year/date 2010
 
 tracts_sf <- filter(tracts_sf, name_muni == "Belo Horizonte")
 
@@ -129,6 +137,7 @@ download the `"Entorno"` dataset and sum the variables
 `domicilios_V05031 + domicilios_V05032 + domicilios_V05033`.
 
 ``` r
+
 # download data
 tract_entorno <- censobr::read_tracts(
   year = 2022,
@@ -150,20 +159,21 @@ df_trees <- tract_entorno |>
 head(df_trees)
 #> # A tibble: 6 × 4
 #> # Groups:   code_tract [6]
-#>   code_tract      total_households trees trees_prop
-#>   <chr>                      <dbl> <dbl>      <dbl>
-#> 1 310620005620001              222   222      1    
-#> 2 310620005620002              158   158      1    
-#> 3 310620005620004              294   294      1    
-#> 4 310620005620005              131   131      1    
-#> 5 310620005620006              142   138      0.972
-#> 6 310620005620007              218   218      1
+#>   code_tract total_households trees trees_prop
+#>        <dbl>            <dbl> <dbl>      <dbl>
+#> 1    3.11e14              222   222      1    
+#> 2    3.11e14              158   158      1    
+#> 3    3.11e14              294   294      1    
+#> 4    3.11e14              131   131      1    
+#> 5    3.11e14              142   138      0.972
+#> 6    3.11e14              218   218      1
 ```
 
 Now we can merge the spatial data with our indicator and see how the
 presence of trees in the surroundings of households varies spatially.
 
 ``` r
+
 bh_tracts <- left_join(tracts_sf, df_trees, by = 'code_tract')
 
 ggplot() +
@@ -195,6 +205,7 @@ Using the code below, we download the data and calculate the income per
 capita of all census tracts in Brazil.
 
 ``` r
+
 # download data
 tract_basico <- censobr::read_tracts(
   year = 2010,
@@ -221,20 +232,21 @@ tracts_df <- left_join(tract_basico, tract_income) |> collect()
 tracts_df <- tracts_df |> mutate(income_pc = V003 / V002)
 head(tracts_df)
 #> # A tibble: 6 × 4
-#>   code_tract       V002   V003 income_pc
-#>   <chr>           <dbl>  <dbl>     <dbl>
-#> 1 110001505000001   956 522231      546.
-#> 2 110001505000002   859 406191      473.
-#> 3 110001505000003   661 241587      365.
-#> 4 110001505000004   266  88502      333.
-#> 5 110001505000005  1206 262860      218.
-#> 6 110001505000006   816 262968      322.
+#>   code_tract  V002   V003 income_pc
+#>        <dbl> <dbl>  <dbl>     <dbl>
+#> 1    2.93e14   132  30119      228.
+#> 2    2.93e14  1422 326770      230.
+#> 3    2.93e14   807 143512      178.
+#> 4    2.93e14   637 146616      230.
+#> 5    2.93e14   678 112334      166.
+#> 6    2.93e14   131  30786      235.
 ```
 
 Finally, we can merge the spatial data with our per capita income
 estimates and map the results.
 
 ``` r
+
 bh_tracts <- left_join(tracts_sf, tracts_df, by = 'code_tract')
 
 ggplot() +

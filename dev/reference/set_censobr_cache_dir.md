@@ -35,10 +35,11 @@ Other Cache data:
 ## Examples
 
 ``` r
+
 # Set custom cache directory
 tempd <- tempdir()
 set_censobr_cache_dir(path = tempd)
-#> ℹ censobr files will be cached at /tmp/RtmpJUcr4c.
+#> ℹ censobr files will be cached at /tmp/RtmpaXbV6C.
 
 # back to default path
 set_censobr_cache_dir(path = NULL)

@@ -12,12 +12,13 @@ functions](https://arrow.apache.org/docs/r/articles/arrow.html#analyzing-arrow-d
 ## Installation
 
 ``` r
+
 # install from CRAN
 install.packages("censobr")
 
 # or use the development version with latest features
 utils::remove.packages('censobr')
-remotes::install_github("ipeaGIT/censobr", ref="dev")
+remotes::install_github("ipea/censobr", ref="dev")
 ```
 
 ## Basic usage
@@ -31,15 +32,15 @@ The package currently includes 6 main functions to download census data:
 5.  [`read_emigration()`](https://ipeagit.github.io/censobr/dev/reference/read_emigration.md)
 6.  [`read_tracts()`](https://ipeagit.github.io/censobr/dev/reference/read_tracts.md)
 
-| Função            | Origem   | Unidade          | Definição                                                  | Disponibilidade |     |     |     |      |     |            |
-|-------------------|----------|------------------|------------------------------------------------------------|-----------------|-----|-----|-----|------|-----|------------|
-|                   |          |                  |                                                            | 1960            | 70  | 80  | 91  | 2000 | 10  | 22         |
-| read_population() | Amostra  | Microdado        | Lê os microdados de pessoas.                               | X               | X   | X   | X   |      | X   | *em breve* |
-| read_households() | Amostra  | Microdado        | Lê os microdados de domicílios.                            | X               | X   | X   | X   | X    | X   | *em breve* |
-| read_families()   | Amostra  | Microdado        | Lê os microdados de famílias do censo de 2000.             |                 |     |     | X   |      |     |            |
-| read_emigration() | Amostra  | Microdado        | Lê os microdados de emigração.                             |                 |     |     |     | X    |     | *em breve* |
-| read_mortality()  | Amostra  | Microdado        | Lê os microdados de mortalidade.                           |                 |     |     |     |      | X   | *em breve* |
-| read_tracts()     | Universo | Setor Censitário | Lê os dados do Universo agregados por setores censitários. |                 |     |     |     | *X*  | X   | *X*        |
+| Função | Origem | Unidade | Definição | Disponibilidade |  |  |  |  |  |  |
+|----|----|----|----|----|----|----|----|----|----|----|
+|  |  |  |  | 1960 | 70 | 80 | 91 | 2000 | 10 | 22 |
+| read_population() | Amostra | Microdado | Lê os microdados de pessoas. | X | X | X | X |  | X | *em breve* |
+| read_households() | Amostra | Microdado | Lê os microdados de domicílios. | X | X | X | X | X | X | *em breve* |
+| read_families() | Amostra | Microdado | Lê os microdados de famílias do censo de 2000. |  |  |  | X |  |  |  |
+| read_emigration() | Amostra | Microdado | Lê os microdados de emigração. |  |  |  |  | X |  | *em breve* |
+| read_mortality() | Amostra | Microdado | Lê os microdados de mortalidade. |  |  |  |  |  | X | *em breve* |
+| read_tracts() | Universo | Setor Censitário | Lê os dados do Universo agregados por setores censitários. |  |  |  |  | *X* | X | *X* |
 
 **{censobr}** also includes a few support functions to help users
 navigate the documentation Brazilian censuses, providing convenient
@@ -59,6 +60,7 @@ same logic so it becomes intuitive to download any data set using a
 single line of code. Like this:
 
 ``` r
+
 read_households(
   year,          # year of reference
   columns,       # select columns to read
@@ -72,8 +74,8 @@ read_households(
 
 ***Note:*** all data sets in **{censobr}** are enriched with geography
 columns following the name standards of the [{geobr}
-package](https://github.com/ipeaGIT/geobr/) to help data manipulation
-and integration with spatial data from {geobr}. The added columns are:
+package](https://github.com/ipea/geobr/) to help data manipulation and
+integration with spatial data from {geobr}. The added columns are:
 `c(‘code_muni’, ‘code_state’, ‘abbrev_state’, ‘name_state’, ‘code_region’, ‘name_region’, ‘code_weighting’)`.
 
 ***Data Cache:***
@@ -81,7 +83,7 @@ and integration with spatial data from {geobr}. The added columns are:
 The first time the user runs a function, **{censobr}** will download the
 file and store it locally. This way, the data only needs to be
 downloaded once. More info in the [Data cache
-section](https://ipeagit.github.io/censobr/articles/censobr.html#data-cache)
+section](https://ipea.github.io/censobr/articles/censobr.html#data-cache)
 below.
 
 ## Larger-than-memory Data
@@ -100,6 +102,7 @@ Let’s see how **{censobr}** works in a couple examples:
 First, let’s load the libraries we’ll be using in this vignette.
 
 ``` r
+
 library(censobr)
 library(arrow)
 library(dplyr)
@@ -121,6 +124,7 @@ by setting `add_labels = 'pt'`, the function returns labeled values for
 categorical variables.
 
 ``` r
+
 pop <- read_population(
   year = 2010,
   columns = c('abbrev_state', 'V0606', 'V0010', 'V6400'),
@@ -146,12 +150,13 @@ package. For example, one can have a quick peak into the data set with
 [`glimpse()`](https://pillar.r-lib.org/reference/glimpse.html)
 
 ``` r
+
 dplyr::glimpse(pop)
 #> FileSystemDataset with 1 Parquet file (query)
 #> 20,635,472 rows x 4 columns
-#> $ abbrev_state <string> "RO", "RO", "RO", "RO", "RO", "RO", "RO", "RO", "RO", "R…
-#> $ V0606        <string> "Parda", "Parda", "Branca", "Branca", "Parda", "Parda", …
-#> $ V0010        <double> 8.705865, 8.705865, 9.818689, 9.495608, 9.495608, 9.4956…
+#> $ abbrev_state <string> "AC", "AC", "AC", "AC", "AC", "AC", "AC", "AC", "AC", "A…
+#> $ V0606        <string> "Amarela", "Parda", "Parda", "Branca", "Parda", "Branca"…
+#> $ V0010        <double> 8.083000, 9.718624, 9.718624, 9.718624, 9.513442, 9.5134…
 #> $ V6400        <string> "Sem instrução e fundamental incompleto", "Sem instrução…
 #> Call `print()` for query details
 ```
@@ -164,6 +169,7 @@ individuals with higher education. Note that we need to add a
 at the end of our query.
 
 ``` r
+
 df <- pop |>
       filter(abbrev_state == "RJ") |>                                                    # (a)
       compute() |>
@@ -187,6 +193,7 @@ head(df)
 Now we only need to plot the results.
 
 ``` r
+
 df <- subset(df, V0606 != 'Ignorado')
 
 ggplot() +
@@ -210,6 +217,7 @@ easily download the households data set with the
 function.
 
 ``` r
+
 hs <- read_households(
   year = 2010, 
   showProgress = FALSE
@@ -221,6 +229,7 @@ number of households connected to a sewage network, (c) calculate the
 proportion of households connected, and (d) collect the results.
 
 ``` r
+
 esg <- hs |> 
         compute() |>
         group_by(code_muni) |>                                             # (a)
@@ -232,7 +241,7 @@ esg <- hs |>
 head(esg)
 #> # A tibble: 6 × 4
 #>   code_muni     rede  total cobertura
-#>       <int>    <dbl>  <dbl>     <dbl>
+#>       <dbl>    <dbl>  <dbl>     <dbl>
 #> 1   1100015     0     7443.   0      
 #> 2   1100023   182.   27654.   0.00660
 #> 3   1100031     0     1979.   0      
@@ -242,10 +251,11 @@ head(esg)
 ```
 
 In order to create a map with these values, we are going to use the
-[{geobr} package](https://ipeagit.github.io/geobr/) to download the
+[{geobr} package](https://ipea.github.io/geobr/) to download the
 geometries of Brazilian municipalities.
 
 ``` r
+
 library(geobr)
 
 muni_sf <- geobr::read_municipality(
@@ -254,31 +264,28 @@ muni_sf <- geobr::read_municipality(
   )
 
 head(muni_sf)
-#> Simple feature collection with 6 features and 4 fields
-#> Geometry type: MULTIPOLYGON
+#> Simple feature collection with 6 features and 8 fields
+#> Geometry type: POLYGON
 #> Dimension:     XY
 #> Bounding box:  xmin: -63.61822 ymin: -13.6937 xmax: -60.33317 ymax: -9.66916
 #> Geodetic CRS:  SIRGAS 2000
-#>   code_muni             name_muni code_state abbrev_state
-#> 1   1100015 Alta Floresta D'oeste         11           RO
-#> 2   1100023             Ariquemes         11           RO
-#> 3   1100031                Cabixi         11           RO
-#> 4   1100049                Cacoal         11           RO
-#> 5   1100056            Cerejeiras         11           RO
-#> 6   1100064     Colorado Do Oeste         11           RO
-#>                             geom
-#> 1 MULTIPOLYGON (((-62.2462 -1...
-#> 2 MULTIPOLYGON (((-63.13712 -...
-#> 3 MULTIPOLYGON (((-60.52408 -...
-#> 4 MULTIPOLYGON (((-61.42679 -...
-#> 5 MULTIPOLYGON (((-61.41347 -...
-#> 6 MULTIPOLYGON (((-60.66352 -...
+#> # A tibble: 6 × 9
+#>   code_muni name_muni code_state abbrev_state name_state code_region name_region
+#>       <dbl> <chr>          <dbl> <chr>        <chr>            <dbl> <chr>      
+#> 1   1100015 Alta Flo…         11 RO           Rondônia             1 Norte      
+#> 2   1100023 Ariquemes         11 RO           Rondônia             1 Norte      
+#> 3   1100031 Cabixi            11 RO           Rondônia             1 Norte      
+#> 4   1100049 Cacoal            11 RO           Rondônia             1 Norte      
+#> 5   1100056 Cerejeir…         11 RO           Rondônia             1 Norte      
+#> 6   1100064 Colorado…         11 RO           Rondônia             1 Norte      
+#> # ℹ 2 more variables: year <dbl>, geometry <POLYGON [°]>
 ```
 
 Now we only need to merge the spatial data with our estimates and map
 the results.
 
 ``` r
+
 esg_sf <- left_join(muni_sf, esg, by = 'code_muni')
 
 ggplot() +
@@ -301,6 +308,7 @@ São Paulo.
 First, let’s download the municipalities of the metro area of São Paulo.
 
 ``` r
+
 metro_muni <- geobr::read_metro_area(
   year = 2010, 
   showProgress = FALSE) |>
@@ -313,6 +321,7 @@ Paulo, and then keep only the ones in the metropolitan region of São
 Paulo.
 
 ``` r
+
 wt_areas <- geobr::read_weighting_area(
   code_weighting = "SP", 
   showProgress = FALSE,
@@ -321,25 +330,14 @@ wt_areas <- geobr::read_weighting_area(
 
 wt_areas <- subset(wt_areas, code_muni %in% metro_muni$code_muni)
 head(wt_areas)
-#> Simple feature collection with 6 features and 7 fields
+#> Simple feature collection with 0 features and 9 fields
 #> Geometry type: MULTIPOLYGON
-#> Dimension:     XY
-#> Bounding box:  xmin: -46.73454 ymin: -23.64487 xmax: -46.64756 ymax: -23.53528
+#> Bounding box:  xmin: NA ymin: NA xmax: NA ymax: NA
 #> Geodetic CRS:  SIRGAS 2000
-#>    code_weighting code_muni name_muni code_state abbrev_state code_region
-#> 5   3550308005100   3550308 São Paulo         35           SP           3
-#> 6   3550308005102   3550308 São Paulo         35           SP           3
-#> 8   3550308005101   3550308 São Paulo         35           SP           3
-#> 10  3550308005104   3550308 São Paulo         35           SP           3
-#> 12  3550308005103   3550308 São Paulo         35           SP           3
-#> 14  3550308005106   3550308 São Paulo         35           SP           3
-#>    name_region                           geom
-#> 5      Sudeste MULTIPOLYGON (((-46.67201 -...
-#> 6      Sudeste MULTIPOLYGON (((-46.67663 -...
-#> 8      Sudeste MULTIPOLYGON (((-46.67257 -...
-#> 10     Sudeste MULTIPOLYGON (((-46.70138 -...
-#> 12     Sudeste MULTIPOLYGON (((-46.69581 -...
-#> 14     Sudeste MULTIPOLYGON (((-46.73454 -...
+#> # A tibble: 0 × 10
+#> # ℹ 10 variables: code_weighting <dbl>, code_muni <dbl>, name_muni <chr>,
+#> #   code_state <dbl>, abbrev_state <chr>, name_state <chr>, code_region <dbl>,
+#> #   name_region <chr>, year <dbl>, geometry <MULTIPOLYGON [°]>
 ```
 
 Now we need to calculate the average rent spent in each weighting area.
@@ -349,6 +347,7 @@ by weighting area, (c) calculate the average rent, and (d) collect the
 results.
 
 ``` r
+
 rent <- hs |>
         filter(code_muni %in% metro_muni$code_muni) |>                     # (a)
         compute() |>
@@ -357,21 +356,15 @@ rent <- hs |>
         collect()                                                          # (d)
 
 head(rent)
-#> # A tibble: 6 × 2
-#>   code_weighting avgrent
-#>   <chr>            <dbl>
-#> 1 3503901003001     355.
-#> 2 3503901003002     627.
-#> 3 3503901003003     358.
-#> 4 3505708005001     577.
-#> 5 3505708005002     397.
-#> 6 3505708005003     327.
+#> # A tibble: 0 × 2
+#> # ℹ 2 variables: code_weighting <dbl>, avgrent <dbl>
 ```
 
 Finally, we can merge the spatial data with our rent estimates and map
 the results.
 
 ``` r
+
 rent_sf <- left_join(wt_areas, rent, by = 'code_weighting')
 
 ggplot() +
@@ -398,6 +391,7 @@ function. For example, users can:
 List cached files in tree format:
 
 ``` r
+
 censobr::censobr_cache(
   list_files = TRUE, 
   print_tree = TRUE
@@ -407,12 +401,14 @@ censobr::censobr_cache(
 Delete a particular file:
 
 ``` r
+
 censobr::censobr_cache(delete_file = "2010_emigration")
 ```
 
 Delete all files:
 
 ``` r
+
 censobr::censobr_cache(delete_file = "all")
 ```
 
@@ -423,11 +419,12 @@ to set custom cache directory. This directory is persistent across R
 sessions.
 
 ``` r
+
 tempf <- fs::path_temp(pattern = "my_temp_dir")
 
 censobr::set_censobr_cache_dir(path = tempf)
 #> ℹ censobr files will be cached at
-#> /tmp/RtmpsDybJt/my_temp_dir.
+#> /tmp/RtmpdJ1kom/my_temp_dir.
 ```
 
 Mind you that the data is saved in a directory inside the cache
@@ -435,6 +432,7 @@ directory set by the user and which is versioned according to the
 version of the latest data release.
 
 ``` r
+
 # download file to our new cache dir
 df_emi <- censobr::read_emigration(year = 2010)
 
@@ -443,9 +441,9 @@ censobr::censobr_cache(
   list_files = TRUE, 
   print_tree = TRUE
   )
-#> /tmp/RtmpsDybJt/my_temp_dir
-#> └── data_release_v0.5.0
-#>     └── 2010_emigration_v0.5.0.parquet
+#> /tmp/RtmpdJ1kom/my_temp_dir
+#> └── data_release_v0.6.0
+#>     └── 2010_emigration_v0.6.0.parquet
 ```
 
 If you do not remember the location of the cache, you can always run

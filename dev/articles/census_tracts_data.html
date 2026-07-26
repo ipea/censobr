@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Census tract-level data">
 <meta name="robots" content="noindex">
@@ -51,7 +51,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ipeaGIT/censobr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ipea/censobr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
@@ -74,9 +74,9 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Census tract-level data</h1>
             
-            <h4 data-toc-skip class="date">2026-04-10</h4>
+            <h4 data-toc-skip class="date">2026-07-26</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/censobr/blob/main/vignettes/census_tracts_data.Rmd" class="external-link"><code>vignettes/census_tracts_data.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ipea/censobr/blob/main/vignettes/census_tracts_data.Rmd" class="external-link"><code>vignettes/census_tracts_data.Rmd</code></a></small>
       <div class="d-none name"><code>census_tracts_data.Rmd</code></div>
     </div>
 
@@ -226,7 +226,7 @@ separate tables: <em>Domicilio01</em>, <em>Domicilio02</em> and
 <em>Domicilio03</em>. So the names of the columns in this dataset are
 organized as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/censobr" class="external-link">censobr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipea/censobr" class="external-link">censobr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">dom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_tracts.html">read_tracts</a></span><span class="op">(</span></span>
 <span>  year <span class="op">=</span> <span class="fl">2022</span>,</span>
@@ -274,21 +274,25 @@ the geometries of all census tracts in the state of Minas Gerais (MG),
 and then keep only the ones in the municipality of Belo Horizonte. We’ll
 also download the municipality borders of BH.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">muni_bh</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://ipeagit.github.io/geobr/reference/read_municipality.html" class="external-link">read_municipality</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">muni_bh</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/geobr/man/read_municipality.html" class="external-link">read_municipality</a></span><span class="op">(</span></span>
 <span>  code_muni <span class="op">=</span> <span class="st">'MG'</span>, </span>
 <span>  year <span class="op">=</span> <span class="fl">2010</span>, </span>
 <span>  showProgress <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name_muni</span> <span class="op">==</span> <span class="st">"Belo Horizonte"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Using year/date 2010</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using year/date 2010</span></span>
+<span><span class="co">#&gt; duckdb is keeping downloaded extensions in a temporary directory:</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/RtmpGTcj32/duckdb/extensions</span></span>
+<span><span class="co">#&gt; This is removed when the R session ends, so extensions are re-downloaded each session.</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> To keep them, point `options(duckdb.extension_directory =)` or the `DUCKDB_EXTENSION_DIRECTORY` environment variable at a permanent path.</span></span>
 <span></span>
-<span><span class="va">tracts_sf</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://ipeagit.github.io/geobr/reference/read_census_tract.html" class="external-link">read_census_tract</a></span><span class="op">(</span></span>
+<span><span class="va">tracts_sf</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/geobr/man/read_census_tract.html" class="external-link">read_census_tract</a></span><span class="op">(</span></span>
 <span>  code_tract <span class="op">=</span> <span class="st">"MG"</span>,</span>
 <span>  simplified <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  year <span class="op">=</span> <span class="fl">2010</span>,</span>
 <span>  showProgress <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Using year/date 2010</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using year/date 2010</span></span>
 <span></span>
 <span><span class="va">tracts_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">tracts_sf</span>, <span class="va">name_muni</span> <span class="op">==</span> <span class="st">"Belo Horizonte"</span><span class="op">)</span></span>
 <span></span>
@@ -326,14 +330,14 @@ variables
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_trees</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   code_tract [6]</span></span></span>
-<span><span class="co">#&gt;   code_tract      total_households trees trees_prop</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 310620005620001              222   222      1    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 310620005620002              158   158      1    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 310620005620004              294   294      1    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 310620005620005              131   131      1    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 310620005620006              142   138      0.972</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 310620005620007              218   218      1</span></span></code></pre></div>
+<span><span class="co">#&gt;   code_tract total_households trees trees_prop</span></span>
+<span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    3.11<span style="color: #949494;">e</span>14              222   222      1    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    3.11<span style="color: #949494;">e</span>14              158   158      1    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    3.11<span style="color: #949494;">e</span>14              294   294      1    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    3.11<span style="color: #949494;">e</span>14              131   131      1    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    3.11<span style="color: #949494;">e</span>14              142   138      0.972</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    3.11<span style="color: #949494;">e</span>14              218   218      1</span></span></code></pre></div>
 <p>Now we can merge the spatial data with our indicator and see how the
 presence of trees in the surroundings of households varies
 spatially.</p>
@@ -392,14 +396,14 @@ per capita of all census tracts in Brazil.</p>
 <span><span class="va">tracts_df</span> <span class="op">&lt;-</span> <span class="va">tracts_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>income_pc <span class="op">=</span> <span class="va">V003</span> <span class="op">/</span> <span class="va">V002</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tracts_df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
-<span><span class="co">#&gt;   code_tract       V002   V003 income_pc</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 110001505000001   956 <span style="text-decoration: underline;">522</span>231      546.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 110001505000002   859 <span style="text-decoration: underline;">406</span>191      473.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 110001505000003   661 <span style="text-decoration: underline;">241</span>587      365.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 110001505000004   266  <span style="text-decoration: underline;">88</span>502      333.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 110001505000005  <span style="text-decoration: underline;">1</span>206 <span style="text-decoration: underline;">262</span>860      218.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 110001505000006   816 <span style="text-decoration: underline;">262</span>968      322.</span></span></code></pre></div>
+<span><span class="co">#&gt;   code_tract  V002   V003 income_pc</span></span>
+<span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    2.93<span style="color: #949494;">e</span>14   132  <span style="text-decoration: underline;">30</span>119      228.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    2.93<span style="color: #949494;">e</span>14  <span style="text-decoration: underline;">1</span>422 <span style="text-decoration: underline;">326</span>770      230.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    2.93<span style="color: #949494;">e</span>14   807 <span style="text-decoration: underline;">143</span>512      178.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    2.93<span style="color: #949494;">e</span>14   637 <span style="text-decoration: underline;">146</span>616      230.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    2.93<span style="color: #949494;">e</span>14   678 <span style="text-decoration: underline;">112</span>334      166.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    2.93<span style="color: #949494;">e</span>14   131  <span style="text-decoration: underline;">30</span>786      235.</span></span></code></pre></div>
 <p>Finally, we can merge the spatial data with our per capita income
 estimates and map the results.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -429,7 +433,7 @@ estimates and map the results.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

@@ -3,13 +3,13 @@
 The **{censobr}** package includes a few functions to help users
 navigate Brazilian census data, its variables and methodology.
 
-| Function           | Documentation                                  | Type                    | Years available |     |     |     |      |     |        |
-|--------------------|------------------------------------------------|-------------------------|-----------------|-----|-----|-----|------|-----|--------|
-|                    |                                                |                         | 1960            | 70  | 80  | 91  | 2000 | 10  | 22     |
-| data_dictionary()  | Data dictionary (codebook)                     | Microdata               | *X*             | X   | X   | X   | X    | X   | *soon* |
-|                    |                                                | Census tract aggregates |                 |     |     |     | X    | X   | *X*    |
-| questionnaire()    | Questionnaires                                 | Long and short          | X               | X   | X   | X   | X    | X   | X      |
-| interview_manual() | Interviewer’s manual (Enumerator Instructions) | \-                      | X               | X   | X   | X   | X    | X   | X      |
+| Function | Documentation | Type | Years available |  |  |  |  |  |  |
+|----|----|----|----|----|----|----|----|----|----|
+|  |  |  | 1960 | 70 | 80 | 91 | 2000 | 10 | 22 |
+| data_dictionary() | Data dictionary (codebook) | Microdata | *X* | X | X | X | X | X | *soon* |
+|  |  | Census tract aggregates |  |  |  |  | X | X | *X* |
+| questionnaire() | Questionnaires | Long and short | X | X | X | X | X | X | X |
+| interview_manual() | Interviewer’s manual (Enumerator Instructions) | \- | X | X | X | X | X | X | X |
 
 All of these functions download supporting documents in either `.html`
 or `.pdf` format, and open the documents on a web browser. Like all
@@ -31,6 +31,7 @@ census) and for the variables available in census tract-level aggregate
 data.
 
 ``` r
+
 # Microdata variables
 data_dictionary(
   year = 2010,
@@ -58,6 +59,7 @@ that is used to interview all households, or the `'short'` one that is
 used in the sample component of the cesus.
 
 ``` r
+
 # short questionnaire
 questionnaire(
   year = 2022, 
@@ -82,6 +84,7 @@ on how to collect the census data.
 Manuals for all censuses since 1970 are available.
 
 ``` r
+
 # 2022
 interview_manual(year = 2022)
 

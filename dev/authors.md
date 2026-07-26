@@ -18,7 +18,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/ipeaGIT/censobr/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/ipea/censobr/blob/main/inst/CITATION)
 
 Pereira, R. H. M.; Barbosa, R. J. (2023) censobr: Download Data from
 Brazil's Population Census. R package version v0.4.0,

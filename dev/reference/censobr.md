@@ -5,17 +5,17 @@ Download data data from Brazil's population Census.
 ## Usage
 
 Please check the vignettes and data documentation on the
-[website](https://ipeagit.github.io/censobr/).
+[website](https://ipea.github.io/censobr/).
 
 ## See also
 
 Useful links:
 
-- <https://github.com/ipeaGIT/censobr>
+- <https://github.com/ipea/censobr>
 
-- <https://ipeagit.github.io/censobr/>
+- <https://ipea.github.io/censobr/>
 
-- Report bugs at <https://github.com/ipeaGIT/censobr/issues>
+- Report bugs at <https://github.com/ipea/censobr/issues>
 
 ## Author
 
@@ -23,6 +23,9 @@ Useful links:
 ([ORCID](https://orcid.org/0000-0003-2125-7465))
 
 Authors:
+
+- Rafael H. M. Pereira <rafa.pereira.br@gmail.com>
+  ([ORCID](https://orcid.org/0000-0003-2125-7465))
 
 - Rogério J. Barbosa <antrologos@gmail.com>
   ([ORCID](https://orcid.org/0000-0002-6796-4547))

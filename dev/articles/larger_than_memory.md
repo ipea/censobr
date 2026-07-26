@@ -15,6 +15,7 @@ First, let’s read the 2010 mortality data, which we’ll use throughout
 vignette for illustration purposes.
 
 ``` r
+
 library(censobr)
 
 # read 2010 mortality data
@@ -53,6 +54,7 @@ data to memory. Note that we only piece of data we
 (i.e. load to memory) here are the first observations of the data.
 
 ``` r
+
 library(dplyr)
 
 # Filter deaths of men in the state of Rio de Janeiro
@@ -63,14 +65,14 @@ head(rio) |>
   collect()
 #> # A tibble: 6 × 26
 #>   code_muni code_state abbrev_state name_state     code_region name_region
-#> *     <int>      <int> <chr>        <chr>                <int> <chr>      
+#> *     <dbl>      <dbl> <chr>        <chr>                <dbl> <chr>      
 #> 1   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
 #> 2   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
 #> 3   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
 #> 4   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
 #> 5   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
 #> 6   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
-#> # ℹ 20 more variables: code_weighting <chr>, V0001 <chr>, V0002 <chr>,
+#> # ℹ 20 more variables: code_weighting <dbl>, V0001 <chr>, V0002 <chr>,
 #> #   V0011 <chr>, V0300 <dbl>, V0010 <dbl>, V1001 <chr>, V1002 <chr>,
 #> #   V1003 <chr>, V1004 <chr>, V1006 <chr>, V0703 <chr>, V0704 <chr>,
 #> #   V7051 <dbl>, V7052 <dbl>, M0703 <chr>, M0704 <chr>, M7051 <chr>,
@@ -94,6 +96,7 @@ Also note that the you need to use a bit of `SQL` syntax inside the
 dplyr call. Using the same example as above:
 
 ``` r
+
 library(duckdb)
 library(dbplyr)
 library(arrow)
@@ -107,14 +110,14 @@ head(rio1) |>
   collect()
 #> # A tibble: 6 × 26
 #>   code_muni code_state abbrev_state name_state     code_region name_region
-#>       <int>      <int> <chr>        <chr>                <int> <chr>      
+#>       <dbl>      <dbl> <chr>        <chr>                <dbl> <chr>      
 #> 1   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
 #> 2   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
 #> 3   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
 #> 4   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
 #> 5   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
 #> 6   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
-#> # ℹ 20 more variables: code_weighting <chr>, V0001 <chr>, V0002 <chr>,
+#> # ℹ 20 more variables: code_weighting <dbl>, V0001 <chr>, V0002 <chr>,
 #> #   V0011 <chr>, V0300 <dbl>, V0010 <dbl>, V1001 <chr>, V1002 <chr>,
 #> #   V1003 <chr>, V1004 <chr>, V1006 <chr>, V0703 <chr>, V0704 <chr>,
 #> #   V7051 <dbl>, V7052 <dbl>, M0703 <chr>, M0704 <chr>, M7051 <chr>,
@@ -127,6 +130,7 @@ Another alternative is to combine [duckdb](https://r.duckdb.org/) with
 [DBI](https://dbi.r-dbi.org) using database interface and `SQL` syntax.
 
 ``` r
+
 library(duckdb)
 library(DBI)
 
@@ -151,12 +155,12 @@ head(rio2)
 #> 5   3300100         33           RJ Rio de Janeiro           3     Sudeste
 #> 6   3300100         33           RJ Rio de Janeiro           3     Sudeste
 #>   code_weighting V0001 V0002         V0011   V0300    V0010 V1001 V1002 V1003
-#> 1  3300100003001    33 00100 3300100003001 1285657 13.51819     3    05   013
-#> 2  3300100003001    33 00100 3300100003001 6084726 12.76395     3    05   013
-#> 3  3300100003002    33 00100 3300100003002  898500 10.68108     3    05   013
-#> 4  3300100003002    33 00100 3300100003002 2581116 11.61204     3    05   013
-#> 5  3300100003002    33 00100 3300100003002 3768175 12.93833     3    05   013
-#> 6  3300100003002    33 00100 3300100003002 4125020 10.66262     3    05   013
+#> 1     3.3001e+12    33 00100 3300100003001 1285657 13.51819     3    05   013
+#> 2     3.3001e+12    33 00100 3300100003001 6084726 12.76395     3    05   013
+#> 3     3.3001e+12    33 00100 3300100003002  898500 10.68108     3    05   013
+#> 4     3.3001e+12    33 00100 3300100003002 2581116 11.61204     3    05   013
+#> 5     3.3001e+12    33 00100 3300100003002 3768175 12.93833     3    05   013
+#> 6     3.3001e+12    33 00100 3300100003002 4125020 10.66262     3    05   013
 #>   V1004  V1006             V0703     V0704 V7051 V7052 M0703 M0704 M7051 M7052
 #> 1    00 Urbana     Março de 2010 Masculino    69    NA     2     2     2     2
 #> 2    00 Urbana Fevereiro de 2010 Masculino    84    NA     2     2     2     2

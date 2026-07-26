@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to censobr">
 <meta name="robots" content="noindex">
@@ -51,7 +51,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ipeaGIT/censobr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ipea/censobr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
@@ -74,9 +74,9 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Introduction to censobr</h1>
             
-            <h4 data-toc-skip class="date">2026-04-10</h4>
+            <h4 data-toc-skip class="date">2026-07-26</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/censobr/blob/main/vignettes/censobr.Rmd" class="external-link"><code>vignettes/censobr.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ipea/censobr/blob/main/vignettes/censobr.Rmd" class="external-link"><code>vignettes/censobr.Rmd</code></a></small>
       <div class="d-none name"><code>censobr.Rmd</code></div>
     </div>
 
@@ -98,7 +98,7 @@ familiar functions</a>.</p>
 <span></span>
 <span><span class="co"># or use the development version with latest features</span></span>
 <span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/remove.packages.html" class="external-link">remove.packages</a></span><span class="op">(</span><span class="st">'censobr'</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ipeaGIT/censobr"</span>, ref<span class="op">=</span><span class="st">"dev"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ipea/censobr"</span>, ref<span class="op">=</span><span class="st">"dev"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="basic-usage">Basic usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
@@ -386,14 +386,14 @@ set using a single line of code. Like this:</p>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><strong><em>Note:</em></strong> all data sets in
 <strong>{censobr}</strong> are enriched with geography columns following
-the name standards of the <a href="https://github.com/ipeaGIT/geobr/" class="external-link">{geobr} package</a> to help
-data manipulation and integration with spatial data from {geobr}. The
-added columns are:
+the name standards of the <a href="https://github.com/ipea/geobr/" class="external-link">{geobr} package</a> to help data
+manipulation and integration with spatial data from {geobr}. The added
+columns are:
 <code>c(‘code_muni’, ‘code_state’, ‘abbrev_state’, ‘name_state’, ‘code_region’, ‘name_region’, ‘code_weighting’)</code>.</p>
 <p><strong><em>Data Cache:</em></strong></p>
 <p>The first time the user runs a function, <strong>{censobr}</strong>
 will download the file and store it locally. This way, the data only
-needs to be downloaded once. More info in the <a href="https://ipeagit.github.io/censobr/articles/censobr.html#data-cache">Data
+needs to be downloaded once. More info in the <a href="https://ipea.github.io/censobr/articles/censobr.html#data-cache" class="external-link">Data
 cache section</a> below.</p>
 </div>
 <div class="section level2">
@@ -413,7 +413,7 @@ examples:</p>
 </h2>
 <p>First, let’s load the libraries we’ll be using in this vignette.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/censobr" class="external-link">censobr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipea/censobr" class="external-link">censobr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/apache/arrow/" class="external-link">arrow</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
@@ -455,9 +455,9 @@ into the data set with <code><a href="https://pillar.r-lib.org/reference/glimpse
 <code class="sourceCode R"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">pop</span><span class="op">)</span></span>
 <span><span class="co">#&gt; FileSystemDataset with 1 Parquet file (query)</span></span>
 <span><span class="co">#&gt; 20,635,472 rows x 4 columns</span></span>
-<span><span class="co">#&gt; $ abbrev_state <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "RO", "RO", "RO", "RO", "RO", "RO", "RO", "RO", "RO", "R…</span></span>
-<span><span class="co">#&gt; $ V0606        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Parda", "Parda", "Branca", "Branca", "Parda", "Parda", …</span></span>
-<span><span class="co">#&gt; $ V0010        <span style="color: #949494; font-style: italic;">&lt;double&gt;</span> 8.705865, 8.705865, 9.818689, 9.495608, 9.495608, 9.4956…</span></span>
+<span><span class="co">#&gt; $ abbrev_state <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "AC", "AC", "AC", "AC", "AC", "AC", "AC", "AC", "AC", "A…</span></span>
+<span><span class="co">#&gt; $ V0606        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Amarela", "Parda", "Parda", "Branca", "Parda", "Branca"…</span></span>
+<span><span class="co">#&gt; $ V0010        <span style="color: #949494; font-style: italic;">&lt;double&gt;</span> 8.083000, 9.718624, 9.718624, 9.718624, 9.513442, 9.5134…</span></span>
 <span><span class="co">#&gt; $ V6400        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Sem instrução e fundamental incompleto", "Sem instrução…</span></span>
 <span><span class="co">#&gt; Call `print()` for query details</span></span></code></pre></div>
 <p>In the example below, we use the <code>dplyr</code> syntax to (a)
@@ -526,7 +526,7 @@ the proportion of households connected, and (d) collect the results.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">esg</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
 <span><span class="co">#&gt;   code_muni     rede  total cobertura</span></span>
-<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>   1<span style="text-decoration: underline;">100</span>015     0     <span style="text-decoration: underline;">7</span>443.   0      </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>   1<span style="text-decoration: underline;">100</span>023   182.   <span style="text-decoration: underline;">27</span>654.   0.006<span style="text-decoration: underline;">60</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>   1<span style="text-decoration: underline;">100</span>031     0     <span style="text-decoration: underline;">1</span>979.   0      </span></span>
@@ -534,36 +534,32 @@ the proportion of households connected, and (d) collect the results.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>   1<span style="text-decoration: underline;">100</span>056     5.81  <span style="text-decoration: underline;">5</span>399    0.001<span style="text-decoration: underline;">08</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>   1<span style="text-decoration: underline;">100</span>064    28.9   <span style="text-decoration: underline;">6</span>013.   0.004<span style="text-decoration: underline;">80</span></span></span></code></pre></div>
 <p>In order to create a map with these values, we are going to use the
-<a href="https://ipeagit.github.io/geobr/" class="external-link">{geobr} package</a> to
-download the geometries of Brazilian municipalities.</p>
+<a href="https://ipea.github.io/geobr/" class="external-link">{geobr} package</a> to download
+the geometries of Brazilian municipalities.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ipeagit.github.io/geobr/" class="external-link">geobr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">muni_sf</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://ipeagit.github.io/geobr/reference/read_municipality.html" class="external-link">read_municipality</a></span><span class="op">(</span></span>
+<span><span class="va">muni_sf</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/geobr/man/read_municipality.html" class="external-link">read_municipality</a></span><span class="op">(</span></span>
 <span>  year <span class="op">=</span> <span class="fl">2010</span>,</span>
 <span>  showProgress <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">muni_sf</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Simple feature collection with 6 features and 4 fields</span></span>
-<span><span class="co">#&gt; Geometry type: MULTIPOLYGON</span></span>
+<span><span class="co">#&gt; Simple feature collection with 6 features and 8 fields</span></span>
+<span><span class="co">#&gt; Geometry type: POLYGON</span></span>
 <span><span class="co">#&gt; Dimension:     XY</span></span>
 <span><span class="co">#&gt; Bounding box:  xmin: -63.61822 ymin: -13.6937 xmax: -60.33317 ymax: -9.66916</span></span>
 <span><span class="co">#&gt; Geodetic CRS:  SIRGAS 2000</span></span>
-<span><span class="co">#&gt;   code_muni             name_muni code_state abbrev_state</span></span>
-<span><span class="co">#&gt; 1   1100015 Alta Floresta D'oeste         11           RO</span></span>
-<span><span class="co">#&gt; 2   1100023             Ariquemes         11           RO</span></span>
-<span><span class="co">#&gt; 3   1100031                Cabixi         11           RO</span></span>
-<span><span class="co">#&gt; 4   1100049                Cacoal         11           RO</span></span>
-<span><span class="co">#&gt; 5   1100056            Cerejeiras         11           RO</span></span>
-<span><span class="co">#&gt; 6   1100064     Colorado Do Oeste         11           RO</span></span>
-<span><span class="co">#&gt;                             geom</span></span>
-<span><span class="co">#&gt; 1 MULTIPOLYGON (((-62.2462 -1...</span></span>
-<span><span class="co">#&gt; 2 MULTIPOLYGON (((-63.13712 -...</span></span>
-<span><span class="co">#&gt; 3 MULTIPOLYGON (((-60.52408 -...</span></span>
-<span><span class="co">#&gt; 4 MULTIPOLYGON (((-61.42679 -...</span></span>
-<span><span class="co">#&gt; 5 MULTIPOLYGON (((-61.41347 -...</span></span>
-<span><span class="co">#&gt; 6 MULTIPOLYGON (((-60.66352 -...</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 9</span></span></span>
+<span><span class="co">#&gt;   code_muni name_muni code_state abbrev_state name_state code_region name_region</span></span>
+<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>   1<span style="text-decoration: underline;">100</span>015 Alta Flo…         11 RO           Rondônia             1 Norte      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>   1<span style="text-decoration: underline;">100</span>023 Ariquemes         11 RO           Rondônia             1 Norte      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>   1<span style="text-decoration: underline;">100</span>031 Cabixi            11 RO           Rondônia             1 Norte      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>   1<span style="text-decoration: underline;">100</span>049 Cacoal            11 RO           Rondônia             1 Norte      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>   1<span style="text-decoration: underline;">100</span>056 Cerejeir…         11 RO           Rondônia             1 Norte      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>   1<span style="text-decoration: underline;">100</span>064 Colorado…         11 RO           Rondônia             1 Norte      </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: year &lt;dbl&gt;, geometry &lt;POLYGON [°]&gt;</span></span></span></code></pre></div>
 <p>Now we only need to merge the spatial data with our estimates and map
 the results.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -587,7 +583,7 @@ of São Paulo.</p>
 <p>First, let’s download the municipalities of the metro area of São
 Paulo.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">metro_muni</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://ipeagit.github.io/geobr/reference/read_metro_area.html" class="external-link">read_metro_area</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">metro_muni</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/geobr/man/read_metro_area.html" class="external-link">read_metro_area</a></span><span class="op">(</span></span>
 <span>  year <span class="op">=</span> <span class="fl">2010</span>, </span>
 <span>  showProgress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">name_metro</span> <span class="op">==</span> <span class="st">"RM São Paulo"</span><span class="op">)</span></span></code></pre></div>
@@ -596,7 +592,7 @@ ponderação). With the code below, we download all weighting areas in the
 state of São Paulo, and then keep only the ones in the metropolitan
 region of São Paulo.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">wt_areas</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://ipeagit.github.io/geobr/reference/read_weighting_area.html" class="external-link">read_weighting_area</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">wt_areas</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/geobr/man/read_weighting_area.html" class="external-link">read_weighting_area</a></span><span class="op">(</span></span>
 <span>  code_weighting <span class="op">=</span> <span class="st">"SP"</span>, </span>
 <span>  showProgress <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  year <span class="op">=</span> <span class="fl">2010</span></span>
@@ -604,25 +600,14 @@ region of São Paulo.</p>
 <span></span>
 <span><span class="va">wt_areas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">wt_areas</span>, <span class="va">code_muni</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">metro_muni</span><span class="op">$</span><span class="va">code_muni</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">wt_areas</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Simple feature collection with 6 features and 7 fields</span></span>
+<span><span class="co">#&gt; Simple feature collection with 0 features and 9 fields</span></span>
 <span><span class="co">#&gt; Geometry type: MULTIPOLYGON</span></span>
-<span><span class="co">#&gt; Dimension:     XY</span></span>
-<span><span class="co">#&gt; Bounding box:  xmin: -46.73454 ymin: -23.64487 xmax: -46.64756 ymax: -23.53528</span></span>
+<span><span class="co">#&gt; Bounding box:  xmin: NA ymin: NA xmax: NA ymax: NA</span></span>
 <span><span class="co">#&gt; Geodetic CRS:  SIRGAS 2000</span></span>
-<span><span class="co">#&gt;    code_weighting code_muni name_muni code_state abbrev_state code_region</span></span>
-<span><span class="co">#&gt; 5   3550308005100   3550308 São Paulo         35           SP           3</span></span>
-<span><span class="co">#&gt; 6   3550308005102   3550308 São Paulo         35           SP           3</span></span>
-<span><span class="co">#&gt; 8   3550308005101   3550308 São Paulo         35           SP           3</span></span>
-<span><span class="co">#&gt; 10  3550308005104   3550308 São Paulo         35           SP           3</span></span>
-<span><span class="co">#&gt; 12  3550308005103   3550308 São Paulo         35           SP           3</span></span>
-<span><span class="co">#&gt; 14  3550308005106   3550308 São Paulo         35           SP           3</span></span>
-<span><span class="co">#&gt;    name_region                           geom</span></span>
-<span><span class="co">#&gt; 5      Sudeste MULTIPOLYGON (((-46.67201 -...</span></span>
-<span><span class="co">#&gt; 6      Sudeste MULTIPOLYGON (((-46.67663 -...</span></span>
-<span><span class="co">#&gt; 8      Sudeste MULTIPOLYGON (((-46.67257 -...</span></span>
-<span><span class="co">#&gt; 10     Sudeste MULTIPOLYGON (((-46.70138 -...</span></span>
-<span><span class="co">#&gt; 12     Sudeste MULTIPOLYGON (((-46.69581 -...</span></span>
-<span><span class="co">#&gt; 14     Sudeste MULTIPOLYGON (((-46.73454 -...</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 0 × 10</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 10 variables: code_weighting &lt;dbl&gt;, code_muni &lt;dbl&gt;, name_muni &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   code_state &lt;dbl&gt;, abbrev_state &lt;chr&gt;, name_state &lt;chr&gt;, code_region &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   name_region &lt;chr&gt;, year &lt;dbl&gt;, geometry &lt;MULTIPOLYGON [°]&gt;</span></span></span></code></pre></div>
 <p>Now we need to calculate the average rent spent in each weighting
 area. Using the national household data set, we’re going to (a) filter
 only observations in our municipalities of interest, (b) group
@@ -637,15 +622,8 @@ collect the results.</p>
 <span>        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span>                                                          <span class="co"># (d)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rent</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
-<span><span class="co">#&gt;   code_weighting avgrent</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 3503901003001     355.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 3503901003002     627.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 3503901003003     358.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> 3505708005001     577.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> 3505708005002     397.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 3505708005003     327.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 0 × 2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 variables: code_weighting &lt;dbl&gt;, avgrent &lt;dbl&gt;</span></span></span></code></pre></div>
 <p>Finally, we can merge the spatial data with our rent estimates and
 map the results.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -691,7 +669,7 @@ directory is persistent across R sessions.</p>
 <span></span>
 <span><span class="fu">censobr</span><span class="fu">::</span><span class="fu"><a href="../reference/set_censobr_cache_dir.html">set_censobr_cache_dir</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">tempf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> censobr files will be cached at</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">/tmp/RtmpsDybJt/my_temp_dir</span>.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #0000BB;">/tmp/RtmpdJ1kom/my_temp_dir</span>.</span></span></code></pre></div>
 <p>Mind you that the data is saved in a directory inside the cache
 directory set by the user and which is versioned according to the
 version of the latest data release.</p>
@@ -704,9 +682,9 @@ version of the latest data release.</p>
 <span>  list_files <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>  print_tree <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpsDybJt/my_temp_dir</span></span></span>
-<span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">data_release_v0.5.0</span></span></span>
-<span><span class="co">#&gt;     └── 2010_emigration_v0.5.0.parquet</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpdJ1kom/my_temp_dir</span></span></span>
+<span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">data_release_v0.6.0</span></span></span>
+<span><span class="co">#&gt;     └── 2010_emigration_v0.6.0.parquet</span></span></code></pre></div>
 <p>If you do not remember the location of the cache, you can always run
 <code><a href="../reference/get_censobr_cache_dir.html">get_censobr_cache_dir()</a></code> to return the path of the cache
 directory in use, or run <code>set_censobr_cache_dir(path = NULL)</code>
@@ -724,7 +702,7 @@ to set the default cache directory back.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

@@ -1,16 +1,19 @@
 # Changelog
 
-## censobr v0.6.0 dev
+## censobr v0.6.0
 
 - Minor changes
   - The function
     [`data_dictionary()`](https://ipeagit.github.io/censobr/dev/reference/data_dictionary.md)
     now does not open the file when `verbose = FALSE`. Closes
-    [72](https://github.com/ipeaGIT/censobr/issues/72)
+    [72](https://github.com/ipea/censobr/issues/72)
 - Data fixes included in this version:
   - The census tract aggregate table of Pessoa02 from the state of Goias
     has been fixed. Closes
-    [68](https://github.com/ipeaGIT/censobr/issues/68)
+    [68](https://github.com/ipea/censobr/issues/68),
+    [70](https://github.com/ipea/censobr/issues/70)
+  - All `code_` columns now have class `numeric` to keep the consistency
+    across {geobr} and other sister packages in the brverse.
 - New data set and files included in this version:
   - Data dictionary of microdata now includes a single Excel file with
     info for all variables, including auxiliary documentation. For now,
@@ -26,8 +29,8 @@ CRAN release: 2025-07-07
   - The function
     [`set_censobr_cache_dir()`](https://ipeagit.github.io/censobr/dev/reference/set_censobr_cache_dir.md)
     now sets cache directories that persist across R sessions. Closes
-    [\#55](https://github.com/ipeaGIT/censobr/issues/55). The data is
-    saved in versioned directory inside the cache directory.
+    [\#55](https://github.com/ipea/censobr/issues/55). The data is saved
+    in versioned directory inside the cache directory.
   - The `year` parameter no longer defaults to `2010`.
   - New parameter `verbose` (logical) indicating whether functions
     should print messsages
@@ -38,11 +41,11 @@ CRAN release: 2025-07-07
   - {censobr} now imports {cli} and {rlang}
 - New data set and files included in this version:
   - 2022 census. Closes
-    [\#64](https://github.com/ipeaGIT/censobr/issues/64)
+    [\#64](https://github.com/ipea/censobr/issues/64)
     - Census-tract level data
     - Census-tract level data dictionary
   - 2000 census. Closes
-    [\#43](https://github.com/ipeaGIT/censobr/issues/43)
+    [\#43](https://github.com/ipea/censobr/issues/43)
     - Census-tract level data
   - All data sets are save in `.parquet` compressed using
     `compression='zstd'` and `compression_level = 22`. This has almost
@@ -50,9 +53,9 @@ CRAN release: 2025-07-07
     at minimal cost of reading time.
   - All data sets are now sorted by key columns to speed up join
     operations. Closes
-    [\#60](https://github.com/ipeaGIT/censobr/issues/60).
+    [\#60](https://github.com/ipea/censobr/issues/60).
   - Fixed annoying message about arrow metadata. closed
-    [\#56](https://github.com/ipeaGIT/censobr/issues/56).
+    [\#56](https://github.com/ipea/censobr/issues/56).
 
 ## censobr v0.4.1
 
@@ -72,17 +75,16 @@ CRAN release: 2024-09-20
   - Some functions (`read_mortality`, `read_emigration`) now include a
     new parameter `merge_households` (logical) to indicate whether the
     function should merge household variables to the output data.
-    Partially closes
-    [\#31](https://github.com/ipeaGIT/censobr/issues/31)
+    Partially closes [\#31](https://github.com/ipea/censobr/issues/31)
   - {censobr} now imports the {duckplyr} package, which is used for
     merging household data. Closes issue
-    [\#31](https://github.com/ipeaGIT/censobr/issues/31).
+    [\#31](https://github.com/ipea/censobr/issues/31).
   - New vignette showing how to work with larger-than-memory data.
-    Closes [\#42](https://github.com/ipeaGIT/censobr/issues/42). The
+    Closes [\#42](https://github.com/ipea/censobr/issues/42). The
     vignette still needs to be expanded with more examples, though.
 - Minor changes
   - Updated Vignettes Closes issue
-    [\#51](https://github.com/ipeaGIT/censobr/issues/51)
+    [\#51](https://github.com/ipea/censobr/issues/51)
   - Removed dependency on the {httr} package
   - Now using
     [`curl::multi_download()`](https://jeroen.r-universe.dev/curl/reference/multi_download.html)
@@ -92,21 +94,19 @@ CRAN release: 2024-09-20
 - Changes to data sets and files included in this version:
   - Population microdata for the year 2000 now include a few columns
     that were not included before. Closes
-    [\#44](https://github.com/ipeaGIT/censobr/issues/44)
+    [\#44](https://github.com/ipea/censobr/issues/44)
   - Included additional columns and fixed minor errors in data
     dictionary of 2010 microdata. Closes
-    [\#45](https://github.com/ipeaGIT/censobr/issues/45)
+    [\#45](https://github.com/ipea/censobr/issues/45)
 - New data set and files included in this version:
-  - 1960 census Closes
-    [\#32](https://github.com/ipeaGIT/censobr/issues/32)
+  - 1960 census Closes [\#32](https://github.com/ipea/censobr/issues/32)
     - Interview manual
     - Data dictionary for microdata of population and households
     - Microdata of population and households
   - 1970: fixed geography columns. Closes
-    [\#52](https://github.com/ipeaGIT/censobr/issues/52)
+    [\#52](https://github.com/ipea/censobr/issues/52)
   - 1991 census: Data dictionary for microdata of population and
-    households. Closes
-    [\#28](https://github.com/ipeaGIT/censobr/issues/28)
+    households. Closes [\#28](https://github.com/ipea/censobr/issues/28)
 
 ## censobr v0.3.2
 
@@ -141,9 +141,8 @@ CRAN release: 2024-01-09
     function now accepts questionnaires of `type`: `"long"` or
     `"short"`.
   - Updated census tract data following latest update by IBGE on
-    Oct/2023. Closed
-    [\#38](https://github.com/ipeaGIT/censobr/issues/38). As a result,
-    the package moved to data release v0.3.0.
+    Oct/2023. Closed [\#38](https://github.com/ipea/censobr/issues/38).
+    As a result, the package moved to data release v0.3.0.
 - Minor changes
   - Replaced `.onAttach` by `.onLoad` so that the package works with
     `censobr::function()`
@@ -183,14 +182,14 @@ CRAN release: 2023-09-30
       the censobr package.
   - New data sets of 1970, 1980 and 1991 censuses: microdata of
     population and households PLUS Census tract-level aggregate data
-    for 2010. Closes [\#6](https://github.com/ipeaGIT/censobr/issues/6),
-    [\#7](https://github.com/ipeaGIT/censobr/issues/7),
-    [\#8](https://github.com/ipeaGIT/censobr/issues/8) and
-    [1#8](https://github.com/ipeaGIT/censobr/issues/18)
+    for 2010. Closes [\#6](https://github.com/ipea/censobr/issues/6),
+    [\#7](https://github.com/ipea/censobr/issues/7),
+    [\#8](https://github.com/ipea/censobr/issues/8) and
+    [1#8](https://github.com/ipea/censobr/issues/18)
   - New vignette on Census tract-level aggregate data for 2010.
   - New vignette covering functions about census documentation and
     dictionary of variables. Closes
-    [\#2](https://github.com/ipeaGIT/censobr/issues/2).
+    [\#2](https://github.com/ipea/censobr/issues/2).
 - Minor changes
   - Running `censobr_cache(delete_file = 'all')` now removes all data
     and directories related from censobr.
@@ -214,10 +213,10 @@ CRAN release: 2023-09-11
 
 - Minor changes
   - Using cache_dir and data_release as global variables. Closes
-    [\#13](https://github.com/ipeaGIT/censobr/issues/13)
+    [\#13](https://github.com/ipea/censobr/issues/13)
   - Running `censobr_cache(delete_file = 'all')`now also remove data
     from old data releases. Closes
-    [\#14](https://github.com/ipeaGIT/censobr/issues/14).
+    [\#14](https://github.com/ipea/censobr/issues/14).
   - Large improvement in code coverage
 - Changes requested by CRAN team
   - Changed location of cached data to directory inside
@@ -235,10 +234,10 @@ CRAN release: 2023-09-06
 - All data sets are now enriched with geography columns following
   {geobr} name standards. This should help data manipulation and
   integration with spatial data from the
-  [{geobr}](https://github.com/ipeaGIT/geobr) package. The added columns
+  [{geobr}](https://github.com/ipea/geobr) package. The added columns
   are: c(‘code_muni’, ‘code_state’, ‘abbrev_state’, ‘name_state’,
   ‘code_region’, ‘name_region’, ‘code_weighting’). Closes
-  [\#5](https://github.com/ipeaGIT/censobr/issues/5).
+  [\#5](https://github.com/ipea/censobr/issues/5).
 - Data included in this version:
   - 2000 Census
     - Microdata of population, households and families.
