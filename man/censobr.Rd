@@ -11,15 +11,15 @@ Download data data from Brazil's population Census.
 \section{Usage}{
 
 Please check the vignettes and data documentation on the
-\href{https://ipeagit.github.io/censobr/}{website}.
+\href{https://ipea.github.io/censobr/}{website}.
 }
 
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/ipeaGIT/censobr}
-  \item \url{https://ipeagit.github.io/censobr/}
-  \item Report bugs at \url{https://github.com/ipeaGIT/censobr/issues}
+  \item \url{https://github.com/ipea/censobr}
+  \item \url{https://ipea.github.io/censobr/}
+  \item Report bugs at \url{https://github.com/ipea/censobr/issues}
 }
 
 }
@@ -28,6 +28,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Rafael H. M. Pereira \email{rafa.pereira.br@gmail.com} (\href{https://orcid.org/0000-0003-2125-7465}{ORCID})
   \item Rogério J. Barbosa \email{antrologos@gmail.com} (\href{https://orcid.org/0000-0002-6796-4547}{ORCID})
 }
 

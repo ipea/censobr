@@ -4,10 +4,10 @@
    status](https://www.r-pkg.org/badges/version/censobr)](https://CRAN.R-project.org/package=censobr)
 [![CRAN/METACRAN Total
    downloads](https://cranlogs.r-pkg.org/badges/grand-total/censobr?color=blue)](https://CRAN.R-project.org/package=censobr) [![Codecov test
-coverage](https://codecov.io/gh/ipeaGIT/censobr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ipeaGIT/censobr?branch=main)
+coverage](https://codecov.io/gh/ipea/censobr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ipea/censobr?branch=main)
 [![Lifecycle:
      maturing](https://img.shields.io/badge/lifecycle-maturing-yellow.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![R-CMD-check](https://github.com/ipeaGIT/censobr/actions/workflows/R-CMD-check.yaml/badge.svg?branch=main)](https://github.com/ipeaGIT/censobr/actions?query=branch%3Amain)
+[![R-CMD-check](https://github.com/ipea/censobr/actions/workflows/R-CMD-check.yaml/badge.svg?branch=main)](https://github.com/ipea/censobr/actions?query=branch%3Amain)
 [![Paper](https://img.shields.io/badge/DOI-10.1590%2Fdados--2026--69--1--006-blue)](https://doi.org/10.1590/dados.2026.69.1.006)
 
 
@@ -22,7 +22,7 @@ install.packages("censobr")
 
 # or use the development version with latest features
 utils::remove.packages('censobr')
-remotes::install_github("ipeaGIT/censobr", ref="dev")
+remotes::install_github("ipea/censobr", ref="dev")
 library(censobr)
 ```
 
@@ -65,7 +65,7 @@ read_households(
   )
 ```
 
-***Note:*** all data sets in **{censobr}** are enriched with geography columns following the name standards of the [{geobr} package](https://github.com/ipeaGIT/geobr/) to help data manipulation and integration with spatial data from {geobr}. The added columns are: `c(‘code_muni’, ‘code_state’, ‘abbrev_state’, ‘name_state’, ‘code_region’, ‘name_region’, ‘code_weighting’)`.
+***Note:*** all data sets in **{censobr}** are enriched with geography columns following the name standards of the [{geobr} package](https://github.com/ipea/geobr/) to help data manipulation and integration with spatial data from {geobr}. The added columns are: `c(‘code_muni’, ‘code_state’, ‘abbrev_state’, ‘name_state’, ‘code_region’, ‘name_region’, ‘code_weighting’)`.
 
 ### Data cache
 
@@ -82,7 +82,7 @@ The first time the user runs a function, **{censobr}** will download the file an
 Microdata of Brazilian census are often be too big to load in users' RAM memory. To avoid this problem, **{censobr}** will by default return an [Arrow table](https://arrow.apache.org/docs/r/articles/arrow.html#tabular-data-in-arrow), which can be analyzed like a regular `data.frame` using the `dplyr` package without loading the full data to memory.
 
 
-More info in the package [vignette](https://ipeagit.github.io/censobr/).
+More info in the package [vignette](https://ipea.github.io/censobr/).
 
 
 ## Contributing to censobr

@@ -33,8 +33,8 @@ set_censobr_cache_dir(path = NULL)
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other Cache data: 
-\code{\link{censobr_cache}()},
-\code{\link{get_censobr_cache_dir}()}
+Other Cache data:
+\code{\link[=censobr_cache]{censobr_cache()}},
+\code{\link[=get_censobr_cache_dir]{get_censobr_cache_dir()}}
 }
 \concept{Cache data}

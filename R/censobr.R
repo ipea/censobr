@@ -4,7 +4,7 @@
 #'
 #' @section Usage:
 #' Please check the vignettes and data documentation on the
-#' [website](https://ipeagit.github.io/censobr/).
+#' [website](https://ipea.github.io/censobr/).
 #'
 #' @docType package
 #' @name censobr

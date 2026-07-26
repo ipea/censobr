@@ -44,7 +44,7 @@ interview_manual(
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other Census documentation: 
-\code{\link{data_dictionary}()}
+Other Census documentation:
+\code{\link[=data_dictionary]{data_dictionary()}}
 }
 \concept{Census documentation}

@@ -20,8 +20,8 @@ get_censobr_cache_dir()
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other Cache data: 
-\code{\link{censobr_cache}()},
-\code{\link{set_censobr_cache_dir}()}
+Other Cache data:
+\code{\link[=censobr_cache]{censobr_cache()}},
+\code{\link[=set_censobr_cache_dir]{set_censobr_cache_dir()}}
 }
 \concept{Cache data}

@@ -75,10 +75,10 @@ df <- read_mortality(
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other Microdata: 
-\code{\link{read_emigration}()},
-\code{\link{read_families}()},
-\code{\link{read_households}()},
-\code{\link{read_population}()}
+Other Microdata:
+\code{\link[=read_emigration]{read_emigration()}},
+\code{\link[=read_families]{read_families()}},
+\code{\link[=read_households]{read_households()}},
+\code{\link[=read_population]{read_population()}}
 }
 \concept{Microdata}

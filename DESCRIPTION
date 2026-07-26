@@ -27,8 +27,8 @@ Description: Easy access to data from Brazil's population censuses. The package
              users to work with larger-than-memory census data using 'dplyr' 
              familiar functions. <https://arrow.apache.org/docs/r/articles/arrow.html#analyzing-arrow-data-with-dplyr>.
 License: MIT + file LICENSE
-URL: https://github.com/ipeaGIT/censobr, https://ipeagit.github.io/censobr/
-BugReports: https://github.com/ipeaGIT/censobr/issues
+URL: https://github.com/ipea/censobr, https://ipea.github.io/censobr/
+BugReports: https://github.com/ipea/censobr/issues
 Depends: 
     R (>= 4.1.0)
 Imports:
@@ -57,4 +57,4 @@ VignetteBuilder:
     knitr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
+RoxygenNote: 8.0.0

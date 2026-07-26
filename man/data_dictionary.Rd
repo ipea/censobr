@@ -60,7 +60,7 @@ data_dictionary(
 \dontshow{\}) # examplesIf}
 }
 \seealso{
-Other Census documentation: 
-\code{\link{interview_manual}()}
+Other Census documentation:
+\code{\link[=interview_manual]{interview_manual()}}
 }
 \concept{Census documentation}
