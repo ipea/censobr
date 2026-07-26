@@ -30,7 +30,7 @@ install.packages("censobr")
 
 # or use the development version with latest features
 utils::remove.packages('censobr')
-remotes::install_github("ipeaGIT/censobr", ref="dev")
+remotes::install_github("ipea/censobr", ref="dev")
 
 ```
 
@@ -173,11 +173,11 @@ read_households(
   )
 ```
 
-***Note:*** all data sets in **{censobr}** are enriched with geography columns following the name standards of the [{geobr} package](https://github.com/ipeaGIT/geobr/) to help data manipulation and integration with spatial data from {geobr}. The added columns are: `c(‘code_muni’, ‘code_state’, ‘abbrev_state’, ‘name_state’, ‘code_region’, ‘name_region’, ‘code_weighting’)`.
+***Note:*** all data sets in **{censobr}** are enriched with geography columns following the name standards of the [{geobr} package](https://github.com/ipea/geobr/) to help data manipulation and integration with spatial data from {geobr}. The added columns are: `c(‘code_muni’, ‘code_state’, ‘abbrev_state’, ‘name_state’, ‘code_region’, ‘name_region’, ‘code_weighting’)`.
 
 ***Data Cache:***
 
-The first time the user runs a function, **{censobr}** will download the file and store it locally. This way, the data only needs to be downloaded once. More info in the [Data cache section](https://ipeagit.github.io/censobr/articles/censobr.html#data-cache) below.
+The first time the user runs a function, **{censobr}** will download the file and store it locally. This way, the data only needs to be downloaded once. More info in the [Data cache section](https://ipea.github.io/censobr/articles/censobr.html#data-cache) below.
 
 
 # Larger-than-memory Data
@@ -276,7 +276,7 @@ esg <- hs |>
 
 head(esg)
 ```
-In order to create a map with these values, we are going to use the [{geobr} package](https://ipeagit.github.io/geobr/) to download the geometries of Brazilian municipalities.
+In order to create a map with these values, we are going to use the [{geobr} package](https://ipea.github.io/geobr/) to download the geometries of Brazilian municipalities.
 
 ```{r warning = FALSE, message=FALSE}
 library(geobr)
