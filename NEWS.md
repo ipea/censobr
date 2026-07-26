@@ -5,7 +5,10 @@
   `verbose = FALSE`. Closes [72](https://github.com/ipea/censobr/issues/72) 
 
 * Data fixes included in this version:
-  * The census tract aggregate table of Pessoa02 from the state of Goias has been fixed. Closes [68](https://github.com/ipea/censobr/issues/68)
+  * The census tract aggregate table of Pessoa02 from the state of Goias has been 
+  fixed. Closes [68](https://github.com/ipea/censobr/issues/68), [70](https://github.com/ipea/censobr/issues/70)
+  * All `code_` columns now have class `numeric` to keep the consistency across 
+  {geobr} and other sister packages in the brverse.
 
 * New data set and files included in this version:
   * Data dictionary of microdata now includes a single Excel file with info for

@@ -82,7 +82,9 @@ names(dom)[c(30:33,119:121, 526:528)]
 
 ## Dictionary of variables
 
-To check the meaning of each variable, users can run the `data_dictionary()`, which will open the file with the dictionary of variables in each dataset. The dictionary file is either an `.html`, a `.pdf` or an `.xlsx` file, depending on the data set and year.
+To check the meaning of each variable, users can run the `data_dictionary()`, 
+which will open the file with the dictionary of variables in each dataset. The dictionary file is either an `.html`, a `.pdf` or an `.xlsx` file, depending on 
+the data set and year.
 
 
 ```{r warning=FALSE, message=FALSE}

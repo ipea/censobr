@@ -402,8 +402,6 @@ urlchecker::url_update()
 Sys.setenv(NOT_CRAN = "true")
 testthat::test_local()
 
-── R CMD check results ───────────────────────────────────────────────── censobr 0.4.19999 ────
-Duration: 9m 3.4s
 
 # LOCAL
 Sys.setenv(NOT_CRAN = "true")
