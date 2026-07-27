@@ -407,6 +407,10 @@ testthat::test_local()
 Sys.setenv(NOT_CRAN = "true")
 devtools::check(pkg = ".",  cran = FALSE, env_vars = c(NOT_CRAN = "true"))
 
+# Run all diagnostics on the current package
+library(checktor)
+results <- checktor()
+
 # CRAN
 Sys.setenv(NOT_CRAN = "false")
 devtools::check(pkg = ".",  cran = TRUE, env_vars = c(NOT_CRAN = "false"))

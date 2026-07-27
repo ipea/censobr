@@ -54,7 +54,6 @@ the sample component of the questionnaire.
 }
 \examples{
 \dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) withAutoprint(\{ # examplesIf}
-library(censobr)
 
 # return data as arrow Dataset
 df <- read_mortality(
@@ -62,16 +61,12 @@ df <- read_mortality(
   showProgress = FALSE
   )
 
-# dplyr::glimpse(df)
-
 # return data as data.frame
 df <- read_mortality(
   year = 2010,
   as_data_frame = TRUE,
   showProgress = FALSE
   )
-
-# dplyr::glimpse(df)
 \dontshow{\}) # examplesIf}
 }
 \seealso{

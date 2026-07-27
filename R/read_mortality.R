@@ -17,7 +17,6 @@
 #' @export
 #' @family Microdata
 #' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
-#' library(censobr)
 #'
 #' # return data as arrow Dataset
 #' df <- read_mortality(
@@ -25,16 +24,12 @@
 #'   showProgress = FALSE
 #'   )
 #'
-#' # dplyr::glimpse(df)
-#'
 #' # return data as data.frame
 #' df <- read_mortality(
 #'   year = 2010,
 #'   as_data_frame = TRUE,
 #'   showProgress = FALSE
 #'   )
-#'
-#' # dplyr::glimpse(df)
 #'
 read_mortality <- function(year,
                            columns = NULL,
@@ -60,7 +55,7 @@ read_mortality <- function(year,
     }
 
   ### Get url
-  file_url <- paste0("https://github.com/ipeaGIT/censobr/releases/download/",
+  file_url <- paste0("https://github.com/ipea/censobr_prep_data/releases/download/",
                      censobr_env$data_release, "/", year, "_mortality_",
                      censobr_env$data_release, ".parquet")
 

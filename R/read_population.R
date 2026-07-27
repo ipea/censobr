@@ -48,7 +48,7 @@ read_population <- function(year,
     }
 
   ### Get url
-  file_url <- paste0("https://github.com/ipeaGIT/censobr/releases/download/",
+  file_url <- paste0("https://github.com/ipea/censobr_prep_data/releases/download/",
                      censobr_env$data_release, "/", year, "_population_",
                      censobr_env$data_release, ".parquet")
 

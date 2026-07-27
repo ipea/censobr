@@ -52,7 +52,7 @@ test_that("censobr_cache", {
   censobr::read_emigration(year = 2010, showProgress = FALSE, cache = TRUE)
   testthat::expect_message(censobr_cache(list_files = TRUE, print_tree = TRUE))
   temp <- censobr_cache(list_files = TRUE, print_tree = TRUE)
-  testthat::expect_is(temp, "fs_path")
+  testthat::expect_is(temp, "character")
 
   # get current cache dir
   testthat::expect_true(is.character(get_censobr_cache_dir()))

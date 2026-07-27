@@ -86,21 +86,23 @@ read_tracts <- function(year,
                       "Preliminares")
 
   # check requested data set
-  if (year==2000 & isFALSE(dataset %in% data_sets_2000)) {
+  dataset <- tolower(dataset)
+
+  if (year==2000 & isFALSE(dataset %in% tolower(data_sets_2000))) {
     error_missing_datasets(data_sets_2010)
   }
 
-  if (year==2010 & isFALSE(dataset %in% data_sets_2010)) {
+  if (year==2010 & isFALSE(dataset %in% tolower(data_sets_2010))) {
     error_missing_datasets(data_sets_2010)
   }
 
-  if (year==2022 & isFALSE(dataset %in% data_sets_2022)) {
+  if (year==2022 & isFALSE(dataset %in% tolower(data_sets_2022))) {
     error_missing_datasets(data_sets_2022)
   }
 
   ### Get url
   dataset  <- paste0(dataset, '_')
-  file_url <- paste0("https://github.com/ipeaGIT/censobr/releases/download/",
+  file_url <- paste0("https://github.com/ipea/censobr_prep_data/releases/download/",
                      censobr_env$data_release, "/", year,"_tracts_", dataset,
                      censobr_env$data_release, ".parquet")
 
