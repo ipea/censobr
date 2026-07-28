@@ -136,6 +136,14 @@ library(DBI)
 
 # create databse connection
 con <- duckdb::dbConnect(duckdb::duckdb())
+#> duckdb keeps downloaded extensions and secrets in a temporary directory:
+#> ℹ /tmp/RtmpqC7zAe/duckdb
+#> This is removed when the R session ends.
+#> • Extensions are re-downloaded each session.
+#> • Secrets are lost.
+#> ℹ Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).
+#> ℹ Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).
+#> ℹ See ?duckdb_storage for details and alternatives.
 
 # register the data in the data base
 duckdb::duckdb_register_arrow(con, 'mortality_2010_tbl', df)

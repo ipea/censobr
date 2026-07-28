@@ -80,7 +80,6 @@ Other Microdata:
 ## Examples
 
 ``` r
-library(censobr)
 
 # return data as arrow Dataset
 df <- read_mortality(
@@ -89,8 +88,6 @@ df <- read_mortality(
   )
 #> ℹ Downloading data and storing it locally for future use.
 
-# dplyr::glimpse(df)
-
 # return data as data.frame
 df <- read_mortality(
   year = 2010,
@@ -98,6 +95,4 @@ df <- read_mortality(
   showProgress = FALSE
   )
 #> ℹ Reading data cached locally.
-
-# dplyr::glimpse(df)
 ```

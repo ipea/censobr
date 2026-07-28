@@ -74,7 +74,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Working with larger-than-memory data</h1>
             
-            <h4 data-toc-skip class="date">2026-07-26</h4>
+            <h4 data-toc-skip class="date">2026-07-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipea/censobr/blob/main/vignettes/larger_than_memory.Rmd" class="external-link"><code>vignettes/larger_than_memory.Rmd</code></a></small>
       <div class="d-none name"><code>larger_than_memory.Rmd</code></div>
@@ -209,6 +209,14 @@ syntax.</p>
 <span></span>
 <span><span class="co"># create databse connection</span></span>
 <span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">duckdb</span><span class="fu">::</span><span class="fu">dbConnect</span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; duckdb keeps downloaded extensions and secrets in a temporary directory:</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/RtmpqC7zAe/duckdb</span></span>
+<span><span class="co">#&gt; This is removed when the R session ends.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Extensions are re-downloaded each session.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Secrets are lost.</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> See ?duckdb_storage for details and alternatives.</span></span>
 <span></span>
 <span><span class="co"># register the data in the data base</span></span>
 <span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb_register_arrow.html" class="external-link">duckdb_register_arrow</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">'mortality_2010_tbl'</span>, <span class="va">df</span><span class="op">)</span></span>
