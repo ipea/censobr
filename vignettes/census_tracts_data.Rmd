@@ -127,7 +127,7 @@ tracts_sf <- geobr::read_census_tract(
 tracts_sf <- filter(tracts_sf, name_muni == "Belo Horizonte")
 
 ggplot() + 
-  geom_sf(data=tracts_sf, fill = 'gray90', color='gray60') + 
+  geom_sf(data = tracts_sf, fill = 'gray90', color = 'gray60') + 
   theme_void()
 ```
 
