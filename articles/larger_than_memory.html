@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Working with larger-than-memory data">
 </head>
@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censobr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +50,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ipeaGIT/censobr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ipea/censobr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
@@ -73,9 +73,9 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Working with larger-than-memory data</h1>
             
-            <h4 data-toc-skip class="date">2025-09-12</h4>
+            <h4 data-toc-skip class="date">2026-07-29</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/censobr/blob/main/vignettes/larger_than_memory.Rmd" class="external-link"><code>vignettes/larger_than_memory.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ipea/censobr/blob/main/vignettes/larger_than_memory.Rmd" class="external-link"><code>vignettes/larger_than_memory.Rmd</code></a></small>
       <div class="d-none name"><code>larger_than_memory.Rmd</code></div>
     </div>
 
@@ -95,7 +95,7 @@ vignette.</p>
 <p>First, let’s read the 2010 mortality data, which we’ll use throughout
 vignette for illustration purposes.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/censobr" class="external-link">censobr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipea/censobr" class="external-link">censobr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># read 2010 mortality data</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">censobr</span><span class="fu">::</span><span class="fu"><a href="../reference/read_mortality.html">read_mortality</a></span><span class="op">(</span></span>
@@ -141,14 +141,14 @@ observations of the data.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 26</span></span></span>
 <span><span class="co">#&gt;   code_muni code_state abbrev_state name_state     code_region name_region</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">*</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">*</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>   3<span style="text-decoration: underline;">300</span>100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>   3<span style="text-decoration: underline;">300</span>100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>   3<span style="text-decoration: underline;">300</span>100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>   3<span style="text-decoration: underline;">300</span>100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>   3<span style="text-decoration: underline;">300</span>100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>   3<span style="text-decoration: underline;">300</span>100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 20 more variables: code_weighting &lt;chr&gt;, V0001 &lt;chr&gt;, V0002 &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 20 more variables: code_weighting &lt;dbl&gt;, V0001 &lt;chr&gt;, V0002 &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   V0011 &lt;chr&gt;, V0300 &lt;dbl&gt;, V0010 &lt;dbl&gt;, V1001 &lt;chr&gt;, V1002 &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   V1003 &lt;chr&gt;, V1004 &lt;chr&gt;, V1006 &lt;chr&gt;, V0703 &lt;chr&gt;, V0704 &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   V7051 &lt;dbl&gt;, V7052 &lt;dbl&gt;, M0703 &lt;chr&gt;, M0704 &lt;chr&gt;, M7051 &lt;chr&gt;,</span></span></span>
@@ -183,14 +183,14 @@ inside the dplyr call. Using the same example as above:</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 26</span></span></span>
 <span><span class="co">#&gt;   code_muni code_state abbrev_state name_state     code_region name_region</span></span>
-<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span></span>
+<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>   3<span style="text-decoration: underline;">300</span>100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>   3<span style="text-decoration: underline;">300</span>100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>   3<span style="text-decoration: underline;">300</span>100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>   3<span style="text-decoration: underline;">300</span>100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>   3<span style="text-decoration: underline;">300</span>100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>   3<span style="text-decoration: underline;">300</span>100         33 RJ           Rio de Janeiro           3 Sudeste    </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 20 more variables: code_weighting &lt;chr&gt;, V0001 &lt;chr&gt;, V0002 &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 20 more variables: code_weighting &lt;dbl&gt;, V0001 &lt;chr&gt;, V0002 &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   V0011 &lt;chr&gt;, V0300 &lt;dbl&gt;, V0010 &lt;dbl&gt;, V1001 &lt;chr&gt;, V1002 &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   V1003 &lt;chr&gt;, V1004 &lt;chr&gt;, V1006 &lt;chr&gt;, V0703 &lt;chr&gt;, V0704 &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   V7051 &lt;dbl&gt;, V7052 &lt;dbl&gt;, M0703 &lt;chr&gt;, M0704 &lt;chr&gt;, M7051 &lt;chr&gt;,</span></span></span>
@@ -208,6 +208,14 @@ syntax.</p>
 <span></span>
 <span><span class="co"># create databse connection</span></span>
 <span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">duckdb</span><span class="fu">::</span><span class="fu">dbConnect</span><span class="op">(</span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb.html" class="external-link">duckdb</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; duckdb keeps downloaded extensions and secrets in a temporary directory:</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/RtmpPTJdMl/duckdb</span></span>
+<span><span class="co">#&gt; This is removed when the R session ends.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Extensions are re-downloaded each session.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Secrets are lost.</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Run duckdb(shared_home = TRUE) (or create ~/.duckdb) to keep them (suitable for most users).</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> Run duckdb(shared_home = FALSE) to accept the temporary directory (and silence this message).</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> See ?duckdb_storage for details and alternatives.</span></span>
 <span></span>
 <span><span class="co"># register the data in the data base</span></span>
 <span><span class="fu">duckdb</span><span class="fu">::</span><span class="fu"><a href="https://r.duckdb.org/reference/duckdb_register_arrow.html" class="external-link">duckdb_register_arrow</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">'mortality_2010_tbl'</span>, <span class="va">df</span><span class="op">)</span></span>
@@ -227,12 +235,12 @@ syntax.</p>
 <span><span class="co">#&gt; 5   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
 <span><span class="co">#&gt; 6   3300100         33           RJ Rio de Janeiro           3     Sudeste</span></span>
 <span><span class="co">#&gt;   code_weighting V0001 V0002         V0011   V0300    V0010 V1001 V1002 V1003</span></span>
-<span><span class="co">#&gt; 1  3300100003001    33 00100 3300100003001 1285657 13.51819     3    05   013</span></span>
-<span><span class="co">#&gt; 2  3300100003001    33 00100 3300100003001 6084726 12.76395     3    05   013</span></span>
-<span><span class="co">#&gt; 3  3300100003002    33 00100 3300100003002  898500 10.68108     3    05   013</span></span>
-<span><span class="co">#&gt; 4  3300100003002    33 00100 3300100003002 2581116 11.61204     3    05   013</span></span>
-<span><span class="co">#&gt; 5  3300100003002    33 00100 3300100003002 3768175 12.93833     3    05   013</span></span>
-<span><span class="co">#&gt; 6  3300100003002    33 00100 3300100003002 4125020 10.66262     3    05   013</span></span>
+<span><span class="co">#&gt; 1     3.3001e+12    33 00100 3300100003001 1285657 13.51819     3    05   013</span></span>
+<span><span class="co">#&gt; 2     3.3001e+12    33 00100 3300100003001 6084726 12.76395     3    05   013</span></span>
+<span><span class="co">#&gt; 3     3.3001e+12    33 00100 3300100003002  898500 10.68108     3    05   013</span></span>
+<span><span class="co">#&gt; 4     3.3001e+12    33 00100 3300100003002 2581116 11.61204     3    05   013</span></span>
+<span><span class="co">#&gt; 5     3.3001e+12    33 00100 3300100003002 3768175 12.93833     3    05   013</span></span>
+<span><span class="co">#&gt; 6     3.3001e+12    33 00100 3300100003002 4125020 10.66262     3    05   013</span></span>
 <span><span class="co">#&gt;   V1004  V1006             V0703     V0704 V7051 V7052 M0703 M0704 M7051 M7052</span></span>
 <span><span class="co">#&gt; 1    00 Urbana     Março de 2010 Masculino    69    NA     2     2     2     2</span></span>
 <span><span class="co">#&gt; 2    00 Urbana Fevereiro de 2010 Masculino    84    NA     2     2     2     2</span></span>
@@ -261,7 +269,7 @@ syntax.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
