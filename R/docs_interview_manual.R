@@ -41,7 +41,7 @@ interview_manual <- function(year = NULL,
 
   ### Get url
   fname <- paste0(year, '_interview_manual.pdf')
-  file_url <- paste0("https://github.com/ipeaGIT/censobr/releases/download/censo_docs/", fname)
+  file_url <- paste0("https://github.com/ipea/censobr_prep_data/releases/download/censo_docs/", fname)
 
   ### Download
   local_file <- download_file(file_url = file_url,

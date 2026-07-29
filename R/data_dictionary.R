@@ -75,19 +75,19 @@ data_dictionary <- function(year,
   # MICRODATA
   if (dataset %in% c("microdata")) {
     fname <- paste0(year, '_dictionary_', dataset, '.xlsx')
-    file_url <- paste0("https://github.com/ipeaGIT/censobr/releases/download/censo_docs/", fname)
+    file_url <- paste0("https://github.com/ipea/censobr_prep_data/releases/download/censo_docs/", fname)
   }
 
   # MICRODATA
   if (dataset %in% c("population", "households", "families", "mortality", "emigration")) {
     fname <- paste0(year, '_dictionary_microdata_', dataset, '.html')
-    file_url <- paste0("https://github.com/ipeaGIT/censobr/releases/download/censo_docs/", fname)
+    file_url <- paste0("https://github.com/ipea/censobr_prep_data/releases/download/censo_docs/", fname)
     }
 
   # TRACT DATA
   if (dataset == 'tracts') {
     fname <- paste0(year, '_dictionary_tracts.pdf')
-    file_url <- paste0("https://github.com/ipeaGIT/censobr/releases/download/censo_docs/", fname)
+    file_url <- paste0("https://github.com/ipea/censobr_prep_data/releases/download/censo_docs/", fname)
 
     if(year==2022) {file_url <- gsub(".pdf", ".xlsx", file_url)}
     }

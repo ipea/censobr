@@ -58,7 +58,7 @@ questionnaire <- function(year = 2010,
 
   ### Get url
   fname <- paste0(year, '_questionnaire_', type, '.pdf')
-  file_url <- paste0("https://github.com/ipeaGIT/censobr/releases/download/censo_docs/", fname)
+  file_url <- paste0("https://github.com/ipea/censobr_prep_data/releases/download/censo_docs/", fname)
 
   ### Download
   local_file <- download_file(file_url = file_url,
