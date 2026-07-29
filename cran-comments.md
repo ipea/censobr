@@ -1,28 +1,26 @@
 ## R CMD check results
 
-── R CMD check results ────────────────────────────────── censobr 0.5.0 ────
-Duration: 7m 14.1s
+── R CMD check results ────────────────────────────────── censobr 0.6.0 ────
+Duration: 12m 14s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-
-* Major changes
-  * New function `get_censobr_cache_dir()`
-  * The function `set_censobr_cache_dir()` now sets cache directories that persist across R sessions. Closes [#55](https://github.com/ipeaGIT/censobr/issues/55). The data is saved in versioned directory inside the cache directory.
-  * New parameter `verbose` (logical) indicating whether functions should print messsages
-  * The `year` parameter no longer defaults to `2010`.
+# censobr v0.6.0
 
 * Minor changes
-  * Improved internal code of `merge_households = TRUE` to avoid duplicated columns 
-  * Improved package info and error messages with {cli}
-  * {censobr} now imports {cli} and {rlang}
+  * The function `data_dictionary()` now does not open the file when 
+  `verbose = FALSE`. Closes [72](https://github.com/ipea/censobr/issues/72) 
+  * All data, documentation files and pipeline to generate the data sets shared
+  through the censobr package have been migrated repository to https://github.com/ipea/censobr_prep_data.
+
+* Data fixes included in this version:
+  * The census tract aggregate table of Pessoa02 from the state of Goias has been 
+  fixed. Closes [68](https://github.com/ipea/censobr/issues/68), [70](https://github.com/ipea/censobr/issues/70)
+  and [71](https://github.com/ipea/censobr/issues/71).
+  * All `code_` columns now have class `numeric` to keep the consistency across 
+  {geobr} and other sister packages in the brverse.
 
 * New data set and files included in this version:
-  * 2022 census. Closes [#64](https://github.com/ipeaGIT/censobr/issues/64)
-    * Census-tract level data
-    * Census-tract level data dictionary
-  * 2000 census. Closes [#43](https://github.com/ipeaGIT/censobr/issues/43)
-    * Census-tract level data
-  * All data sets are save in `.parquet` compressed using `compression='zstd'` and `compression_level = 22`. This has almost halved the size of data files, making downloads much more efficient at minimal cost of reading time.
-  * All data sets are now sorted by key columns to speed up join operations. Closes #60.
-  * Fixed annoying message about arrow metadata. closed #56.
+  * Data dictionary of microdata now includes a single Excel file with info for
+  all variables, including auxiliary documentation. For now, available for the years
+  2000 and 2010.
