@@ -12,7 +12,7 @@ tester <- function(year = 2010,
                    showProgress = FALSE,
                    cache = TRUE,
                    verbose = TRUE) {
-  read_tracts(
+  censobr::read_tracts(
     year,
     dataset,
     as_data_frame,
@@ -25,7 +25,7 @@ tester <- function(year = 2010,
 
 # Reading the data -----------------------
 
-test_that("read_tracts", {
+testthat::test_that("read_tracts", {
 
   # arrow table
   test1 <- tester(year = 2010, dataset = 'Basico')
@@ -53,7 +53,7 @@ test_that("read_tracts", {
 
 # 2022 data sets  -----------------------
 
-test_that("read_tracts 2022 datasets", {
+testthat::test_that("read_tracts 2022 datasets", {
 
   # 2022 different data sets
   ## check if file has been downloaded
@@ -69,17 +69,21 @@ test_that("read_tracts 2022 datasets", {
 
 # 2010 data sets  -----------------------
 
-test_that("read_tracts 2010 datasets", {
+testthat::test_that("read_tracts 2010 datasets", {
 
   # 2010 different data sets
   ## check if file have been downloaded
   tbls <- c('Basico', 'Domicilio', 'DomicilioRenda', 'Entorno',
             'ResponsavelRenda', 'Responsavel', 'PessoaRenda', 'Pessoa')
 
-  lapply(X=tbls, FUN = function(y){ # y = 'Pessoa'     y = 'Basico'  y = 'Entorno'
-    tmp_d <- tester(year = 2010, dataset = y)
-    testthat::expect_true( nrow(tmp_d) >= 310114)
-  } )
+  lapply(
+    X=tbls,
+    FUN = function(y){ # y = 'Pessoa'     y = 'Basico'  y = 'Entorno'
+      message(y)
+      tmp_d <- tester(year = 2010, dataset = y)
+      testthat::expect_true( nrow(tmp_d) >= 310114)
+      }
+    )
 
 })
 
@@ -88,7 +92,7 @@ test_that("read_tracts 2010 datasets", {
 
 # 2000 data sets  -----------------------
 
-test_that("read_tracts 2000 datasets", {
+testthat::test_that("read_tracts 2000 datasets", {
 
   # 2000 different data sets
   ## check if file have been downloaded
@@ -102,7 +106,7 @@ test_that("read_tracts 2000 datasets", {
 })
 
 # ERRORS and messages  -----------------------
-test_that("read_tracts", {
+testthat::test_that("read_tracts", {
 
   # Wrong date 4 digits )
   testthat::expect_error(tester(year=999, dataset='Basico'))
