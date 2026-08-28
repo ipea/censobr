@@ -76,7 +76,7 @@ must move together, and this table is the reference when they disagree.
 | `data_dictionary(dataset = "tracts")` | 1970, 1980, 1991, 2000, 2010, 2022 |
 
 `read_tracts()` datasets differ per census — 2000 (6), 2010 (8), 2022 (9); the authoritative lists
-are in `R/read_tracts.R:75-85` and mirrored in that function's roxygen `@param dataset`.
+are in `R/read_tracts.R:77-86` and mirrored in that function's roxygen `@param dataset`.
 
 ---
 
@@ -215,8 +215,9 @@ error — if the download fails.
    `…/ipea/censobr_prep_data/releases/download/{tag}/{year}_population_{tag}.parquet`.
 4. **Download or resolve from cache** — `:57-60` → `download_file()` (`R/utils.R:11-66`):
    - `:21-23` resolve the versioned cache dir `{cache_dir}/data_release_{tag}`, creating it
-     **only when `cache = TRUE`**;
-   - `:27` build the local path from `basename(file_url)`;
+     **only when `cache = TRUE`** — with `cache = FALSE` and no pre-existing dir, `curl` cannot
+     create the parent and the download fails at `:48`;
+   - `:26-27` build the local path from `basename(file_url)`;
    - `:30` `cache_message()` reports which of the four cache states applies (gated on `verbose`);
    - `:33-35` **cache hit short-circuits** — an existing local file is returned unread and
      unvalidated when `cache = TRUE`;
@@ -242,20 +243,24 @@ error — if the download fails.
 10. **1960 warning** — `:89-91`. A base `warning()` explaining that the 1960 microdata combines two
     IBGE releases (25% sample + 1.27% sub-sample); see the `1960_census_section` `@template`.
 11. **Return** — `:94-97`. `as_data_frame = TRUE` triggers `dplyr::collect(df)` — **the only point
-    where data enters memory**. Otherwise the lazy Dataset is returned.
+    where data enters memory** (except the merge path, below). Otherwise the lazy Dataset is returned.
 
 **Gotchas worth knowing**
 
-- **`add_labels` works only for 2010.** Step 1 accepts `add_labels = "pt"` for *any* year, but
-  `add_labels_population()` aborts at `R/add_labels_population.R:9-11` unless `year == 2010`. So
-  `read_population(2000, add_labels = "pt")` downloads the file, then errors.
+- **Labeller coverage is narrower than reader coverage.** Step 1 accepts `add_labels = "pt"` for
+  *any* valid year, but each labeller aborts on years it doesn't cover — and only *after* the
+  parquet has downloaded. `read_population()` reads 6 years but labels only 2010
+  (`R/add_labels_population.R:9-11`); `read_households()` reads 6 but labels 2000 + 2010
+  (`R/add_labels_households.R:9-11`). So `read_population(2000, add_labels = "pt")` downloads a
+  large file, then errors.
 - **Steps 8 and 9 are order-dependent.** Columns are selected *before* labels are applied, and the
   labeller only touches variables still present. Selecting a narrow `columns` set silently skips
   labelling for everything dropped — no warning.
 - **The 1960 warning ignores `verbose`.** Every other message in the pipeline is gated on it; this
   one fires even with `verbose = FALSE`.
 - **`assert_string(add_labels, pattern = "pt")` is a regex match**, not equality — `"ptbr"` passes
-  validation and then fails the `lang == 'pt'` comparison inside the labeller.
+  both asserts, then silently skips the `lang == 'pt'`-guarded labelling block
+  (`R/add_labels_population.R:27`) — no error, no labels.
 - **A cache hit is never integrity-checked** (step 4), only size-checked on fresh download. Corrupt
   cached files surface later, at step 6.
 
@@ -266,23 +271,25 @@ All five share steps 1-6 and 11 above. Differences only:
 | Function | Years | `merge_households` | Labeller | Notes |
 |---|---|---|---|---|
 | `read_population()` | 1960-2010 (6) | commented out | `add_labels_population()` (2010 only) | 1960 `warning()` |
-| `read_households()` | 1960-2010 (6) | not present | `add_labels_households()` | 1960 `warning()`; no merge block at all |
-| `read_families()` | 2000 | commented out (`:66-72`) | `add_labels_families()` | no 1960 warning (year is 2000-only) |
-| `read_mortality()` | 2010 | **live** (`:76-82`) | `add_labels_mortality()` | merge runs **before** select+labels |
-| `read_emigration()` | 2010 | **live** (`:75-81`) | `add_labels_emigration()` | merge runs **before** select+labels |
+| `read_households()` | 1960-2010 (6) | not present | `add_labels_households()` (2000 + 2010) | 1960 `warning()`; no merge block at all |
+| `read_families()` | 2000 | commented out (`:66-72`) | `add_labels_families()` (2000 + 2010) | no 1960 warning; labeller's 2010 branch is unreachable |
+| `read_mortality()` | 2010 | **live** (`:76-82`) | `add_labels_mortality()` (2010) | merge runs **before** select+labels |
+| `read_emigration()` | 2010 | **live** (`:75-81`) | `add_labels_emigration()` (2010) | merge runs **before** select+labels |
 
-**`merge_household_var()`** (`R/merge_household.R:12-…`), reached only from `read_mortality()` and
+**`merge_household_var()`** (`R/merge_household.R:12-113`), reached only from `read_mortality()` and
 `read_emigration()`: calls `censobr::read_households()` for the same year (`:19-25`), picks join keys
 per census year (`:33-56` — 1970 `id_household`, 1980 `V601`, 1991 `V0109`, 2000/2010 `V0300`; the
-1960 branch is commented out at `:28-31`), drops duplicated columns (`:60`), then joins through a
-temporary DuckDB database (`tempfile()`, `R/merge_household.R:77-109`) and returns Arrow.
+1960 branch is commented out at `:28-31`), drops duplicated columns (`:60-62`), then joins through
+a temporary DuckDB database (`tempfile()`, `:77-110`) and returns an arrow Table.
+**It breaks the lazy contract before step 11**: `:68` `collect()`s the key values and `:73`
+`compute()`s the household table into memory.
 
 ### `read_tracts(year, dataset, as_data_frame, showProgress, cache, verbose)`
 
-1. **Validate** — `R/read_tracts.R:61-66`. Note there is **no `columns` or `add_labels` parameter**;
+1. **Validate** — `R/read_tracts.R:62-67`. Note there is **no `columns` or `add_labels` parameter**;
    both blocks exist but are commented out (`:121-131`).
-2. **Check year** — `:70-73`, `c(2000, 2010, 2022)`.
-3. **Check dataset** — per-census lists at `:75-85` (2000: 6, 2010: 8, 2022: 9). Input is lowercased
+2. **Check year** — `:71-74`, `c(2000, 2010, 2022)`.
+3. **Check dataset** — per-census lists at `:77-86` (2000: 6, 2010: 8, 2022: 9). Input is lowercased
    at `:89` and compared against `tolower()` of each list, so `dataset` is case-insensitive.
 4. **Build URL** — `:104-107`. `dataset` first gets `'_'` appended (`:104`), giving
    `{year}_tracts_{dataset}_{tag}.parquet` with the dataset name **lowercased**.
@@ -294,12 +301,12 @@ All three fetch from the **fixed** `censo_docs` release tag, not the data-releas
 
 | Function | Validates | File built | Opens with |
 |---|---|---|---|
-| `data_dictionary(year, dataset, …)` | `dataset` against 7 names (`R/data_dictionary.R:50-54`), then year per dataset (`:56-62`) | 3 branches (`:76-93`): `microdata`→`.xlsx`; the 5 microdata types→`.html`; `tracts`→`.pdf`, swapped to `.xlsx` for 2022 (`:92`) | `browseURL()` for pdf/html, else `open_file()` (`:107-113`) |
+| `data_dictionary(year, dataset, …)` | `dataset` against 7 names (`R/data_dictionary.R:50-53`), then year per dataset (`:56-62`) | 3 branches (`:76-93`): `microdata`→`.xlsx`; the 5 microdata types→`.html`; `tracts`→`.pdf`, swapped to `.xlsx` for 2022 (`:92`) | `browseURL()` for pdf/html, else `open_file()` (`:107-113`) |
 | `questionnaire(year, type, …)` | year (7 options) + `type` in `c("long","short")` (`R/docs_questionnaire.R:40-57`) | `{year}_questionnaire_{type}.pdf` | `utils::browseURL()` (`:72`) |
 | `interview_manual(year, …)` | year (7 options) (`R/docs_interview_manual.R:33-40`) | `{year}_interview_manual.pdf` | `utils::browseURL()` (`:56`) |
 
-All three return `NULL` (`data_dictionary()` explicitly at `:115`) and bail with `NULL` if the
-download fails.
+All three bail with `NULL` if the download fails. Only `data_dictionary()` returns `NULL`
+explicitly (`:115`); the other two return the value of `utils::browseURL()`.
 
 ### Cache functions
 

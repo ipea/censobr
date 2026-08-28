@@ -102,7 +102,7 @@ settings own hooks, permission mode, and statusline.
 
 [LEARN:config] The vendored `.claude/rules/` were byte-identical to `~/.claude/rules/` except
 `meta-governance.md` — copying them into a project adds duplication, not content. What the project
-copy *is* good for is pruning to the applicable subset (censobr: 18 rules / 23 skills / 8 agents)
+copy *is* good for is pruning to the applicable subset (censobr: 7 rules / 12 skills / 4 agents)
 so `CLAUDE.md` can honestly document what is live.
 
 [LEARN:check] Running `R CMD check --as-cran` **without network access** halts twice unless two env
