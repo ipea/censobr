@@ -184,3 +184,29 @@ Follow that pattern for any new validation helper.
 that would have corrupted the suite (an undeclared `withr` dependency plus a persistent
 `set_censobr_cache_dir()` config write), and it killed a proposed fix whose stated motivation I had
 simply got wrong. Have the reviewer verify the *premise* of each fix, not only its diff.
+
+## Docs-function behaviour change (commit b9ca5ed, 2026-08-28)
+
+[LEARN:api] **`data_dictionary()`, `questionnaire()` and `interview_manual()` open the file only
+when `verbose = TRUE` AND `interactive()`.** Otherwise they return the path to the downloaded file
+(visibly); when the file is opened the path is returned invisibly. `data_dictionary()` previously
+returned `NULL` - that is an API change, filed under Major changes in NEWS, not bug fixes.
+Both halves of the gate are load-bearing: `verbose` is the user-facing rule, and `interactive()`
+is what stops the test suite and `R CMD check` from launching viewers. Removing `interactive()`
+brings back the EBUSY failure below.
+
+[LEARN:defect] **RESOLVED by b9ca5ed.** The `[EBUSY]` suite failure - `data_dictionary(2022,
+'tracts')` opened an `.xlsx` via `shell.exec()`, Excel held the handle, and a later
+`censobr_cache(delete_file = 'all')` could not remove it - is fixed by the `interactive()` gate.
+Confirmed: the suite run immediately after the gate was added had zero failures.
+
+[LEARN:docs] **Open item: `vignettes/census_tracts_data.Rmd:90`** calls `data_dictionary(year =
+2022, dataset = 'tracts')` in an evaluated chunk with `verbose` at its `TRUE` default. Knitting is
+non-interactive, so the file is no longer opened and the chunk now prints a machine-specific cache
+path. The surrounding prose still says the function "will open the file", which is now
+conditional. Fix with `results='hide'`, an assignment, or reworded prose - not yet done.
+
+[LEARN:workflow] **A background task that returns no completion notification may have produced
+nothing.** After the b9ca5ed changes the suite was launched in the background but its output file
+was 0 bytes and no notification arrived, so that commit went in unverified. Check the output file
+size before treating a background run as evidence; an absent failure is not a pass.

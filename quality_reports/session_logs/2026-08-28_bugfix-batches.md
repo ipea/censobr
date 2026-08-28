@@ -51,17 +51,21 @@ list the accepted values, and `read_tracts()` lists the options for the requeste
 
 ## Open questions / blockers
 
-1. **`[EBUSY]` test failure — real and unaddressed.** `data_dictionary(2022, 'tracts')` opens an
-   `.xlsx` via `shell.exec()`; Excel holds the handle; the later `censobr_cache(delete_file="all")`
-   fails. Two failures in `test_z_censobr_cache.R` (lines 14, 98). Proposed fix: gate the file-open
-   on `interactive()` in all three docs functions. **Not a regression from these commits.**
-2. `Config/testthat/edition: 3` — deferred, needs its own commit + full-suite run.
-3. `download_file()` latent: if `try()` catches a genuine throw, `downloaded_files` is undefined and
-   line 48 errors with "object not found". Rare (curl usually returns a data frame), never logged as
-   a defect.
+1. **Vignette drift.** `vignettes/census_tracts_data.Rmd:90` runs `data_dictionary()` in an
+   evaluated chunk. Knitting is non-interactive, so it now prints a machine-specific cache path
+   rather than opening the file, and the prose above still says it "will open the file".
+2. **`Config/testthat/edition: 3`** — deferred; needs its own commit and full-suite run (3e
+   switches `expect_equal` to waldo against ~10 arrow-collected numeric totals).
+3. **`download_file()` latent** — if `try()` catches a real throw, `downloaded_files` is undefined
+   and `R/utils.R:48` errors with "object not found".
 
 ## Status
 
-Done and pushed. Suite was green through batch 2; the final run surfaced the pre-existing `[EBUSY]`
-failure above, which is environmental to the docs functions' side effects rather than to the fixes.
-Next session should start with item 1.
+All bug fixes committed and pushed: `9110ef1`, `b7213eb`, `10a24b9`, `b9ca5ed`.
+
+**Verification gap on the last commit.** Batches 1 and 2 were each validated with a full
+`NOT_CRAN=true` suite run plus `R CMD check --as-cran` (0 errors / 0 notes). The final commit
+`b9ca5ed` (docs-function `verbose` behaviour) was verified only by targeted behavioural checks of
+all three functions — the background suite run launched for it produced a 0-byte output file and
+never reported, and no `R CMD check` was run against that state. A confirming run was started
+afterwards; its result should be recorded here.

@@ -351,10 +351,10 @@ explicitly (`:115`); the other two return the value of `utils::browseURL()`.
 
 See [MEMORY.md](MEMORY.md) for detail.
 
-1. **`[EBUSY]` test failure (open).** `data_dictionary(2022, 'tracts')` opens an `.xlsx` via
-   `shell.exec()` (`R/data_dictionary.R:113,125`); on Windows Excel holds the handle, so a later
-   `censobr_cache(delete_file = 'all')` fails and 2 tests in `test_z_censobr_cache.R` error. Fix:
-   gate the file-open on `interactive()` in all three docs functions — **not** on `verbose`.
+1. **Vignette prose/output drift (open).** `vignettes/census_tracts_data.Rmd:90` calls
+   `data_dictionary()` in an evaluated chunk; knitting is non-interactive, so it now prints a
+   machine-specific cache path instead of opening the file, and the prose above it still says the
+   function "will open the file".
 2. **`Config/testthat/edition: 3`** — deferred to its own commit. 16 `context()` calls and one
    `expect_is()` need removing first, and 3e switches `expect_equal` to waldo against ~10
    arrow-collected numeric totals.
