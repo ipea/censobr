@@ -138,6 +138,22 @@ cache_message <- function(local_file = parent.frame()$local_file,
 
 
 
+#' Error when a required argument is not declared
+#'
+#' @param arg String. Name of the argument.
+#' @param options Vector. The values the argument accepts.
+#' @return An informative error
+#'
+#' @keywords internal
+error_arg_not_declared <- function(arg, options) { # nocov start
+
+  cli::cli_abort(
+    c("Please declare the {.arg {arg}}.",
+      "i" = "Options: {options}."),
+    call = rlang::caller_env()
+  )
+} # nocov end
+
 #' Error when the year is not declared
 #'
 #' @return An informative error

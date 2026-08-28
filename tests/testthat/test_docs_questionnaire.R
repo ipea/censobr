@@ -85,6 +85,10 @@ test_that("questionnaire", {
 
   # Wrong date 4 digits
   # year must be declared by the user, whether omitted or passed as NULL
+  # type must be declared, and the error must list the options
+  testthat::expect_error( questionnaire(year = 2010), 'declare' )
+  testthat::expect_error( questionnaire(year = 2010), 'long' )
+  testthat::expect_error( questionnaire(year = 2010, type = NULL), 'declare' )
   testthat::expect_error( questionnaire(), 'declare' )
   testthat::expect_error( questionnaire(year = NULL), 'declare' )
   testthat::expect_error( questionnaire(type = 'long'), 'declare' )

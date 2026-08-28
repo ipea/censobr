@@ -34,7 +34,6 @@ questionnaire <- function(year,
   ### check inputs
   if (missing(year) || is.null(year)) { error_year_not_declared() }
   checkmate::assert_numeric(year)
-  checkmate::assert_string(type)
   checkmate::assert_logical(verbose, null.ok = FALSE)
 
   # data available for the years:
@@ -49,6 +48,8 @@ questionnaire <- function(year,
 
   # data available for data sets:
   data_sets <- c('long', 'short')
+  if (missing(type) || is.null(type)) { error_arg_not_declared('type', data_sets) }
+  checkmate::assert_string(type)
   if (isFALSE(type %in% data_sets)) {
     datasets_available <- paste(data_sets, collapse = ", ")
     cli::cli_abort(

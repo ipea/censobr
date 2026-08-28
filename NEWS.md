@@ -20,8 +20,11 @@
   `questionnaire()` silently assumed `year = 2010`, `interview_manual()`
   defaulted to `NULL`, and passing `year = NULL` to any reading function failed
   with a type-check message instead of telling the user what to do.
-  * The argument `questionnaire(type)` is now explicitly required. It previously
-  defaulted to `NULL`, which could not be used because it failed the input check.
+  * The arguments `questionnaire(type)`, `read_tracts(dataset)` and
+  `data_dictionary(dataset)` are now explicitly required, and the error message
+  lists the values accepted. Previously a missing argument surfaced as an
+  uninformative message from the input check. For `read_tracts()`, the options
+  listed are the ones available for the requested year.
 
 
 # censobr v0.6.0

@@ -44,11 +44,12 @@ data_dictionary <- function(year,
   ### check inputs
   if (missing(year) || is.null(year)) { error_year_not_declared() }
   checkmate::assert_numeric(year, any.missing = FALSE)
-  checkmate::assert_string(dataset, na.ok = FALSE)
   checkmate::assert_logical(verbose, null.ok = FALSE)
 
   # data available for data sets:
   data_sets <- c("population", "households", "families", "mortality", "emigration", "microdata", "tracts")
+  if (missing(dataset) || is.null(dataset)) { error_arg_not_declared('dataset', data_sets) }
+  checkmate::assert_string(dataset, na.ok = FALSE)
   if (isFALSE(dataset %in% data_sets)) {
     error_missing_datasets(data_sets)
     }
