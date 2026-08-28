@@ -12,8 +12,10 @@ export(read_mortality)
 export(read_population)
 export(read_tracts)
 export(set_censobr_cache_dir)
-importFrom(dplyr,across)
-importFrom(dplyr,all_of)
-importFrom(dplyr,case_when)
-importFrom(dplyr,mutate)
-importFrom(dplyr,select)
+importFrom(dplyr,
+  across,
+  all_of,
+  case_when,
+  mutate,
+  select
+)
