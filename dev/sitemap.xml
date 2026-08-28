@@ -1,5 +1,7 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://ipeagit.github.io/censobr/dev/CLAUDE.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/LICENSE-text.html</loc></url>
+<url><loc>https://ipeagit.github.io/censobr/dev/MEMORY.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/articles/censobr.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/articles/census_tracts_data.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/articles/documentation.html</loc></url>
@@ -14,8 +16,10 @@
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/censobr_cache.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/data_dictionary.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/download_file.html</loc></url>
+<url><loc>https://ipeagit.github.io/censobr/dev/reference/error_arg_not_declared.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/error_missing_datasets.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/error_missing_years.html</loc></url>
+<url><loc>https://ipeagit.github.io/censobr/dev/reference/error_year_not_declared.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/get_censobr_cache_dir.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/index.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/interview_manual.html</loc></url>

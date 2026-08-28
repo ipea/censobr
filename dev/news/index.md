@@ -2,6 +2,8 @@
 
 ## censobr v0.6.0
 
+CRAN release: 2026-07-29
+
 - Minor changes
   - The function
     [`data_dictionary()`](https://ipeagit.github.io/censobr/dev/reference/data_dictionary.md)

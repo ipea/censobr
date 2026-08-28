@@ -6,12 +6,7 @@ Brazil's censuses
 ## Usage
 
 ``` r
-interview_manual(
-  year = NULL,
-  showProgress = TRUE,
-  cache = TRUE,
-  verbose = TRUE
-)
+interview_manual(year, showProgress = TRUE, cache = TRUE, verbose = TRUE)
 ```
 
 ## Arguments

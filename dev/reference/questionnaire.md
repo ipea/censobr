@@ -6,13 +6,7 @@ Brazil's censuses
 ## Usage
 
 ``` r
-questionnaire(
-  year = 2010,
-  type = NULL,
-  showProgress = TRUE,
-  cache = TRUE,
-  verbose = TRUE
-)
+questionnaire(year, type, showProgress = TRUE, cache = TRUE, verbose = TRUE)
 ```
 
 ## Arguments
