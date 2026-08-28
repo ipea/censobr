@@ -1,5 +1,16 @@
 # censobr dev
 
+* bug fixes
+  * Passing `cache = FALSE` no longer fails when the cache directory does not
+  exist yet, for example on a fresh installation.
+  * The `add_labels` parameter now only accepts `"pt"`. Values such as `"ptbr"`
+  previously passed the input check and returned data with labels partially
+  applied or missing, with no error.
+  * `read_tracts()` now lists the data sets available in 2000 when an invalid
+  `dataset` is passed for that year. It previously listed the 2010 data sets.
+  * `censobr_cache(delete_file = "all", print_tree = TRUE)` no longer throws an
+  error after deleting the cache directory.
+
 
 # censobr v0.6.0
 

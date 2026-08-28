@@ -20,7 +20,7 @@ download_file <- function(file_url = parent.frame()$file_url,
   # create local dir / cache dir is versioned
   cache_dir <- get_censobr_cache_dir()
   cache_dir <- glue::glue("{cache_dir}/data_release_{censobr_env$data_release}")
-  if (isTRUE(cache) & !dir.exists(cache_dir)) { dir.create(cache_dir, recursive=TRUE) }
+  if (!dir.exists(cache_dir)) { dir.create(cache_dir, recursive=TRUE) }
 
   # path to local file
   file_name <- basename(file_url)

@@ -46,7 +46,7 @@ read_emigration <- function(year,
   checkmate::assert_logical(as_data_frame, null.ok = FALSE)
   checkmate::assert_logical(merge_households, null.ok = FALSE)
   checkmate::assert_logical(verbose, null.ok = FALSE)
-  checkmate::assert_string(add_labels, pattern = 'pt', null.ok = TRUE)
+  checkmate::assert_choice(add_labels, choices = 'pt', null.ok = TRUE)
 
   # data available for the years:
   years <- c(2010)

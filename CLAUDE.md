@@ -6,7 +6,7 @@ familiar {dplyr} verbs.
 **Maintainer:** Rafael H. M. Pereira (aut, cre) · **Authors:** Rogério J. Barbosa (aut);
 Diego Rabatone Oliveira, Neal Richardson (ctb) · **Copyright/funding:** Ipea
 **Repo:** https://github.com/ipea/censobr · **Site:** https://ipea.github.io/censobr/
-**Branch:** main · **Version:** 0.6.0 · **Language:** English (NEWS, roxygen, vignettes, messages)
+**Branch:** main · **Version:** 0.6.0.999 (dev) · **Language:** English (NEWS, roxygen, vignettes, messages)
 
 ---
 
@@ -339,9 +339,14 @@ explicitly (`:115`); the other two return the value of `utils::browseURL()`.
 
 ## Known follow-ups (logged, not fixed)
 
-See [MEMORY.md](MEMORY.md) for detail. In short: missing `Config/testthat/edition: 3`; and
-`R/read_tracts.R:91-92` reports the **2010** dataset list when the user's invalid `dataset` was for
-year **2000**.
+See [MEMORY.md](MEMORY.md) for detail. Open: missing `Config/testthat/edition: 3`; swapped failure
+messages in `download_file()` (`R/utils.R:49-53` vs `:60`); `questionnaire()` / `interview_manual()`
+ignore `verbose`; unusable defaults `interview_manual(year = NULL)` and `questionnaire(type = NULL)`;
+and `censobr_cache(delete_file = "all", verbose = FALSE)` on an empty cache.
+
+**Fixed 2026-08-28** (see `NEWS.md` dev section): `cache = FALSE` on a fresh install; `add_labels`
+accepting non-`"pt"` strings; `read_tracts()` 2000 error list; `censobr_cache(delete_file = "all",
+print_tree = TRUE)`.
 
 **Org:** `ipea` is canonical; `ipeaGIT` redirects. Reconciled 2026-08-27 across the repo, the
 `DESCRIPTION`, and the git remote. **Exception:** `r5r` has *not* migrated — `ipeaGIT/r5r` is still

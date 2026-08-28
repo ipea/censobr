@@ -46,7 +46,7 @@ read_mortality <- function(year,
   checkmate::assert_logical(as_data_frame)
   checkmate::assert_logical(verbose)
   checkmate::assert_logical(merge_households)
-  checkmate::assert_string(add_labels, pattern = 'pt', null.ok = TRUE)
+  checkmate::assert_choice(add_labels, choices = 'pt', null.ok = TRUE)
 
   # available for the years:
   years <- c(2010)

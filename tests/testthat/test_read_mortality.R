@@ -95,6 +95,8 @@ test_that("read_mortality errors", {
   testthat::expect_error(tester(showProgress = 'banana' ))
   testthat::expect_error(tester(cache = 'banana'))
   testthat::expect_error(tester(add_labels = 'banana'))
+  # 'ptbr' matches the old regex check but is not a valid option
+  testthat::expect_error(tester(add_labels = 'ptbr'))
   testthat::expect_error(tester(verbose='banana'))
 
   # missing labels

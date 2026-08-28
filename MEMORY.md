@@ -43,7 +43,7 @@ must touch every relevant copy — the reference table is in [CLAUDE.md](CLAUDE.
 
 ## Known defects (logged 2026-08-27, not yet fixed)
 
-[LEARN:defect] `R/read_tracts.R:91-92` — the `year == 2000` branch validates against
+[LEARN:defect] **FIXED 2026-08-28.** `R/read_tracts.R:91-92` — the `year == 2000` branch validates against
 `data_sets_2000` but its error message reports `data_sets_2010`. A user passing an invalid
 `dataset` for 2000 is told about `DomicilioRenda`/`PessoaRenda`/`Entorno` (not available in 2000)
 and is *not* told about `Instrucao`/`Morador` (which are). One-word fix:
@@ -63,7 +63,7 @@ not org-wide.
 `.claude/rules/r-package-conventions.md` requires. The suite appears to be written in 3e style;
 adding the field makes it explicit rather than incidental.
 
-[LEARN:defect] `read_population(year, add_labels = "pt")` validates `add_labels` for **any** year
+[LEARN:defect] **FIXED 2026-08-28** (now `assert_choice`). `read_population(year, add_labels = "pt")` validated `add_labels` for **any** year
 (`R/read_population.R:42`) but `add_labels_population()` aborts unless `year == 2010`
 (`R/add_labels_population.R:9-11`). The abort happens *after* the parquet download, so a user asking
 for 2000 labels waits for a large file and then gets an error. Either validate the year/label

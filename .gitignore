@@ -18,3 +18,6 @@ docs
 
 # Claude Code local state (never committed)
 .claude/state/
+
+/.quarto/
+**/*.quarto_ipynb

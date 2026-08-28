@@ -226,7 +226,7 @@ censobr_cache <- function(list_files = TRUE,
     }
 
     # print dir as a tree
-    if(isTRUE(print_tree)){
+    if(isTRUE(print_tree) & dir.exists(cache_dir)){
       fs::dir_tree(cache_dir)
     }
   }

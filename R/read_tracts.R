@@ -89,7 +89,7 @@ read_tracts <- function(year,
   dataset <- tolower(dataset)
 
   if (year==2000 & isFALSE(dataset %in% tolower(data_sets_2000))) {
-    error_missing_datasets(data_sets_2010)
+    error_missing_datasets(data_sets_2000)
   }
 
   if (year==2010 & isFALSE(dataset %in% tolower(data_sets_2010))) {

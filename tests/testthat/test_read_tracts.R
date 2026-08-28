@@ -113,6 +113,8 @@ testthat::test_that("read_tracts", {
   testthat::expect_error(tester(year=999, dataset='Basico'))
   testthat::expect_error(tester(year=2010, dataset='banana'))
   testthat::expect_error(tester(year=2022, dataset='banana'))
+  # error for 2000 must list the 2000 data sets, not the 2010 ones
+  testthat::expect_error(tester(year=2000, dataset='banana'), 'Instrucao')
 
   testthat::expect_error(tester(cache='banana'))
   testthat::expect_error(tester(showProgress='banana'))

@@ -39,7 +39,7 @@ read_households <- function(year,
   checkmate::assert_vector(columns, null.ok = TRUE)
   checkmate::assert_logical(as_data_frame)
   checkmate::assert_logical(verbose)
-  checkmate::assert_string(add_labels, pattern = 'pt', null.ok = TRUE)
+  checkmate::assert_choice(add_labels, choices = 'pt', null.ok = TRUE)
 
   # data available for the years:
   years <- c(1960, 1970, 1980, 1991, 2000, 2010)
