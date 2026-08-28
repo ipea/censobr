@@ -206,3 +206,48 @@ explicitly-NULL call. A bare required argument alone is NOT enough -
 `f(year = NULL)` sails past R’s missing-argument machinery
 ([`missing()`](https://rdrr.io/r/base/missing.html) is FALSE there) into
 checkmate, producing a type complaint instead of a useful message.
+
+## Session 2026-08-28 - bug fix batches 1 and 2 (committed 9110ef1, b7213eb, 10a24b9)
+
+\[LEARN:defect\] **OPEN, and it breaks the test suite.**
+`data_dictionary(2022, 'tracts')` downloads an `.xlsx` and opens it with
+`open_file()` -\> `shell.exec()` (`R/data_dictionary.R:113,125`). On
+Windows Excel keeps the file handle, so a later
+`censobr_cache(delete_file = 'all')` in the same session fails with
+`[EBUSY] Failed to remove ... 2022_dictionary_tracts.xlsx`. Observed as
+2 real test failures in `test_z_censobr_cache.R` (lines 14 and 98). Not
+caused by the bug fixes - it is the docs functions’ own side effect. The
+fix is to gate the file-open on
+[`interactive()`](https://rdrr.io/r/base/interactive.html) in all three
+docs functions, so a non-interactive test run never launches Excel or a
+PDF viewer. Do NOT gate on `verbose` - see the \[LEARN:api\] entry above
+for why.
+
+\[LEARN:api\] **When you make an argument required, test the *missing*
+path, not just the bad-value path.** Dropping `type = NULL` from
+[`questionnaire()`](https://ipeagit.github.io/censobr/dev/reference/questionnaire.md)
+swapped one poor message (`Must be of type 'string', not 'NULL'`) for
+another (`argument "type" is missing, with no default`) - because the
+`checkmate` assert ran before the block that knew the valid options. The
+fix is ordering: put an informative guard next to the option list that
+already exists, then let `checkmate` run. Now handled by
+`error_arg_not_declared(arg, options)` in `R/utils.R`, used by
+`questionnaire(type)`, `read_tracts(dataset)` and
+`data_dictionary(dataset)`;
+[`read_tracts()`](https://ipeagit.github.io/censobr/dev/reference/read_tracts.md)
+shows the options for the *requested year*.
+
+\[LEARN:workflow\] The four `error_*` helpers in `R/utils.R`
+(`error_arg_not_declared`, `error_year_not_declared`,
+`error_missing_years`, `error_missing_datasets`) all pass
+`call = rlang::caller_env()` so the error is attributed to the exported
+function, not the helper. Follow that pattern for any new validation
+helper.
+
+\[LEARN:workflow\] The adversarial-review loop paid for itself twice
+this session: it rejected a test that would have corrupted the suite (an
+undeclared `withr` dependency plus a persistent
+[`set_censobr_cache_dir()`](https://ipeagit.github.io/censobr/dev/reference/set_censobr_cache_dir.md)
+config write), and it killed a proposed fix whose stated motivation I
+had simply got wrong. Have the reviewer verify the *premise* of each
+fix, not only its diff.

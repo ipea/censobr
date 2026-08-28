@@ -466,30 +466,38 @@ returns `NULL` explicitly (`:115`); the other two return the value of
 
 ------------------------------------------------------------------------
 
-## Known follow-ups (logged, not fixed)
+## Known follow-ups
 
 See [MEMORY.md](https://ipeagit.github.io/censobr/dev/MEMORY.md) for
-detail. Open: missing `Config/testthat/edition: 3`; swapped failure
-messages in
-[`download_file()`](https://ipeagit.github.io/censobr/dev/reference/download_file.md)
-(`R/utils.R:49-53` vs `:60`);
-[`questionnaire()`](https://ipeagit.github.io/censobr/dev/reference/questionnaire.md)
-/
-[`interview_manual()`](https://ipeagit.github.io/censobr/dev/reference/interview_manual.md)
-ignore `verbose`; unusable defaults `interview_manual(year = NULL)` and
-`questionnaire(type = NULL)`; and
-`censobr_cache(delete_file = "all", verbose = FALSE)` on an empty cache.
+detail.
 
-**Fixed 2026-08-28** (see `NEWS.md` dev section): `cache = FALSE` on a
-fresh install; `add_labels` accepting non-`"pt"` strings;
+1.  **`[EBUSY]` test failure (open).** `data_dictionary(2022, 'tracts')`
+    opens an `.xlsx` via `shell.exec()` (`R/data_dictionary.R:113,125`);
+    on Windows Excel holds the handle, so a later
+    `censobr_cache(delete_file = 'all')` fails and 2 tests in
+    `test_z_censobr_cache.R` error. Fix: gate the file-open on
+    [`interactive()`](https://rdrr.io/r/base/interactive.html) in all
+    three docs functions — **not** on `verbose`.
+2.  **`Config/testthat/edition: 3`** — deferred to its own commit. 16
+    `context()` calls and one `expect_is()` need removing first, and 3e
+    switches `expect_equal` to waldo against ~10 arrow-collected numeric
+    totals.
+3.  **[`download_file()`](https://ipeagit.github.io/censobr/dev/reference/download_file.md)
+    latent** — if [`try()`](https://rdrr.io/r/base/try.html) catches a
+    real throw, `downloaded_files` is undefined and `R/utils.R:48`
+    errors with “object not found”.
+
+**Fixed 2026-08-28** (commits `9110ef1`, `b7213eb`, `10a24b9`; see
+`NEWS.md` dev section): `cache = FALSE` on a fresh install; `add_labels`
+accepting non-`"pt"` strings;
 [`read_tracts()`](https://ipeagit.github.io/censobr/dev/reference/read_tracts.md)
-2000 error list;
-`censobr_cache(delete_file = "all", print_tree = TRUE)`.
-
-**Org:** `ipea` is canonical; `ipeaGIT` redirects. Reconciled 2026-08-27
-across the repo, the `DESCRIPTION`, and the git remote. **Exception:**
-`r5r` has *not* migrated — `ipeaGIT/r5r` is still its only valid path,
-so leave that one alone.
+2000 error list; two
+[`censobr_cache()`](https://ipeagit.github.io/censobr/dev/reference/censobr_cache.md)
+errors; swapped
+[`download_file()`](https://ipeagit.github.io/censobr/dev/reference/download_file.md)
+messages; the `year` contract; and informative option lists for
+`questionnaire(type)` / `read_tracts(dataset)` /
+`data_dictionary(dataset)`.
 
 ## Onboarding: check-in mode (temporary)
 

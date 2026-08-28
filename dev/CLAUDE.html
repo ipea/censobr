@@ -372,10 +372,15 @@
 </ul><hr></div>
 </div>
 <div class="section level2">
-<h2 id="known-follow-ups-logged-not-fixed">Known follow-ups (logged, not fixed)<a class="anchor" aria-label="anchor" href="#known-follow-ups-logged-not-fixed"></a></h2>
-<p>See <a href="MEMORY.html">MEMORY.md</a> for detail. Open: missing <code>Config/testthat/edition: 3</code>; swapped failure messages in <code><a href="reference/download_file.html">download_file()</a></code> (<code>R/utils.R:49-53</code> vs <code>:60</code>); <code><a href="reference/questionnaire.html">questionnaire()</a></code> / <code><a href="reference/interview_manual.html">interview_manual()</a></code> ignore <code>verbose</code>; unusable defaults <code>interview_manual(year = NULL)</code> and <code>questionnaire(type = NULL)</code>; and <code>censobr_cache(delete_file = "all", verbose = FALSE)</code> on an empty cache.</p>
-<p><strong>Fixed 2026-08-28</strong> (see <code>NEWS.md</code> dev section): <code>cache = FALSE</code> on a fresh install; <code>add_labels</code> accepting non-<code>"pt"</code> strings; <code><a href="reference/read_tracts.html">read_tracts()</a></code> 2000 error list; <code>censobr_cache(delete_file = "all", print_tree = TRUE)</code>.</p>
-<p><strong>Org:</strong> <code>ipea</code> is canonical; <code>ipeaGIT</code> redirects. Reconciled 2026-08-27 across the repo, the <code>DESCRIPTION</code>, and the git remote. <strong>Exception:</strong> <code>r5r</code> has <em>not</em> migrated — <code>ipeaGIT/r5r</code> is still its only valid path, so leave that one alone.</p>
+<h2 id="known-follow-ups">Known follow-ups<a class="anchor" aria-label="anchor" href="#known-follow-ups"></a></h2>
+<p>See <a href="MEMORY.html">MEMORY.md</a> for detail.</p>
+<ol style="list-style-type: decimal"><li>
+<strong><code>[EBUSY]</code> test failure (open).</strong> <code>data_dictionary(2022, 'tracts')</code> opens an <code>.xlsx</code> via <code>shell.exec()</code> (<code>R/data_dictionary.R:113,125</code>); on Windows Excel holds the handle, so a later <code>censobr_cache(delete_file = 'all')</code> fails and 2 tests in <code>test_z_censobr_cache.R</code> error. Fix: gate the file-open on <code><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive()</a></code> in all three docs functions — <strong>not</strong> on <code>verbose</code>.</li>
+<li>
+<strong><code>Config/testthat/edition: 3</code></strong> — deferred to its own commit. 16 <code>context()</code> calls and one <code>expect_is()</code> need removing first, and 3e switches <code>expect_equal</code> to waldo against ~10 arrow-collected numeric totals.</li>
+<li>
+<strong><code><a href="reference/download_file.html">download_file()</a></code> latent</strong> — if <code><a href="https://rdrr.io/r/base/try.html" class="external-link">try()</a></code> catches a real throw, <code>downloaded_files</code> is undefined and <code>R/utils.R:48</code> errors with “object not found”.</li>
+</ol><p><strong>Fixed 2026-08-28</strong> (commits <code>9110ef1</code>, <code>b7213eb</code>, <code>10a24b9</code>; see <code>NEWS.md</code> dev section): <code>cache = FALSE</code> on a fresh install; <code>add_labels</code> accepting non-<code>"pt"</code> strings; <code><a href="reference/read_tracts.html">read_tracts()</a></code> 2000 error list; two <code><a href="reference/censobr_cache.html">censobr_cache()</a></code> errors; swapped <code><a href="reference/download_file.html">download_file()</a></code> messages; the <code>year</code> contract; and informative option lists for <code>questionnaire(type)</code> / <code>read_tracts(dataset)</code> / <code>data_dictionary(dataset)</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="onboarding-check-in-mode-temporary">Onboarding: check-in mode (temporary)<a class="anchor" aria-label="anchor" href="#onboarding-check-in-mode-temporary"></a></h2>

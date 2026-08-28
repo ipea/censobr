@@ -49,7 +49,9 @@ data_dictionary(
 
 ## Value
 
-Returns `NULL` and opens an .html, .pdf or excel file
+Returns the path to the downloaded file. When `verbose = TRUE` and the
+session is interactive, the file is also opened and the path is returned
+invisibly.
 
 ## See also
 
@@ -65,19 +67,19 @@ data_dictionary(
   dataset = 'microdata'
   )
 #> ℹ Downloading data and storing it locally for future use.
-#> NULL
+#> /home/runner/.cache/R/censobr/data_release_v0.6.0/2010_dictionary_microdata.xlsx
 
 data_dictionary(
   year = 2022,
   dataset = 'tracts'
   )
 #> ℹ Downloading data and storing it locally for future use.
-#> NULL
+#> /home/runner/.cache/R/censobr/data_release_v0.6.0/2022_dictionary_tracts.xlsx
 
 data_dictionary(
   year = 1980,
   dataset = 'households'
   )
 #> ℹ Downloading data and storing it locally for future use.
-#> NULL
+#> /home/runner/.cache/R/censobr/data_release_v0.6.0/1980_dictionary_microdata_households.html
 ```

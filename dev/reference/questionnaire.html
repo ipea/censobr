@@ -93,7 +93,9 @@ messages. Defaults to <code>TRUE</code>.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Opens a <code>.pdf</code> file on the browser</p>
+    <p>Returns the path to the downloaded file. When <code>verbose = TRUE</code> and the
+session is interactive, the file is also opened and the path is
+returned invisibly.</p>
     </div>
 
     <div class="section level2">
@@ -103,6 +105,7 @@ messages. Defaults to <code>TRUE</code>.</p></dd>
 <span class="r-in"><span><span class="co"># Open questionnaire on browser</span></span></span>
 <span class="r-in"><span><span class="fu">questionnaire</span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2010</span>, type <span class="op">=</span> <span class="st">'long'</span>, showProgress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading data and storing it locally for future use.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> /home/runner/.cache/R/censobr/data_release_v0.6.0/2010_questionnaire_long.pdf</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
