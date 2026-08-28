@@ -148,7 +148,7 @@ bench::mark(
 
 # codigo douglas --------------------------------------------------------------
 
-# https://github.com/ipeaGIT/censobr/pull/59
+# https://github.com/ipea/censobr/pull/59
 
 # mais rapido usar duckdb pra salvar parquet e depois ler com Arrows do que
 # usar factharrow

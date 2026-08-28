@@ -174,7 +174,7 @@ read_and_rename <- function(f, tabl){ # f = uf_files[2]
   # temp_df <- data.table::fread(f, fill=T, encoding = enc, colClasses = 'character')
   # temp_df <- vroom::vroom(f, delim = ';')
 
-  # fix column names of table Pessoa02 of Goias. Issue https://github.com/ipeaGIT/censobr/issues/68
+  # fix column names of table Pessoa02 of Goias. Issue https://github.com/ipea/censobr/issues/68
 
 
   if( tabl=="Pessoa"){

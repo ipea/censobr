@@ -13,3 +13,9 @@
 ^_pkgdown\.yml$
 ^pkgdown$
 
+# Claude Code workflow config (not part of the package)
+^\.claude$
+^quality_reports$
+^templates$
+^CLAUDE\.md$
+^MEMORY\.md$

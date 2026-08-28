@@ -165,7 +165,7 @@ utils::browseURL(url = "./data_prep/data_raw/test.html")
   * NAO funciona offline
 
 
-u <- "https://github.com/ipeaGIT/censobr/releases/download/v0.3.0/2010_emigration_v0.3.0.parquet"
+u <- "https://github.com/ipea/censobr/releases/download/v0.3.0/2010_emigration_v0.3.0.parquet"
 
 aaa <- httr::HEAD(u)$headers$etag
 

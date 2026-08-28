@@ -61,7 +61,7 @@ mc_alias_set("censobr", "minioapi-teste.ipea.gov.br:443",
 # duckdbfs ---------------------------------------------------------------------------------
 # https://cboettig.github.io/duckdbfs/
 
-a <- "https://github.com/ipeaGIT/censobr/releases/download/v0.5.0/1960_households_v0.5.0.parquet"
+a <- "https://github.com/ipea/censobr/releases/download/v0.5.0/1960_households_v0.5.0.parquet"
 
 a <- "http://minio.ipea.gov.br/censobr/2010_tracts_Pessoa_v0.5.0.parquet"
 
@@ -75,7 +75,7 @@ class(ds2)
 nrow(ds2)
 ds2
 
-url <- "https://github.com/ipeaGIT/geobr/releases/download/v1.7.0/amazonia_legal.gpkg"
+url <- "https://github.com/ipea/geobr/releases/download/v1.7.0/amazonia_legal.gpkg"
 
 countries_meta <- duckdbfs::st_read_meta(url )
 countries_meta

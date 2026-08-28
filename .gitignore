@@ -15,3 +15,6 @@ vignettes/*.html
 docs
 /data_prep/data/*
 /data_prep/data_raw/*
+
+# Claude Code local state (never committed)
+.claude/state/
