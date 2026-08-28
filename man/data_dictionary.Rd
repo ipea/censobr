@@ -34,7 +34,9 @@ the function will download the data again and overwrite the local file.}
 messages. Defaults to \code{TRUE}.}
 }
 \value{
-Returns \code{NULL} and opens an .html, .pdf or excel file
+Returns the path to the downloaded file. When \code{verbose = TRUE} and the
+session is interactive, the file is also opened and the path is
+returned invisibly.
 }
 \description{
 Open on a browser the data dictionary of Brazil's census data.

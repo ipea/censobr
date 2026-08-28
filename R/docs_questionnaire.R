@@ -13,7 +13,9 @@
 #' @template cache
 #' @template verbose
 #'
-#' @return Opens a `.pdf` file on the browser
+#' @return Returns the path to the downloaded file. When `verbose = TRUE` and the
+#'         session is interactive, the file is also opened and the path is
+#'         returned invisibly.
 #' @export
 #' @family Questionnaire
 #' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
@@ -70,6 +72,12 @@ questionnaire <- function(year,
   # check if download worked
   if(is.null(local_file)) { return(NULL) }
 
-  # open data dic on browser
-  utils::browseURL(url = local_file)
+  # open the file only when the user asked for messages and the session is
+  # interactive. Otherwise simply hand back the path to the downloaded file.
+  if (isTRUE(verbose) && interactive()) {
+    utils::browseURL(url = local_file)
+    return(invisible(local_file))
+  }
+
+  return(local_file)
 }

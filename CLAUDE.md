@@ -347,20 +347,25 @@ explicitly (`:115`); the other two return the value of `utils::browseURL()`.
 
 ---
 
-## Known follow-ups (logged, not fixed)
+## Known follow-ups
 
-See [MEMORY.md](MEMORY.md) for detail. Open: missing `Config/testthat/edition: 3`; swapped failure
-messages in `download_file()` (`R/utils.R:49-53` vs `:60`); `questionnaire()` / `interview_manual()`
-ignore `verbose`; unusable defaults `interview_manual(year = NULL)` and `questionnaire(type = NULL)`;
-and `censobr_cache(delete_file = "all", verbose = FALSE)` on an empty cache.
+See [MEMORY.md](MEMORY.md) for detail.
 
-**Fixed 2026-08-28** (see `NEWS.md` dev section): `cache = FALSE` on a fresh install; `add_labels`
-accepting non-`"pt"` strings; `read_tracts()` 2000 error list; `censobr_cache(delete_file = "all",
-print_tree = TRUE)`.
+1. **`[EBUSY]` test failure (open).** `data_dictionary(2022, 'tracts')` opens an `.xlsx` via
+   `shell.exec()` (`R/data_dictionary.R:113,125`); on Windows Excel holds the handle, so a later
+   `censobr_cache(delete_file = 'all')` fails and 2 tests in `test_z_censobr_cache.R` error. Fix:
+   gate the file-open on `interactive()` in all three docs functions — **not** on `verbose`.
+2. **`Config/testthat/edition: 3`** — deferred to its own commit. 16 `context()` calls and one
+   `expect_is()` need removing first, and 3e switches `expect_equal` to waldo against ~10
+   arrow-collected numeric totals.
+3. **`download_file()` latent** — if `try()` catches a real throw, `downloaded_files` is undefined
+   and `R/utils.R:48` errors with "object not found".
 
-**Org:** `ipea` is canonical; `ipeaGIT` redirects. Reconciled 2026-08-27 across the repo, the
-`DESCRIPTION`, and the git remote. **Exception:** `r5r` has *not* migrated — `ipeaGIT/r5r` is still
-its only valid path, so leave that one alone.
+**Fixed 2026-08-28** (commits `9110ef1`, `b7213eb`, `10a24b9`; see `NEWS.md` dev section):
+`cache = FALSE` on a fresh install; `add_labels` accepting non-`"pt"` strings; `read_tracts()` 2000
+error list; two `censobr_cache()` errors; swapped `download_file()` messages; the `year` contract;
+and informative option lists for `questionnaire(type)` / `read_tracts(dataset)` /
+`data_dictionary(dataset)`.
 
 ## Onboarding: check-in mode (temporary)
 

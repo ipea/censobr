@@ -87,7 +87,7 @@ which will open the file with the dictionary of variables in each dataset. The d
 the data set and year.
 
 
-```{r warning=FALSE, message=FALSE}
+```{r warning=FALSE, message=FALSE, results='hide'}
 data_dictionary(
   year = 2022, 
   dataset = 'tracts'

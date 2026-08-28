@@ -1,6 +1,17 @@
 # censobr dev
 
+* Major changes
+  * `data_dictionary()`, `questionnaire()` and `interview_manual()` now return the
+  path to the downloaded file. When `verbose = FALSE` the file is no longer
+  opened, and the function simply returns the path. The file is also not opened
+  in non-interactive sessions, so scripted runs no longer launch a viewer.
+
 * bug fixes
+  * `data_dictionary()`, `questionnaire()` and `interview_manual()` now only open
+  the file when the session is interactive. Previously they launched a viewer
+  during scripted and non-interactive runs, which on Windows left the file locked
+  and could make `censobr_cache()` fail to remove it. The two documentation
+  functions now also return the path to the local file invisibly.
   * Passing `cache = FALSE` no longer fails when the cache directory does not
   exist yet, for example on a fresh installation.
   * The `add_labels` parameter now only accepts `"pt"`. Values such as `"ptbr"`

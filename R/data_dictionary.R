@@ -12,7 +12,9 @@
 #' @template cache
 #' @template verbose
 #'
-#' @return Returns `NULL` and opens an .html, .pdf or excel file
+#' @return Returns the path to the downloaded file. When `verbose = TRUE` and the
+#'         session is interactive, the file is also opened and the path is
+#'         returned invisibly.
 #' @export
 #' @family Census documentation
 #' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
@@ -106,15 +108,18 @@ data_dictionary <- function(year,
   # open data dic on browser
   file_extension <- fs::path_ext(local_file)
 
-  if(verbose){
+  # open the file only when the user asked for messages and the session is
+  # interactive. Otherwise simply hand back the path to the downloaded file.
+  if (isTRUE(verbose) && interactive()) {
     if (file_extension %in% c('pdf', 'html')) {
       utils::browseURL(url = local_file)
     } else {
       open_file(path = local_file)
     }
+    return(invisible(local_file))
   }
 
-  return(NULL)
+  return(local_file)
 }
 
 
