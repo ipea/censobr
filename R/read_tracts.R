@@ -59,6 +59,7 @@ read_tracts <- function(year,
                         verbose = TRUE){
 
   ### check inputs
+  if (missing(year) || is.null(year)) { error_year_not_declared() }
   checkmate::assert_numeric(year, any.missing = FALSE)
   checkmate::assert_string(dataset, null.ok = FALSE)
   checkmate::assert_logical(as_data_frame)

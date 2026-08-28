@@ -4,12 +4,7 @@
 \alias{interview_manual}
 \title{Interview manual of the data collection of Brazil's censuses}
 \usage{
-interview_manual(
-  year = NULL,
-  showProgress = TRUE,
-  cache = TRUE,
-  verbose = TRUE
-)
+interview_manual(year, showProgress = TRUE, cache = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{year}{Numeric. Year of reference in the format \code{yyyy}.}

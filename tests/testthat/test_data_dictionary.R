@@ -46,6 +46,9 @@ test_that("data_dictionary", {
 
   # families
   testthat::expect_message( tester(year = 2000, dataset = 'families') )
+  # year must be declared by the user, whether omitted or passed as NULL
+  testthat::expect_error( data_dictionary(), 'declare' )
+  testthat::expect_error( data_dictionary(year = NULL), 'declare' )
   testthat::expect_error( tester(year = 1991, dataset = 'families') )
 
   # mortality

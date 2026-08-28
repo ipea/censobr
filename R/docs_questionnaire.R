@@ -22,8 +22,8 @@
 #' # Open questionnaire on browser
 #' questionnaire(year = 2010, type = 'long', showProgress = FALSE)
 #'
-questionnaire <- function(year = 2010,
-                          type = NULL,
+questionnaire <- function(year,
+                          type,
                           showProgress = TRUE,
                           cache = TRUE,
                           verbose = TRUE){
@@ -32,6 +32,7 @@ questionnaire <- function(year = 2010,
   # type = 'long'
 
   ### check inputs
+  if (missing(year) || is.null(year)) { error_year_not_declared() }
   checkmate::assert_numeric(year)
   checkmate::assert_string(type)
   checkmate::assert_logical(verbose, null.ok = FALSE)

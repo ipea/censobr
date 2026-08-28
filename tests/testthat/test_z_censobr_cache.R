@@ -67,6 +67,10 @@ test_that("censobr_cache", {
   # deleting everything while print_tree = TRUE must not error on the missing dir
   testthat::expect_no_error( censobr_cache(delete_file = 'all', print_tree = TRUE) )
 
+  # an empty cache must not error when verbose = FALSE (the early return used to
+  # sit inside the verbose guard, so execution fell through to fs::dir_delete)
+  testthat::expect_no_error( censobr_cache(delete_file = 'all', verbose = FALSE) )
+
   # get current cache dir
   testthat::expect_true(is.character(get_censobr_cache_dir()))
 

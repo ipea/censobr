@@ -109,6 +109,9 @@ testthat::test_that("read_tracts 2000 datasets", {
 testthat::test_that("read_tracts", {
 
   # Wrong date 4 digits )
+  # year must be declared by the user, whether omitted or passed as NULL
+  testthat::expect_error( read_tracts(), 'declare' )
+  testthat::expect_error( read_tracts(year = NULL), 'declare' )
   testthat::expect_error(tester(year=999, dataset='Basico'))
   testthat::expect_error(tester(year=999, dataset='Basico'))
   testthat::expect_error(tester(year=2010, dataset='banana'))

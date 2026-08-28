@@ -19,13 +19,14 @@
 #'   showProgress = FALSE
 #'   )
 #'
-interview_manual <- function(year = NULL,
+interview_manual <- function(year,
                              showProgress = TRUE,
                              cache = TRUE,
                              verbose = TRUE){
   # year = 2000
 
   ### check inputs
+  if (missing(year) || is.null(year)) { error_year_not_declared() }
   checkmate::assert_numeric(year)
   checkmate::assert_logical(verbose)
 

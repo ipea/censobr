@@ -35,6 +35,7 @@ read_households <- function(year,
                             verbose = TRUE){
 
   ### check inputs
+  if (missing(year) || is.null(year)) { error_year_not_declared() }
   checkmate::assert_numeric(year, any.missing = FALSE)
   checkmate::assert_vector(columns, null.ok = TRUE)
   checkmate::assert_logical(as_data_frame)

@@ -46,18 +46,18 @@ download_file <- function(file_url = parent.frame()$file_url,
 
   # if anything fails, return NULL (fail gracefully)
   if (any(!downloaded_files$success | is.na(downloaded_files$success))) {
-        msg <- paste(
-        "Local file seems to be corrupted. Please download it again using 'cache = FALSE'.",
-        sprintf("Alternatively, you can remove the corrupted file with 'censobr::censobr_cache(delete_file = \"%s\")'", basename(local_file)),
-        sep = "\n")
-        cli::cli_alert_danger(msg)
+        cli::cli_alert_danger("Download failed. Please check your internet connection and try again.")
 
         return(invisible(NULL))
         }
 
   # Halt function if download failed (file must exist and be larger than 200 kb)
   if (!file.exists(local_file) | file.info(local_file)$size < 5000) {
-    cli::cli_alert_danger("Internet connection not working properly.")
+    msg <- paste(
+      "The downloaded file is incomplete or unavailable at the source.",
+      sprintf("Please remove it with 'censobr::censobr_cache(delete_file = \"%s\")' and try again.", basename(local_file)),
+      sep = "\n")
+    cli::cli_alert_danger(msg)
 
     return(invisible(NULL))
   }
@@ -137,6 +137,19 @@ cache_message <- function(local_file = parent.frame()$local_file,
 
 
 
+
+#' Error when the year is not declared
+#'
+#' @return An informative error
+#'
+#' @keywords internal
+error_year_not_declared <- function() { # nocov start
+
+  cli::cli_abort(
+    "Please declare the {.arg year} of the census.",
+    call = rlang::caller_env()
+  )
+} # nocov end
 
 #' Error missing years
 #'

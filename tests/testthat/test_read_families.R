@@ -73,6 +73,9 @@ test_that("read_families read", {
 test_that("read_families errors", {
 
   # Wrong date 4 digits
+  # year must be declared by the user, whether omitted or passed as NULL
+  testthat::expect_error( read_families(), 'declare' )
+  testthat::expect_error( read_families(year = NULL), 'declare' )
   testthat::expect_error(tester(year=999))
   testthat::expect_error(tester(year='999'))
   testthat::expect_error(tester(columns = 'banana'))

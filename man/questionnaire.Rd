@@ -4,13 +4,7 @@
 \alias{questionnaire}
 \title{Questionnaires used in the data collection of Brazil's censuses}
 \usage{
-questionnaire(
-  year = 2010,
-  type = NULL,
-  showProgress = TRUE,
-  cache = TRUE,
-  verbose = TRUE
-)
+questionnaire(year, type, showProgress = TRUE, cache = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{year}{Numeric. Year of reference in the format \code{yyyy}.}

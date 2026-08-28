@@ -131,6 +131,9 @@ test_that("read_households totals", {
 test_that("read_households errors", {
 
   # Wrong date 4 digits
+  # year must be declared by the user, whether omitted or passed as NULL
+  testthat::expect_error( read_households(), 'declare' )
+  testthat::expect_error( read_households(year = NULL), 'declare' )
   testthat::expect_error(tester(year=999))
   testthat::expect_error(tester(year='999'))
   testthat::expect_error(tester(columns = 'banana'))

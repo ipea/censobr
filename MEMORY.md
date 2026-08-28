@@ -132,3 +132,25 @@ including *pre-existing* broken links the vendored copy already carried (`audit-
 finish a prune with a link-resolution sweep over `.claude/**/*.md`, not just a name grep — the
 grep found 23 mentions, the link check found 11 more that the grep's pattern list missed.
 
+[LEARN:check] A stale `00LOCK-censobr` directory left by a concurrent or interrupted R process makes
+`R CMD check` raise *"checking for non-standard things in the check directory ... NOTE"*. It is an
+environment artifact, not a package defect - delete `censobr.Rcheck/` and re-run before believing a
+new NOTE. Do not run the test suite and a check against the same library at the same time.
+
+[LEARN:api] `verbose` in the docs functions means "be quiet", **not** "skip the side effect". The
+`@return` of `questionnaire()` and `interview_manual()` is literally "Opens a `.pdf` file on the
+browser", so gating `browseURL()` on `verbose` would make them documented no-ops. `data_dictionary()`
+already gates (issue #72) and is the inconsistent one. If the goal is a quiet test suite, the correct
+gate is `interactive()` on all three - a deliberate API decision, not a bug fix.
+
+[LEARN:docs] Changing a function signature (even dropping an unusable default) requires
+`devtools::document()`, because \usage{} in `man/*.Rd` hard-codes the defaults. Skipping it raises a
+*code/documentation mismatch* WARNING and silently breaks the 0/0/0 baseline.
+
+[LEARN:api] **Every function taking `year` must require the user to declare it - no function may
+assume a year.** Enforced by `error_year_not_declared()` (`R/utils.R`) called from a
+`if (missing(year) || is.null(year))` guard in all 9 functions. Use the bare `year` signature, not
+`year = NULL`: a NULL default makes \usage{} advertise a default and implies NULL is meaningful,
+while `missing() || is.null()` still catches both the omitted and the explicitly-NULL call. A bare
+required argument alone is NOT enough - `f(year = NULL)` sails past R's missing-argument machinery
+(`missing()` is FALSE there) into checkmate, producing a type complaint instead of a useful message.

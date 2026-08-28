@@ -88,6 +88,9 @@ test_that("read_mortality merge_households_vars", {
 test_that("read_mortality errors", {
 
   # Wrong date 4 digits
+  # year must be declared by the user, whether omitted or passed as NULL
+  testthat::expect_error( read_mortality(), 'declare' )
+  testthat::expect_error( read_mortality(year = NULL), 'declare' )
   testthat::expect_error(tester(year=999))
   testthat::expect_error(tester(year='999'))
   testthat::expect_error(tester(columns = 'banana'))

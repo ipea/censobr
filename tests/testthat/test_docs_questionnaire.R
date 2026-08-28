@@ -84,6 +84,10 @@ test_that("questionnaire", {
 test_that("questionnaire", {
 
   # Wrong date 4 digits
+  # year must be declared by the user, whether omitted or passed as NULL
+  testthat::expect_error( questionnaire(), 'declare' )
+  testthat::expect_error( questionnaire(year = NULL), 'declare' )
+  testthat::expect_error( questionnaire(type = 'long'), 'declare' )
   testthat::expect_error(questionnaire(year = 9999))
   testthat::expect_error(questionnaire(year = 2000, showProgress = 'banana'))
   testthat::expect_error(questionnaire(year = 2000, cache = 'banana'))

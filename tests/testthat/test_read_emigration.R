@@ -77,6 +77,9 @@ test_that("emigration merge_households_vars", {
 test_that("read_emigration errors", {
 
   # Wrong date 4 digits
+  # year must be declared by the user, whether omitted or passed as NULL
+  testthat::expect_error( read_emigration(), 'declare' )
+  testthat::expect_error( read_emigration(year = NULL), 'declare' )
   testthat::expect_error(tester(year=999))
   testthat::expect_error(tester(year='999'))
   testthat::expect_error(tester(columns = 'banana'))

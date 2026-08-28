@@ -80,6 +80,16 @@ are in `R/read_tracts.R:77-86` and mirrored in that function's roxygen `@param d
 
 ---
 
+## The `year` contract
+
+**No function assumes a year.** All 9 functions taking `year` guard with
+`if (missing(year) || is.null(year)) { error_year_not_declared() }` (`R/utils.R`), so both an
+omitted `year` and an explicit `year = NULL` return *"Please declare the `year` of the census."*
+Keep the signature as bare `year` - a `year = NULL` default would advertise a default in
+\usage{} and imply NULL is a meaningful value.
+
+---
+
 ## The Arrow / DuckDB contract
 
 - `read_*()` returns an **arrow `Dataset`** by default (`as_data_frame = FALSE`). This *is* the

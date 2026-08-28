@@ -10,6 +10,18 @@
   `dataset` is passed for that year. It previously listed the 2010 data sets.
   * `censobr_cache(delete_file = "all", print_tree = TRUE)` no longer throws an
   error after deleting the cache directory.
+  * `censobr_cache()` no longer throws an error when the cache directory is
+  empty or absent and `verbose = FALSE`.
+  * Download error messages now match their cause. A failed transfer no longer
+  reports the local file as corrupted, and an incomplete download no longer
+  reports the internet connection as faulty.
+  * All functions that take a `year` now require the user to declare it, and say
+  so with an informative message when it is missing or `NULL`. Previously
+  `questionnaire()` silently assumed `year = 2010`, `interview_manual()`
+  defaulted to `NULL`, and passing `year = NULL` to any reading function failed
+  with a type-check message instead of telling the user what to do.
+  * The argument `questionnaire(type)` is now explicitly required. It previously
+  defaulted to `NULL`, which could not be used because it failed the input check.
 
 
 # censobr v0.6.0

@@ -166,11 +166,9 @@ censobr_cache <- function(list_files = TRUE,
 
   # if (!fs::dir_exists(cache_dir)) return(character(0))
 
-  if (isTRUE(verbose)) {
-    if (length(files)==0) {
-      cli::cli_alert_info("Cache directory is currently empty.")
-      return(character(0))
-    }
+  if (length(files)==0) {
+    if (isTRUE(verbose)) { cli::cli_alert_info("Cache directory is currently empty.") }
+    return(character(0))
   }
 
   # if wants to dele file

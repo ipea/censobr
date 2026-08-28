@@ -37,6 +37,9 @@ test_that("interview_manual", {
 test_that("interview_manual", {
 
   # Wrong date 4 digits
+  # year must be declared by the user, whether omitted or passed as NULL
+  testthat::expect_error( interview_manual(), 'declare' )
+  testthat::expect_error( interview_manual(year = NULL), 'declare' )
   testthat::expect_error(interview_manual(year = 9999))
   testthat::expect_error(interview_manual(year = 2000, showProgress = 'banana'))
   testthat::expect_error(interview_manual(year = 2000, cache = 'banana'))
