@@ -24,6 +24,9 @@ merge_household_var <- function(df,
     verbose = verbose
     )
 
+  # fail gracefully if the household data could not be downloaded
+  if (is.null(df_household)) { return(invisible(NULL)) }
+
   # set vars to merge
   # if (year == 1960) {
   #   key_vars <- c('code_state', 'code_muni', 'id_household')

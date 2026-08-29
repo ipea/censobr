@@ -66,6 +66,9 @@ read_population <- function(year,
   ### read data
   df <- arrow_open_dataset(local_file)
 
+  # the cached file may be corrupted; arrow_open_dataset() returns NULL
+  if (is.null(df)) { return(invisible(NULL)) }
+
   # # ### merge household data
   # if (isTRUE(merge_households)) {
   #   df <- merge_household_var(df,

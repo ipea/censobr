@@ -66,6 +66,9 @@ read_households <- function(year,
   ### read data
   df <- arrow_open_dataset(local_file)
 
+  # the cached file may be corrupted; arrow_open_dataset() returns NULL
+  if (is.null(df)) { return(invisible(NULL)) }
+
   ### Select
   if (!is.null(columns)) { # columns <- c('V0002','V0011')
     df <- dplyr::select(df, dplyr::all_of(columns))

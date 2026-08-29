@@ -72,6 +72,9 @@ read_emigration <- function(year,
   ### read data
   df <- arrow_open_dataset(local_file)
 
+  # the cached file may be corrupted; arrow_open_dataset() returns NULL
+  if (is.null(df)) { return(invisible(NULL)) }
+
   ### merge household data
   if (isTRUE(merge_households)) {
     df <- merge_household_var(df,
@@ -80,6 +83,9 @@ read_emigration <- function(year,
                               showProgress = showProgress,
                               verbose = verbose)
   }
+
+  # merge_household_var() returns NULL if the household data could not be downloaded
+  if (isTRUE(merge_households) && is.null(df)) { return(invisible(NULL)) }
 
   ### Select
   if (!is.null(columns)) { # columns <- c('V0002','V0011')

@@ -35,11 +35,11 @@ Imports:
     arrow (>= 15.0.1),
     checkmate,
     cli,
-    curl (>= 5.0.0),
     dplyr,
     duckdb,
     fs,
     glue,
+    httr2 (>= 1.0.0),
     rlang,
     tools
 Suggests:

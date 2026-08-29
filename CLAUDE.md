@@ -311,7 +311,7 @@ All three fetch from the **fixed** `censo_docs` release tag, not the data-releas
 
 | Function | Validates | File built | Opens with |
 |---|---|---|---|
-| `data_dictionary(year, dataset, …)` | `dataset` against 7 names (`R/data_dictionary.R:50-53`), then year per dataset (`:56-62`) | 3 branches (`:76-93`): `microdata`→`.xlsx`; the 5 microdata types→`.html`; `tracts`→`.pdf`, swapped to `.xlsx` for 2022 (`:92`) | `browseURL()` for pdf/html, else `open_file()` (`:107-113`) |
+| `data_dictionary(year, dataset, …)` | `dataset` against 2 names (`microdata`, `tracts`) (`R/data_dictionary.R:50-53`), then year per dataset (`:56-62`) | 3 branches (`:76-93`): `microdata`→`.xlsx`; the 5 microdata types→`.html`; `tracts`→`.pdf`, swapped to `.xlsx` for 2022 (`:92`) | `browseURL()` for pdf/html, else `open_file()` (`:107-113`) |
 | `questionnaire(year, type, …)` | year (7 options) + `type` in `c("long","short")` (`R/docs_questionnaire.R:40-57`) | `{year}_questionnaire_{type}.pdf` | `utils::browseURL()` (`:72`) |
 | `interview_manual(year, …)` | year (7 options) (`R/docs_interview_manual.R:33-40`) | `{year}_interview_manual.pdf` | `utils::browseURL()` (`:56`) |
 
