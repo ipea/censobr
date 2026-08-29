@@ -5,9 +5,11 @@
 #'
 #' @template year
 #' @param dataset Character. The type of data dictionary to be opened. Options
-#'        include `c("microdata", "tracts", "population", "households", "families", "mortality", "emigration")`.
-#'        In the case of `"microdata"`, the function opens an Excel file with the
-#'        data dictionary of all variables, including auxiliary documentation.
+#'        include `c("microdata", "tracts", "population", "households")`. In the
+#'        case of `"microdata"`, the function opens a single Excel file with the
+#'        data dictionary of all variables of the microdata, available for the
+#'        years 2000 and 2010. For earlier censuses, use `"population"` or
+#'        `"households"`, which open a separate file per data set.
 #' @template showProgress
 #' @template cache
 #' @template verbose
@@ -35,13 +37,14 @@
 #'   )
 #'
 #'
+#'
 data_dictionary <- function(year,
                             dataset,
                             showProgress = TRUE,
                             cache = TRUE,
                             verbose = TRUE){
   # year = 2010
-  # dataset = 'population'
+  # dataset = 'microdata'
 
   ### check inputs
   if (missing(year) || is.null(year)) { error_year_not_declared() }
@@ -49,9 +52,19 @@ data_dictionary <- function(year,
   checkmate::assert_logical(verbose, null.ok = FALSE)
 
   # data available for data sets:
-  data_sets <- c("population", "households", "families", "mortality", "emigration", "microdata", "tracts")
+  data_sets <- c("microdata", "tracts", "population", "households")
   if (missing(dataset) || is.null(dataset)) { error_arg_not_declared('dataset', data_sets) }
   checkmate::assert_string(dataset, na.ok = FALSE)
+  # data sets that censobr distributes but for which no dictionary of its own
+  # was ever published: point the user to the microdata dictionary instead
+  no_dictionary <- c("families", "mortality", "emigration")
+  if (dataset %in% no_dictionary) {
+    cli::cli_abort(
+      c("There is no data dictionary published for {.val {dataset}} data.",
+        "i" = "The variables of {.val {dataset}} are described in the microdata dictionary, which you can open with {.code data_dictionary(year, dataset = 'microdata')} for the years 2000 and 2010.")
+    )
+  }
+
   if (isFALSE(dataset %in% data_sets)) {
     error_missing_datasets(data_sets)
     }
@@ -59,16 +72,31 @@ data_dictionary <- function(year,
   # check year / data availability
   if(dataset == 'microdata'){ years <- c(2000, 2010) }
   if(dataset == 'tracts'){ years <- c(1970, 1980, 1991, 2000, 2010, 2022) }
-  if(dataset == 'population'){ years <- c(1960, 1970, 1980, 1991, 2000, 2010) }
-  if(dataset == 'households'){ years <- c(1960, 1970, 1980, 1991, 2000, 2010) }
-  if(dataset == 'families'){ years <- c(2000) }
-  if(dataset == 'mortality'){ years <- c(2010) }
-  if(dataset == 'emigration'){ years <- c(2010) }
+  # the per-dataset dictionaries were superseded by the single Excel file in
+  # 2000 and 2010, but remain the only ones available for earlier censuses
+  if(dataset == 'population'){ years <- c(1960, 1970, 1980, 1991) }
+  if(dataset == 'households'){ years <- c(1960, 1970, 1980, 1991) }
 
   if (isFALSE(year %in% years)) {
-    years_available <- paste(years, collapse = " ")
+
+    # 2022 has no microdata dictionary at all, only a census tract one
+    if (dataset == "microdata" && year == 2022) {
+      cli::cli_abort(
+        c("The {.val microdata} dictionary is only available for the years 2000 and 2010.",
+          "i" = "For {year}, the only dictionary published is for census tract data: {.code data_dictionary({year}, dataset = 'tracts')}.")
+      )
+    }
+
+    # for censuses before 2000 the dictionary exists, but per data set
+    if (dataset == "microdata" && year %in% c(1960, 1970, 1980, 1991)) {
+      cli::cli_abort(
+        c("The {.val microdata} dictionary is only available for the years 2000 and 2010.",
+          "i" = "For {year}, open the dictionary of a specific data set with {.code data_dictionary({year}, dataset = 'population')} or {.code dataset = 'households'}.")
+      )
+    }
+
     cli::cli_abort(
-      "Dictionary for {dataset} data currently only for the years {years_available}.",
+      "The dictionary for {.val {dataset}} data is only available for the years {years}.",
       call = rlang::caller_env()
       )
     }
@@ -82,11 +110,11 @@ data_dictionary <- function(year,
     file_url <- paste0("https://github.com/ipea/censobr_prep_data/releases/download/censo_docs/", fname)
   }
 
-  # MICRODATA
-  if (dataset %in% c("population", "households", "families", "mortality", "emigration")) {
+  # MICRODATA, per data set (censuses before 2000)
+  if (dataset %in% c("population", "households")) {
     fname <- paste0(year, '_dictionary_microdata_', dataset, '.html')
     file_url <- paste0("https://github.com/ipea/censobr_prep_data/releases/download/censo_docs/", fname)
-    }
+  }
 
   # TRACT DATA
   if (dataset == 'tracts') {
