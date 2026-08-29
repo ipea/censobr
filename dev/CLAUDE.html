@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">censobr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.6.0.999</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.6.0.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -336,7 +336,7 @@
 <th>Opens with</th>
 </tr></thead><tbody><tr><td><code>data_dictionary(year, dataset, …)</code></td>
 <td>
-<code>dataset</code> against 7 names (<code>R/data_dictionary.R:50-53</code>), then year per dataset (<code>:56-62</code>)</td>
+<code>dataset</code> against 2 names (<code>microdata</code>, <code>tracts</code>) (<code>R/data_dictionary.R:50-53</code>), then year per dataset (<code>:56-62</code>)</td>
 <td>3 branches (<code>:76-93</code>): <code>microdata</code>→<code>.xlsx</code>; the 5 microdata types→<code>.html</code>; <code>tracts</code>→<code>.pdf</code>, swapped to <code>.xlsx</code> for 2022 (<code>:92</code>)</td>
 <td>
 <code><a href="https://rdrr.io/r/utils/browseURL.html" class="external-link">browseURL()</a></code> for pdf/html, else <code>open_file()</code> (<code>:107-113</code>)</td>
@@ -375,7 +375,7 @@
 <h2 id="known-follow-ups">Known follow-ups<a class="anchor" aria-label="anchor" href="#known-follow-ups"></a></h2>
 <p>See <a href="MEMORY.html">MEMORY.md</a> for detail.</p>
 <ol style="list-style-type: decimal"><li>
-<strong><code>[EBUSY]</code> test failure (open).</strong> <code>data_dictionary(2022, 'tracts')</code> opens an <code>.xlsx</code> via <code>shell.exec()</code> (<code>R/data_dictionary.R:113,125</code>); on Windows Excel holds the handle, so a later <code>censobr_cache(delete_file = 'all')</code> fails and 2 tests in <code>test_z_censobr_cache.R</code> error. Fix: gate the file-open on <code><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive()</a></code> in all three docs functions — <strong>not</strong> on <code>verbose</code>.</li>
+<strong>Vignette prose/output drift (open).</strong> <code>vignettes/census_tracts_data.Rmd:90</code> calls <code><a href="reference/data_dictionary.html">data_dictionary()</a></code> in an evaluated chunk; knitting is non-interactive, so it now prints a machine-specific cache path instead of opening the file, and the prose above it still says the function “will open the file”.</li>
 <li>
 <strong><code>Config/testthat/edition: 3</code></strong> — deferred to its own commit. 16 <code>context()</code> calls and one <code>expect_is()</code> need removing first, and 3e switches <code>expect_equal</code> to waldo against ~10 arrow-collected numeric totals.</li>
 <li>

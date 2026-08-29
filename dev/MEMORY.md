@@ -251,3 +251,222 @@ undeclared `withr` dependency plus a persistent
 config write), and it killed a proposed fix whose stated motivation I
 had simply got wrong. Have the reviewer verify the *premise* of each
 fix, not only its diff.
+
+## Docs-function behaviour change (commit b9ca5ed, 2026-08-28)
+
+\[LEARN:api\]
+**[`data_dictionary()`](https://ipeagit.github.io/censobr/dev/reference/data_dictionary.md),
+[`questionnaire()`](https://ipeagit.github.io/censobr/dev/reference/questionnaire.md)
+and
+[`interview_manual()`](https://ipeagit.github.io/censobr/dev/reference/interview_manual.md)
+open the file only when `verbose = TRUE` AND
+[`interactive()`](https://rdrr.io/r/base/interactive.html).** Otherwise
+they return the path to the downloaded file (visibly); when the file is
+opened the path is returned invisibly.
+[`data_dictionary()`](https://ipeagit.github.io/censobr/dev/reference/data_dictionary.md)
+previously returned `NULL` - that is an API change, filed under Major
+changes in NEWS, not bug fixes. Both halves of the gate are
+load-bearing: `verbose` is the user-facing rule, and
+[`interactive()`](https://rdrr.io/r/base/interactive.html) is what stops
+the test suite and `R CMD check` from launching viewers. Removing
+[`interactive()`](https://rdrr.io/r/base/interactive.html) brings back
+the EBUSY failure below.
+
+\[LEARN:defect\] **The `[EBUSY]` cache-deletion failure had TWO
+independent causes; only one is confirmed fixed.** (a)
+`data_dictionary(2022,'tracts')` opened an `.xlsx` via `shell.exec()`
+and Excel held the handle - fixed by the
+[`interactive()`](https://rdrr.io/r/base/interactive.html) gate in
+b9ca5ed, confirmed by a clean single-process suite run with zero
+failures. (b) Two R sessions sharing the same global cache directory:
+one downloads or reads while the other runs
+`censobr_cache(delete_file='all')`, giving `EBUSY`, `ENOTEMPTY`, or a
+spurious “cached file seems to be corrupted”. Cause (b) was
+self-inflicted - two overlapping background suite runs - not a package
+defect.
+
+\[LEARN:workflow\] **Never run two test suites concurrently.** They
+share the global cache dir (`tools::R_user_dir("censobr","cache")`), so
+they corrupt each other’s downloads and fight over deletion. Symptoms
+look like package bugs (`EBUSY` / `ENOTEMPTY` / “file corrupted”) but
+are pure contention. Check for a running `Rscript` before launching a
+suite, and never launch a second one because the first appears silent -
+a 0-byte output file usually means still running, not dead.
+
+\[LEARN:pattern\] A live
+[`arrow::open_dataset()`](https://arrow.apache.org/docs/r/reference/open_dataset.html)
+Dataset does **not** lock its parquet file on Windows - verified
+directly. Do not blame Arrow for an `EBUSY` on a `.parquet`; look for
+another process first. \[LEARN:docs\] **Open item:
+`vignettes/census_tracts_data.Rmd:90`** calls
+`data_dictionary(year = 2022, dataset = 'tracts')` in an evaluated chunk
+with `verbose` at its `TRUE` default. Knitting is non-interactive, so
+the file is no longer opened and the chunk now prints a machine-specific
+cache path. The surrounding prose still says the function “will open the
+file”, which is now conditional. Fix with `results='hide'`, an
+assignment, or reworded prose - not yet done.
+
+\[LEARN:workflow\] **A background task that returns no completion
+notification may have produced nothing.** After the b9ca5ed changes the
+suite was launched in the background but its output file was 0 bytes and
+no notification arrived, so that commit went in unverified. Check the
+output file size before treating a background run as evidence; an absent
+failure is not a pass.
+
+\[LEARN:testing\] **The full suite from a cold cache is not a reliable
+signal on this machine.** A 2026-08-28 run produced 24+ failures in
+`test_read_population.R` / `test_read_tracts.R` - the computer slept
+mid-run, the network dropped, downloads returned `NULL`, and one file
+cached truncated. None of it was a code defect. Before treating suite
+failures as real: check whether the cache was cold, whether the machine
+slept, and whether more than one R session was running.
+
+\[LEARN:defect\] **CORRECTED, then FIXED 2026-08-28.** I originally
+logged this as “download_file() cannot detect a truncated download”.
+That was wrong: libcurl compares Content-Length against bytes received
+at the transport layer, so
+[`curl::multi_download()`](https://jeroen.r-universe.dev/curl/reference/multi_download.html)
+already returned `success = FALSE` on a partial transfer (verified with
+a local server sending 50 of a declared 100000 bytes). The real bug was
+that **the partial file stayed on disk**, and since
+[`download_file()`](https://ipeagit.github.io/censobr/dev/reference/download_file.md)
+returns early on `file.exists() && cache`, it was served as a valid
+cache hit and then failed inside arrow as “File cached locally seems to
+be corrupted”. Fixed by the httr2 port, which
+[`unlink()`](https://rdrr.io/r/base/unlink.html)s the file on any
+failure.
+
+\[LEARN:pattern\] **Do not verify a download against `content-length`.**
+It is redundant (libcurl already does it) and actively wrong under
+compression: httr2 sends `Accept-Encoding: gzip` by default and curl
+decompresses, so the header describes compressed bytes while the file on
+disk is larger. Measured on r-project.org: header 2714, disk 7216 - such
+a check would delete a good file. GitHub release assets are uncompressed
+today, but that is a server setting censobr does not control.
+\[LEARN:workflow\] **A filtered or truncated log is not evidence.** Two
+false “zero failures” reports in one session: once from grepping
+`^(Failure|Error)` when testthat writes `-- 4. Failure (...)`, once from
+piping a run through `tail -30` and then pattern-matching the truncated
+file. Always write the full log to a file and count
+`^-- [0-9]+\. (Failure|Error)` blocks, and watch for testthat’s “Maximum
+number of 10 failures reached” cap hiding the rest.
+
+## httr2 port + data_dictionary cleanup (2026-08-28)
+
+\[LEARN:api\]
+**[`data_dictionary()`](https://ipeagit.github.io/censobr/dev/reference/data_dictionary.md)
+file format depends on year AND dataset.** `"microdata"` opens a single
+Excel file, published only for **2000 and 2010**. For the 1960, 1970,
+1980 and 1991 censuses the per-dataset HTML dictionaries are still the
+only ones, and `"population"` / `"households"` are valid options for
+exactly those years. `"families"`, `"mortality"` and `"emigration"` were
+never published for any year and are removed.
+
+\[LEARN:process\] **I broke working functionality by testing one year
+and generalising.** Told that the 2010 microdata dictionary should come
+from the Excel file, I checked the per-dataset URLs for 2010 only, saw
+404s, and removed all five options - which killed the 1960-1991
+dictionaries that work fine. The user caught it by asking why their
+example had been deleted. **Before removing an option, test the full
+matrix of its parameters, not one cell.** The 404s were also perfectly
+consistent with v0.6.0’s own NEWS (“Excel file … for now, available for
+the years 2000 and 2010”) - the release notes said the Excel covered two
+years, not all of them, and I did not read that as the constraint it
+was. \[LEARN:defect\] **A poisoned cache hid the 404s for an entire
+release cycle.**
+[`curl::multi_download()`](https://jeroen.r-universe.dev/curl/reference/multi_download.html)
+treated a 404 as a completed transfer and wrote the 9-byte error body
+into the cache. The size check caught it once and returned NULL, but the
+file stayed, so every later call short-circuited on
+`file.exists() && cache` - no download, no message, tests green - while
+users got a 9-byte HTML error page as their data dictionary. The httr2
+port [`unlink()`](https://rdrr.io/r/base/unlink.html)s failed downloads,
+which is what surfaced it. **Any silent cache hit deserves suspicion:
+verify the cached file is what it claims to be, not merely that it
+exists.**
+
+\[LEARN:testing\] **`expect_message()` is a near-worthless assertion for
+these functions.** The retired dictionary tests used it, and a 404’s own
+danger message satisfies it just as well as a successful download.
+Assert on the returned path, or on specific message text - never on the
+mere existence of a message.
+
+\[LEARN:pattern\] **httr2 port shape** (`R/utils.R`): `request()` -\>
+optional `req_progress()` -\>
+`tryCatch(req_perform(req, path = local_file))`. Connection failures
+throw `httr2_failure` and are NOT suppressed by `req_error()`; HTTP
+status errors throw and inherit `httr2_http`, which is how the two
+failure messages are told apart. Both leave a file on disk, so
+[`unlink()`](https://rdrr.io/r/base/unlink.html) on any failure is
+mandatory. `req_progress()` writes 0 bytes non-interactively where
+[`curl::multi_download`](https://jeroen.r-universe.dev/curl/reference/multi_download.html)
+wrote 169 to stderr.
+
+\[LEARN:cran\] **Fail-gracefully is verified, not assumed.** All 10
+download sites now guard on
+[`is.null()`](https://rdrr.io/r/base/NULL.html);
+[`merge_household_var()`](https://ipeagit.github.io/censobr/dev/reference/merge_household_var.md)
+was the only gap (it used
+[`read_households()`](https://ipeagit.github.io/censobr/dev/reference/read_households.md)’s
+result directly). `tests/testthat/test_graceful_failure.R` locks the
+behaviour in using
+[`httr2::with_mocked_responses()`](https://httr2.r-lib.org/reference/with_mocked_responses.html) -
+runs fully offline, no network, no `assignInNamespace`. Mock a
+connection failure by [`stop()`](https://rdrr.io/r/base/stop.html)ing a
+condition of class `httr2_failure`; mock an HTTP error with
+`httr2::response(status_code = 404L)`.
+
+\[LEARN:testing\] **A graceful-failure test through an exported function
+can be decorative.** My first merge test passed with the guard removed:
+under a global mock,
+[`read_mortality()`](https://ipeagit.github.io/censobr/dev/reference/read_mortality.md)’s
+own download fails first and it returns before ever reaching the merge
+block. The path had to be tested by calling
+[`merge_household_var()`](https://ipeagit.github.io/censobr/dev/reference/merge_household_var.md)
+directly. **Always confirm a regression test fails without the fix** -
+comment the fix out, re-run, and check the count goes up. Here: 2
+failures without, 0 with.
+
+\[LEARN:cran\]
+**[`arrow_open_dataset()`](https://ipeagit.github.io/censobr/dev/reference/arrow_open_dataset.md)
+no longer throws.** It used
+[`cli::cli_abort()`](https://cli.r-lib.org/reference/cli_abort.html) on
+a corrupt cached parquet, which violated fail-gracefully and, worse, was
+unrecoverable: the corrupt file stayed in the cache so every subsequent
+call failed the same way. It now
+[`unlink()`](https://rdrr.io/r/base/unlink.html)s the file and returns
+`NULL`, making the package self-healing - the next call re-downloads.
+All 6 `read_*()` functions guard the result with
+[`is.null()`](https://rdrr.io/r/base/NULL.html). Covered by two
+regression tests in `test_graceful_failure.R` that write a non-parquet
+file into the cache path.
+
+\[LEARN:defect\] **Truncation detection was needed after all - my
+earlier entry saying otherwise was wrong.** A partial download of the
+802 MB `2010_population` parquet passed
+[`download_file()`](https://ipeagit.github.io/censobr/dev/reference/download_file.md)’s
+only test (`size < 5000`), was cached, and then failed in arrow as
+corrupted - breaking the vignette build. libcurl catches a transfer that
+*errors*, but not every way a large transfer ends short. The fix
+compares bytes-on-disk to `content-length`, but **only when
+`content-encoding` is absent**, because curl decompresses on the fly and
+a gzip response legitimately differs (r-project.org: header 2714, disk
+7216). Logic lives in
+[`download_is_incomplete()`](https://ipeagit.github.io/censobr/dev/reference/download_is_incomplete.md)
+(`R/utils.R`).
+
+\[LEARN:testing\] **httr2 mocked responses do NOT write a body to
+disk.** `with_mocked_responses()` plus `req_perform(path=)` leaves no
+file, so any test of size/integrity logic through a mock passes or fails
+for the wrong reason - mine did both. Extract such logic into a plain
+internal function (`download_is_incomplete(actual, expected, encoding)`)
+and unit-test it directly. Mocks remain right for testing *error
+propagation* (404, connection failure), just not file contents.
+
+\[LEARN:testing\] **Never write a corrupt file into the real cache in a
+test.** A test that poisoned `2010_population_v0.6.0.parquet` relied on
+[`unlink()`](https://rdrr.io/r/base/unlink.html) to clean up; when the
+file was locked on Windows the unlink failed silently and the garbage
+stayed, breaking the vignette build. Test
+[`arrow_open_dataset()`](https://ipeagit.github.io/censobr/dev/reference/arrow_open_dataset.md)
+directly in [`tempdir()`](https://rdrr.io/r/base/tempfile.html) instead.

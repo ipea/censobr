@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censobr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.6.0.999</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.6.0.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,7 +74,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Census tract-level data</h1>
             
-            <h4 data-toc-skip class="date">2026-08-28</h4>
+            <h4 data-toc-skip class="date">2026-08-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipea/censobr/blob/main/vignettes/census_tracts_data.Rmd" class="external-link"><code>vignettes/census_tracts_data.Rmd</code></a></small>
       <div class="d-none name"><code>census_tracts_data.Rmd</code></div>
@@ -281,7 +281,7 @@ also download the municipality borders of BH.</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name_muni</span> <span class="op">==</span> <span class="st">"Belo Horizonte"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using year/date 2010</span></span>
 <span><span class="co">#&gt; duckdb keeps downloaded extensions and secrets in a temporary directory:</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/RtmpqQKVrg/duckdb</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB;">ℹ</span> /tmp/RtmpVCVJu6/duckdb</span></span>
 <span><span class="co">#&gt; This is removed when the R session ends.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Extensions are re-downloaded each session.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Secrets are lost.</span></span>
@@ -401,12 +401,12 @@ per capita of all census tracts in Brazil.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
 <span><span class="co">#&gt;   code_tract  V002   V003 income_pc</span></span>
 <span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    1.10<span style="color: #949494;">e</span>14   956 <span style="text-decoration: underline;">522</span>231      546.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    1.10<span style="color: #949494;">e</span>14   859 <span style="text-decoration: underline;">406</span>191      473.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    1.10<span style="color: #949494;">e</span>14   661 <span style="text-decoration: underline;">241</span>587      365.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    1.10<span style="color: #949494;">e</span>14   266  <span style="text-decoration: underline;">88</span>502      333.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    1.10<span style="color: #949494;">e</span>14  <span style="text-decoration: underline;">1</span>206 <span style="text-decoration: underline;">262</span>860      218.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    1.10<span style="color: #949494;">e</span>14   816 <span style="text-decoration: underline;">262</span>968      322.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>    2.21<span style="color: #949494;">e</span>14   714 <span style="text-decoration: underline;">145</span>414      204.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>    2.21<span style="color: #949494;">e</span>14   436  <span style="text-decoration: underline;">47</span>457      109.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>    2.21<span style="color: #949494;">e</span>14   287  <span style="text-decoration: underline;">45</span>302      158.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>    2.21<span style="color: #949494;">e</span>14   331  <span style="text-decoration: underline;">47</span>624      144.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>    2.21<span style="color: #949494;">e</span>14   846 <span style="text-decoration: underline;">133</span>232      157.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>    2.21<span style="color: #949494;">e</span>14   196  <span style="text-decoration: underline;">45</span>780      234.</span></span></code></pre></div>
 <p>Finally, we can merge the spatial data with our per capita income
 estimates and map the results.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">

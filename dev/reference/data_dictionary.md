@@ -23,10 +23,11 @@ data_dictionary(
 - dataset:
 
   Character. The type of data dictionary to be opened. Options include
-  `c("microdata", "tracts", "population", "households", "families", "mortality", "emigration")`.
-  In the case of `"microdata"`, the function opens an Excel file with
-  the data dictionary of all variables, including auxiliary
-  documentation.
+  `c("microdata", "tracts", "population", "households")`. In the case of
+  `"microdata"`, the function opens a single Excel file with the data
+  dictionary of all variables of the microdata, available for the years
+  2000 and 2010. For earlier censuses, use `"population"` or
+  `"households"`, which open a separate file per data set.
 
 - showProgress:
 
@@ -82,4 +83,5 @@ data_dictionary(
   )
 #> ℹ Downloading data and storing it locally for future use.
 #> /home/runner/.cache/R/censobr/data_release_v0.6.0/1980_dictionary_microdata_households.html
+
 ```

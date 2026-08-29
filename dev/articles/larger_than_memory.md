@@ -137,7 +137,7 @@ library(DBI)
 # create databse connection
 con <- duckdb::dbConnect(duckdb::duckdb())
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpLNBX5j/duckdb
+#> ℹ /tmp/RtmpQEW2vo/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.

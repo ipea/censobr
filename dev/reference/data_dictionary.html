@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censobr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.6.0.999</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.6.0.900</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,9 +70,11 @@
 
 <dt id="arg-dataset">dataset<a class="anchor" aria-label="anchor" href="#arg-dataset"></a></dt>
 <dd><p>Character. The type of data dictionary to be opened. Options
-include <code>c("microdata", "tracts", "population", "households", "families", "mortality", "emigration")</code>.
-In the case of <code>"microdata"</code>, the function opens an Excel file with the
-data dictionary of all variables, including auxiliary documentation.</p></dd>
+include <code>c("microdata", "tracts", "population", "households")</code>. In the
+case of <code>"microdata"</code>, the function opens a single Excel file with the
+data dictionary of all variables of the microdata, available for the
+years 2000 and 2010. For earlier censuses, use <code>"population"</code> or
+<code>"households"</code>, which open a separate file per data set.</p></dd>
 
 
 <dt id="arg-showprogress">showProgress<a class="anchor" aria-label="anchor" href="#arg-showprogress"></a></dt>
@@ -129,6 +131,7 @@ returned invisibly.</p>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Downloading data and storing it locally for future use.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> /home/runner/.cache/R/censobr/data_release_v0.6.0/1980_dictionary_microdata_households.html</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

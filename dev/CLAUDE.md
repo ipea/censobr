@@ -411,7 +411,7 @@ data-release pin.
 
 | Function | Validates | File built | Opens with |
 |----|----|----|----|
-| `data_dictionary(year, dataset, …)` | `dataset` against 7 names (`R/data_dictionary.R:50-53`), then year per dataset (`:56-62`) | 3 branches (`:76-93`): `microdata`→`.xlsx`; the 5 microdata types→`.html`; `tracts`→`.pdf`, swapped to `.xlsx` for 2022 (`:92`) | [`browseURL()`](https://rdrr.io/r/utils/browseURL.html) for pdf/html, else `open_file()` (`:107-113`) |
+| `data_dictionary(year, dataset, …)` | `dataset` against 2 names (`microdata`, `tracts`) (`R/data_dictionary.R:50-53`), then year per dataset (`:56-62`) | 3 branches (`:76-93`): `microdata`→`.xlsx`; the 5 microdata types→`.html`; `tracts`→`.pdf`, swapped to `.xlsx` for 2022 (`:92`) | [`browseURL()`](https://rdrr.io/r/utils/browseURL.html) for pdf/html, else `open_file()` (`:107-113`) |
 | `questionnaire(year, type, …)` | year (7 options) + `type` in `c("long","short")` (`R/docs_questionnaire.R:40-57`) | `{year}_questionnaire_{type}.pdf` | [`utils::browseURL()`](https://rdrr.io/r/utils/browseURL.html) (`:72`) |
 | `interview_manual(year, …)` | year (7 options) (`R/docs_interview_manual.R:33-40`) | `{year}_interview_manual.pdf` | [`utils::browseURL()`](https://rdrr.io/r/utils/browseURL.html) (`:56`) |
 
@@ -471,13 +471,12 @@ returns `NULL` explicitly (`:115`); the other two return the value of
 See [MEMORY.md](https://ipeagit.github.io/censobr/dev/MEMORY.md) for
 detail.
 
-1.  **`[EBUSY]` test failure (open).** `data_dictionary(2022, 'tracts')`
-    opens an `.xlsx` via `shell.exec()` (`R/data_dictionary.R:113,125`);
-    on Windows Excel holds the handle, so a later
-    `censobr_cache(delete_file = 'all')` fails and 2 tests in
-    `test_z_censobr_cache.R` error. Fix: gate the file-open on
-    [`interactive()`](https://rdrr.io/r/base/interactive.html) in all
-    three docs functions — **not** on `verbose`.
+1.  **Vignette prose/output drift (open).**
+    `vignettes/census_tracts_data.Rmd:90` calls
+    [`data_dictionary()`](https://ipeagit.github.io/censobr/dev/reference/data_dictionary.md)
+    in an evaluated chunk; knitting is non-interactive, so it now prints
+    a machine-specific cache path instead of opening the file, and the
+    prose above it still says the function “will open the file”.
 2.  **`Config/testthat/edition: 3`** — deferred to its own commit. 16
     `context()` calls and one `expect_is()` need removing first, and 3e
     switches `expect_equal` to waldo against ~10 arrow-collected numeric
