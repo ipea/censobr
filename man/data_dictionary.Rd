@@ -16,9 +16,11 @@ data_dictionary(
 \item{year}{Numeric. Year of reference in the format \code{yyyy}.}
 
 \item{dataset}{Character. The type of data dictionary to be opened. Options
-include \code{c("microdata", "tracts", "population", "households", "families", "mortality", "emigration")}.
-In the case of \code{"microdata"}, the function opens an Excel file with the
-data dictionary of all variables, including auxiliary documentation.}
+include \code{c("microdata", "tracts", "population", "households")}. In the
+case of \code{"microdata"}, the function opens a single Excel file with the
+data dictionary of all variables of the microdata, available for the
+years 2000 and 2010. For earlier censuses, use \code{"population"} or
+\code{"households"}, which open a separate file per data set.}
 
 \item{showProgress}{Logical. Defaults to \code{TRUE} display download progress
 bar. The progress bar only reflects only the downloading
@@ -58,6 +60,7 @@ data_dictionary(
   year = 1980,
   dataset = 'households'
   )
+
 
 \dontshow{\}) # examplesIf}
 }

@@ -1,17 +1,46 @@
 # censobr dev
 
+
 * Major changes
+
+  * All functions that take a `year` now require the user to declare it, and say
+  so with an informative message when it is missing or `NULL`. Previously
+  `questionnaire()` silently assumed `year = 2010` and `interview_manual()`
+  defaulted to `NULL`.
+  * The arguments `questionnaire(type)`, `read_tracts(dataset)` and
+  `data_dictionary(dataset)` are now explicitly required, and the error message
+  lists the values accepted. For `read_tracts()`, the options listed are the ones
+  available for the requested year.
+  * censobr now uses {httr2} to download files, replacing {curl}.
+
+* Minor changes
+
+  * `data_dictionary()` now returns an informative error for
+  `dataset = "families"`, `"mortality"` and `"emigration"`, explaining that no
+  dictionary was published for those data sets and pointing to the microdata
+  dictionary instead. The `"population"` and `"households"`
+  dictionaries remain available for the 1960, 1970, 1980 and 1991 censuses; for
+  2000 and 2010 they were superseded by the single Excel file opened with
+  `dataset = "microdata"`.
   * `data_dictionary()`, `questionnaire()` and `interview_manual()` now return the
-  path to the downloaded file. When `verbose = FALSE` the file is no longer
-  opened, and the function simply returns the path. The file is also not opened
-  in non-interactive sessions, so scripted runs no longer launch a viewer.
+  path to the downloaded file. The file is only opened when `verbose = TRUE` and
+  the session is interactive, so scripted runs no longer launch a viewer.
 
 * bug fixes
-  * `data_dictionary()`, `questionnaire()` and `interview_manual()` now only open
-  the file when the session is interactive. Previously they launched a viewer
-  during scripted and non-interactive runs, which on Windows left the file locked
-  and could make `censobr_cache()` fail to remove it. The two documentation
-  functions now also return the path to the local file invisibly.
+  * An incomplete download is now detected by comparing the size of the file
+  with the size reported by the server, and is removed instead of being cached.
+  Previously a partial download of a large file passed the size check and was
+  stored, only to fail later as a corrupted file.
+  * A corrupted file in the local cache no longer throws an error. The file is
+  removed and the function returns `NULL`, so that running it again downloads a
+  fresh copy instead of failing on every call.
+  * `read_mortality()` and `read_emigration()` with `merge_households = TRUE` no
+  longer throw an error when the household data cannot be downloaded. Following
+  CRAN policy, they now fail gracefully and return `NULL`.
+  * A failed or incomplete download is now removed instead of being left in the
+  cache, where it would be picked up as a valid file on the next call. This is
+  what made a partial download surface later as a corrupted file, and what left
+  the 404 responses of the retired data dictionaries silently cached.
   * Passing `cache = FALSE` no longer fails when the cache directory does not
   exist yet, for example on a fresh installation.
   * The `add_labels` parameter now only accepts `"pt"`. Values such as `"ptbr"`
@@ -26,16 +55,6 @@
   * Download error messages now match their cause. A failed transfer no longer
   reports the local file as corrupted, and an incomplete download no longer
   reports the internet connection as faulty.
-  * All functions that take a `year` now require the user to declare it, and say
-  so with an informative message when it is missing or `NULL`. Previously
-  `questionnaire()` silently assumed `year = 2010`, `interview_manual()`
-  defaulted to `NULL`, and passing `year = NULL` to any reading function failed
-  with a type-check message instead of telling the user what to do.
-  * The arguments `questionnaire(type)`, `read_tracts(dataset)` and
-  `data_dictionary(dataset)` are now explicitly required, and the error message
-  lists the values accepted. Previously a missing argument surfaced as an
-  uninformative message from the input check. For `read_tracts()`, the options
-  listed are the ones available for the requested year.
 
 
 # censobr v0.6.0

@@ -69,3 +69,28 @@ All bug fixes committed and pushed: `9110ef1`, `b7213eb`, `10a24b9`, `b9ca5ed`.
 all three functions — the background suite run launched for it produced a 0-byte output file and
 never reported, and no `R CMD check` was run against that state. A confirming run was started
 afterwards; its result should be recorded here.
+
+---
+
+## Addendum — httr2 port + data_dictionary cleanup (uncommitted)
+
+**httr2 port.** `download_file()` (`R/utils.R`) now uses `httr2::request()` + `req_perform(path=)`;
+`DESCRIPTION` swaps `curl (>= 5.0.0)` for `httr2 (>= 1.0.0)`. No `curl::` remains anywhere.
+
+The adversarial review **dropped the size-integrity check** I had planned, on three grounds I then
+verified: libcurl already detects partial transfers (so the premise was false), my predicate was
+dead code (`as.numeric(NULL)` -> `numeric(0)` -> `NA` -> `isTRUE(NA)` is FALSE), and it would delete
+good files under gzip (r-project.org: header 2714, disk 7216). The real bug was never detection but
+**cleanup** - the partial file stayed on disk and was served as a valid cache hit.
+
+**What the port exposed.** Five `data_dictionary()` options (population, households, families,
+mortality, emigration) pointed at `.html` URLs returning 404, superseded in v0.6.0 by the single
+Excel dictionary. `curl::multi_download` had been caching the 9-byte 404 body, so every later call
+short-circuited silently and the tests stayed green. Those options are now removed.
+
+**Verification.** Full suite `NOT_CRAN=true`, single run, complete log: **0 failures, 0 errors**,
+completion marker present, no truncation cap. `R CMD check --as-cran`: 0 errors, 0 notes, with
+`package dependencies` / `dependencies in R code` / namespace checks OK after the curl->httr2 swap.
+
+**Not done:** no adversarial review round on the `data_dictionary` option removal - the instruction
+was unambiguous and the change contained.

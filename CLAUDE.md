@@ -135,8 +135,11 @@ covr::package_coverage()                # Coverage
 pkgdown::build_site()                   # Docs site
 ```
 
-```bash
-R CMD build . && R CMD check --as-cran censobr_*.tar.gz   # CI equivalent
+```r
+# The release gate is BOTH modes. A check run with --no-examples/--no-tests
+# executes no package code and must never be reported as passing.
+devtools::check(pkg = ".", cran = TRUE,  env_vars = c(NOT_CRAN = "false")) # CRAN policy
+devtools::check(pkg = ".", cran = FALSE, env_vars = c(NOT_CRAN = "true"))  # runs examples/tests/vignettes
 ```
 
 **CRAN submission:** update `NEWS.md`, bump `Version` in `DESCRIPTION`, refresh `cran-comments.md`
