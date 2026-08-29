@@ -1,3 +1,28 @@
+#' Is a downloaded file incomplete?
+#'
+#' @param actual Numeric. Size of the file on disk, or NA if it does not exist.
+#' @param expected String. The `content-length` reported by the server, or NULL.
+#' @param encoding String. The `content-encoding` reported by the server, or NULL.
+#'
+#' @return Logical.
+#'
+#' @keywords internal
+download_is_incomplete <- function(actual, expected, encoding) {
+
+  # no file, or a body too small to be a real data set
+  if (is.na(actual) || actual < 5000) { return(TRUE) }
+
+  # the server size can only be compared with the bytes on disk when the
+  # response was not compressed: curl decompresses on the fly, so the two
+  # would legitimately differ
+  if (is.null(encoding) && !is.null(expected)) {
+    expected <- suppressWarnings(as.numeric(expected))
+    if (!is.na(expected)) { return(actual != expected) }
+  }
+
+  return(FALSE)
+}
+
 #' Download file from url
 #'
 #' @param file_url String. A url.
@@ -34,31 +59,34 @@ download_file <- function(file_url = parent.frame()$file_url,
     return(local_file)
   }
 
-  # download files
-  try(silent = TRUE,
-        downloaded_files <- curl::multi_download(
-          urls = file_url,
-          destfiles = local_file,
-          progress = showProgress,
-          resume = cache
-        )
-      )
+  # download file
+  req <- httr2::request(file_url)
+  if (isTRUE(showProgress)) { req <- httr2::req_progress(req) }
 
-  # if anything fails, return NULL (fail gracefully)
-  if (any(!downloaded_files$success | is.na(downloaded_files$success))) {
-        cli::cli_alert_danger("Download failed. Please check your internet connection and try again.")
+  resp <- tryCatch(httr2::req_perform(req, path = local_file), error = function(e) e)
 
-        return(invisible(NULL))
-        }
+  # a failed download must not be left behind: download_file() treats an
+  # existing file as a valid cache hit on the next call
+  if (inherits(resp, 'error')) {
+    unlink(local_file)
+    if (inherits(resp, 'httr2_http')) {
+      cli::cli_alert_danger("The file is not available at the source. Please try again later.")
+    } else {
+      cli::cli_alert_danger("Download failed. Please check your internet connection and try again.")
+    }
+    return(invisible(NULL))
+  }
 
-  # Halt function if download failed (file must exist and be larger than 200 kb)
-  if (!file.exists(local_file) | file.info(local_file)$size < 5000) {
-    msg <- paste(
-      "The downloaded file is incomplete or unavailable at the source.",
-      sprintf("Please remove it with 'censobr::censobr_cache(delete_file = \"%s\")' and try again.", basename(local_file)),
-      sep = "\n")
-    cli::cli_alert_danger(msg)
+  # verify the download is complete. The size reported by the server can only be
+  # compared with the bytes on disk when the response was not compressed, since
+  # curl decompresses on the fly and the two would legitimately differ.
+  actual <- if (file.exists(local_file)) file.info(local_file)$size else NA_real_
+  encoding <- httr2::resp_header(resp, "content-encoding")
+  expected <- httr2::resp_header(resp, "content-length")
 
+  if (isTRUE(download_is_incomplete(actual, expected, encoding))) {
+    unlink(local_file)
+    cli::cli_alert_danger("The downloaded file is incomplete. Please try again.")
     return(invisible(NULL))
   }
 
@@ -80,13 +108,17 @@ arrow_open_dataset <- function(filename){ # nocov start
   tryCatch(
     arrow::open_dataset(filename),
     error = function(e){
+      # remove the corrupted file so the next call downloads it again, and
+      # fail gracefully instead of throwing (CRAN policy)
+      unlink(filename)
       msg <- paste(
-        "File cached locally seems to be corrupted. Please download it again using 'cache = FALSE'.",
-        sprintf("Alternatively, you can remove the corrupted file with 'censobr::censobr_cache(delete_file = \"%s\")'", basename(filename)),
+        "The file cached locally seems to be corrupted, and has been removed.",
+        "Please run the function again to download it.",
         sep = "\n"
       )
-      cli::cli_abort(msg)
+      cli::cli_alert_danger(msg)
 
+      return(invisible(NULL))
     }
   )
 } # nocov end

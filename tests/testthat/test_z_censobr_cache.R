@@ -53,6 +53,9 @@ test_that("censobr_cache", {
   testthat::expect_true( dir.exists(
     file.path(cache_dir, paste0("data_release_", censobr_env$data_release))
     ) )
+  # a failed download must not be left behind, or it becomes a poisoned cache hit
+  testthat::expect_false( file.exists(file.path(cache_dir,
+    paste0("data_release_", censobr_env$data_release), "x.parquet")) )
 
   # if file does not exist, simply print message
   testthat::expect_message( censobr_cache(delete_file ='aaa') )
