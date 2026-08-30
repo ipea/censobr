@@ -18,6 +18,7 @@
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/download_file.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/download_is_incomplete.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/error_arg_not_declared.html</loc></url>
+<url><loc>https://ipeagit.github.io/censobr/dev/reference/error_columns_absent.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/error_missing_datasets.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/error_missing_years.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/error_year_not_declared.html</loc></url>
@@ -25,6 +26,7 @@
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/index.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/interview_manual.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/merge_household_var.html</loc></url>
+<url><loc>https://ipeagit.github.io/censobr/dev/reference/open_censobr_data.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/questionnaire.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/read_emigration.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/read_families.html</loc></url>

@@ -297,6 +297,15 @@ a 0-byte output file usually means still running, not dead.
 [`arrow::open_dataset()`](https://arrow.apache.org/docs/r/reference/open_dataset.html)
 Dataset does **not** lock its parquet file on Windows - verified
 directly. Do not blame Arrow for an `EBUSY` on a `.parquet`; look for
+another process first. contention. Check for a running `Rscript` before
+launching a suite, and never launch a second one because the first
+appears silent - a 0-byte output file usually means still running, not
+dead.
+
+\[LEARN:pattern\] A live
+[`arrow::open_dataset()`](https://arrow.apache.org/docs/r/reference/open_dataset.html)
+Dataset does **not** lock its parquet file on Windows - verified
+directly. Do not blame Arrow for an `EBUSY` on a `.parquet`; look for
 another process first. \[LEARN:docs\] **Open item:
 `vignettes/census_tracts_data.Rmd:90`** calls
 `data_dictionary(year = 2022, dataset = 'tracts')` in an evaluated chunk
@@ -470,3 +479,106 @@ file was locked on Windows the unlink failed silently and the garbage
 stayed, breaking the vignette build. Test
 [`arrow_open_dataset()`](https://ipeagit.github.io/censobr/dev/reference/arrow_open_dataset.md)
 directly in [`tempdir()`](https://rdrr.io/r/base/tempfile.html) instead.
+
+## Session close 2026-08-29 (commits b9674f5, bc942e5, 42747c0)
+
+\[LEARN:cran\]
+**[`data_dictionary()`](https://ipeagit.github.io/censobr/dev/reference/data_dictionary.md)
+error paths now guide, not just refuse.** Three shapes: an unknown
+dataset lists valid options; a real-but-undocumented dataset
+(`families`/`mortality`/`emigration`) says none was published and points
+to the microdata dictionary; a year without the requested dictionary
+points to what *does* exist for that year (1960-1991 -\>
+`population`/`households`; 2022 -\> `tracts`). Non-census years fall
+back to a plain message, since no suggestion would be honest.
+
+\[LEARN:testing\] **A reduced `R CMD check` is not a check.** Most of
+this session I ran `--no-examples --no-tests --no-vignettes` and
+reported ‘0 errors, 0 notes’. That configuration never executes a line
+of package code. Two real defects - an orphaned `@examples` call and a
+truncated 802 MB download breaking the vignette - surfaced only when the
+user asked for
+`devtools::check(cran = FALSE, env_vars = c(NOT_CRAN = 'true'))`. **Use
+the reduced form only for fast structural feedback, and never describe
+its result as a passing check.** The release gate is both modes:
+`cran = TRUE` + `NOT_CRAN='false'` for CRAN policy, `cran = FALSE` +
+`NOT_CRAN='true'` to actually run examples, tests and vignettes.
+
+\[LEARN:api\]
+[`questionnaire()`](https://ipeagit.github.io/censobr/dev/reference/questionnaire.md)
+requires both `year` and `type`; each missing argument gives its own
+informative error. Reviewed and **accepted** by the user 2026-08-29 -
+not an open item.
+
+\[LEARN:testing\] **testthat edition 3 is DONE and clean (2026-08-29).**
+`Config/testthat/edition: 3` is in DESCRIPTION and
+[`testthat::edition_get()`](https://testthat.r-lib.org/reference/local_edition.html)
+returns 3. My deferral reasoning turned out to be over-cautious on both
+counts: the 10 arrow-collected `expect_equal()` comparisons in
+`test_read_population.R` / `test_read_households.R` pass under waldo
+unchanged, and the 17 `context()` calls and the one `expect_is()` DID
+warn under 3e - my earlier claim that they did not was a grep error
+(they surface in testthat’s summary reporter, not as a check WARNING).
+Both were removed on 2026-08-29; the suite is now warning-free. Full
+`devtools::check(cran = FALSE, NOT_CRAN = 'true')`: Status OK,
+examples/tests/vignettes all executed. **Lesson: a risk that can only be
+settled by running it should be run, not deferred indefinitely.**
+
+\[LEARN:api\] **All 9 functions taking `year` use
+`checkmate::assert_number(year)`, not `assert_numeric()`.**
+`assert_numeric` accepts a vector, so `read_population(c(2000, 2010))`
+used to reach `if (isFALSE(year %in% years))` with a length-2 condition
+and die on base R’s “the condition has length \> 1”. `assert_number`
+enforces length 1 and rejects NA. The `missing(year) || is.null(year)`
+guard still runs first, so a missing year keeps its friendly message.
+
+\[LEARN:api\] **`columns` accepts numeric indices as well as names** -
+`read_families(2000, columns = c(1L, 2L))` returns code_muni/code_state.
+Undocumented but working, so any validation must guard with
+`is.character(columns)`; [`setdiff()`](https://rdrr.io/r/base/sets.html)
+coerces numerics and would falsely reject them. Absent names now raise
+[`error_columns_absent()`](https://ipeagit.github.io/censobr/dev/reference/error_columns_absent.md)
+(`R/utils.R`) naming the columns and pointing at
+[`data_dictionary()`](https://ipeagit.github.io/censobr/dev/reference/data_dictionary.md).
+
+\[LEARN:process\] **Edit-distance suggestions are useless for coded
+variable names.** I proposed
+[`utils::adist`](https://rdrr.io/r/utils/adist.html) near-matches for
+mistyped columns; on censobr’s real 251-column schema `"V0602"` matched
+85 candidates, because census names are 5-character codes where
+everything is within edit distance 2. It would also have added an
+undeclared `utils` dependency. Check the suggestion quality against real
+data before shipping a did-you-mean.
+
+\[LEARN:testing\] **Graceful-failure tests are destructive to the cache
+and MUST run last.** `test_zz_graceful_failure.R` calls the real
+exported functions with real years under mocked download failures.
+[`download_file()`](https://ipeagit.github.io/censobr/dev/reference/download_file.md)
+[`unlink()`](https://rdrr.io/r/base/unlink.html)s the target on failure,
+and with `cache = FALSE` that target is a real path in the user’s
+cache - so the file gets deleted. Named `test_zz_` so it runs after the
+`read_*` tests; when it ran as `test_graceful_failure.R` (g \< r) it
+wiped the 802 MB `2010_population` parquet and the read tests failed on
+the re-download. **Diagnostic tell: vignettes passed in the same run,
+which requires read_population() to work - so the failure had to be
+test-ordering, not code.**
+
+\[LEARN:refactor\] **Do not route validation through a shared helper in
+this package.** `checkmate::assert_*()` has no `call` argument, so an
+extra frame permanently changes error attribution from
+[`read_families()`](https://ipeagit.github.io/censobr/dev/reference/read_families.md)
+to the internal helper - verified: 2-frame reports `inner(c(1,2))`,
+3-frame reports `inner(year = year)`. That would degrade ~30 of the most
+common user-facing errors, and **no test would catch it**: every
+`expect_error` here matches message text, never `conditionCall`. Extract
+only code with **no `cli_abort` and no `checkmate`** -
+[`open_censobr_data()`](https://ipeagit.github.io/censobr/dev/reference/open_censobr_data.md)
+(`R/utils.R`) is the safe shape: URL + download + open, no validation.
+
+\[LEARN:process\] **Two of my three stated motivations for that refactor
+did not survive inspection.** ‘Assert drift’ between readers was
+cosmetic (`assert_logical`’s `null.ok` already defaults to FALSE, so the
+variants were behaviourally identical), and both live `merge_households`
+guards were already correct. Only the copy-paste URL class was real.
+When justifying a refactor by citing past bugs, re-check that each cited
+bug is actually attributable to the structure being changed.
