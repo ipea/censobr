@@ -9,7 +9,7 @@ in the sample component of the questionnaire."><meta property="og:image" content
 
     <a class="navbar-brand me-2" href="../index.html">censobr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.6.0.900</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.6.0.901</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,7 +75,9 @@ in the sample component of the questionnaire.</p>
 
 <dt id="arg-columns">columns<a class="anchor" aria-label="anchor" href="#arg-columns"></a></dt>
 <dd><p>String. A vector of column names to keep. The rest of the
-columns are not read. Defaults to <code>NULL</code> and read all columns.</p></dd>
+columns are not read. Defaults to <code>NULL</code> and read all columns. If the
+user passes <code>merge_households = TRUE</code>, then the <code>columns</code> vector can
+also include the names of the households data set that should be kept.</p></dd>
 
 
 <dt id="arg-add-labels">add_labels<a class="anchor" aria-label="anchor" href="#arg-add-labels"></a></dt>

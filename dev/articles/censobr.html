@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censobr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.6.0.900</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.6.0.901</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -375,14 +375,15 @@ data cached locally.</p>
 operate on the same logic so it becomes intuitive to download any data
 set using a single line of code. Like this:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/read_households.html">read_households</a></span><span class="op">(</span></span>
-<span>  <span class="va">year</span>,          <span class="co"># year of reference</span></span>
-<span>  <span class="va">columns</span>,       <span class="co"># select columns to read</span></span>
-<span>  <span class="va">add_labels</span>,    <span class="co"># add labels to categorical variables</span></span>
-<span>  <span class="va">as_data_frame</span>, <span class="co"># return an Arrow DataSet or a data.frame</span></span>
-<span>  <span class="va">showProgress</span>,  <span class="co"># show download progress bar</span></span>
-<span>  <span class="va">cache</span>,         <span class="co"># cache data for faster access later</span></span>
-<span>  <span class="va">verbose</span>        <span class="co"># whether to print informative messages</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/read_population.html">read_population</a></span><span class="op">(</span></span>
+<span>  <span class="va">year</span>,             <span class="co"># year of reference</span></span>
+<span>  <span class="va">columns</span>,          <span class="co"># select columns to read</span></span>
+<span>  <span class="va">add_labels</span>,       <span class="co"># add labels to categorical variables</span></span>
+<span>  <span class="va">merge_households</span>, <span class="co"># bring in household-level variables</span></span>
+<span>  <span class="va">as_data_frame</span>,    <span class="co"># return an Arrow DataSet or a data.frame</span></span>
+<span>  <span class="va">showProgress</span>,     <span class="co"># show download progress bar</span></span>
+<span>  <span class="va">cache</span>,            <span class="co"># cache data for faster access later</span></span>
+<span>  <span class="va">verbose</span>           <span class="co"># whether to print informative messages</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><strong><em>Note:</em></strong> all data sets in
 <strong>{censobr}</strong> are enriched with geography columns following
@@ -456,9 +457,9 @@ into the data set with <code><a href="https://pillar.r-lib.org/reference/glimpse
 <span><span class="co">#&gt; FileSystemDataset with 1 Parquet file (query)</span></span>
 <span><span class="co">#&gt; 20,635,472 rows x 4 columns</span></span>
 <span><span class="co">#&gt; $ abbrev_state <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "RO", "RO", "RO", "RO", "RO", "RO", "RO", "RO", "RO", "R…</span></span>
-<span><span class="co">#&gt; $ V0606        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Parda", "Parda", "Parda", "Parda", "Branca", "Parda", "…</span></span>
-<span><span class="co">#&gt; $ V0010        <span style="color: #949494; font-style: italic;">&lt;double&gt;</span> 11.996452, 11.996452, 11.996452, 10.298796, 10.298796, 7…</span></span>
-<span><span class="co">#&gt; $ V6400        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> <span style="color: #BB0000;">NA</span>, "Sem instrução e fundamental incompleto", "Sem instr…</span></span>
+<span><span class="co">#&gt; $ V0606        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Parda", "Parda", "Branca", "Branca", "Parda", "Parda", …</span></span>
+<span><span class="co">#&gt; $ V0010        <span style="color: #949494; font-style: italic;">&lt;double&gt;</span> 8.705865, 8.705865, 9.818689, 9.495608, 9.495608, 9.4956…</span></span>
+<span><span class="co">#&gt; $ V6400        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Sem instrução e fundamental incompleto", "Sem instrução…</span></span>
 <span><span class="co">#&gt; Call `print()` for query details</span></span></code></pre></div>
 <p>In the example below, we use the <code>dplyr</code> syntax to (a)
 filter observations for the state of Rio de Janeiro, (b) group
@@ -669,7 +670,7 @@ directory is persistent across R sessions.</p>
 <span></span>
 <span><span class="fu">censobr</span><span class="fu">::</span><span class="fu"><a href="../reference/set_censobr_cache_dir.html">set_censobr_cache_dir</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">tempf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> censobr files will be cached at</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">/tmp/RtmpgMV8nR/my_temp_dir</span>.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #0000BB;">/tmp/Rtmp74e0kp/my_temp_dir</span>.</span></span></code></pre></div>
 <p>Mind you that the data is saved in a directory inside the cache
 directory set by the user and which is versioned according to the
 version of the latest data release.</p>
@@ -682,7 +683,7 @@ version of the latest data release.</p>
 <span>  list_files <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>  print_tree <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpgMV8nR/my_temp_dir</span></span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/Rtmp74e0kp/my_temp_dir</span></span></span>
 <span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">data_release_v0.6.0</span></span></span>
 <span><span class="co">#&gt;     └── 2010_emigration_v0.6.0.parquet</span></span></code></pre></div>
 <p>If you do not remember the location of the cache, you can always run

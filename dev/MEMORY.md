@@ -532,11 +532,16 @@ and die on base R’s “the condition has length \> 1”. `assert_number`
 enforces length 1 and rejects NA. The `missing(year) || is.null(year)`
 guard still runs first, so a missing year keeps its friendly message.
 
-\[LEARN:api\] **`columns` accepts numeric indices as well as names** -
-`read_families(2000, columns = c(1L, 2L))` returns code_muni/code_state.
-Undocumented but working, so any validation must guard with
-`is.character(columns)`; [`setdiff()`](https://rdrr.io/r/base/sets.html)
-coerces numerics and would falsely reject them. Absent names now raise
+\[LEARN:api\] **`columns` is character-only across all five readers,
+enforced with `checkmate::assert_character(columns, null.ok = TRUE)`
+since 2026-08-30.** It used to also silently accept numeric indices
+(`read_families(2000, columns = c(1L, 2L))` returned
+code_muni/code_state) - undocumented, and inconsistent with the roxygen
+contract (“String”, `man/roxygen/templates/columns.R`). **The user
+explicitly asked for this to be an error**
+(`read_emigration(year = 2010, columns = c(1, 3))` should throw), so
+numeric-index support was removed package-wide rather than kept as a
+quiet exception. Do not reintroduce it. Absent names raise
 [`error_columns_absent()`](https://ipeagit.github.io/censobr/dev/reference/error_columns_absent.md)
 (`R/utils.R`) naming the columns and pointing at
 [`data_dictionary()`](https://ipeagit.github.io/censobr/dev/reference/data_dictionary.md).
@@ -582,3 +587,60 @@ variants were behaviourally identical), and both live `merge_households`
 guards were already correct. Only the copy-paste URL class was real.
 When justifying a refactor by citing past bugs, re-check that each cited
 bug is actually attributable to the structure being changed.
+
+\[LEARN:data\] **`read_population(merge_households = TRUE)` only
+supports 1970, 2000, 2010 - not all six census years - and this was
+confirmed against the real release data, not assumed.** 1960 has no
+documented join key at all. **1980’s household variables are already
+present in the population microdata**
+(`setdiff(names(households_1980), names(population_1980))` is empty) - a
+merge would add nothing. **1991’s key `(code_state, code_muni, V0109)`
+is not unique** - 1,285,449 distinct values across 4,024,543 household
+rows - and a real `LEFT JOIN` on it inflates 17,045,653 population rows
+to 1,264,701,251 (a 74x explosion). Verified via DuckDB’s `httpfs`
+extension reading the release parquet footers directly over HTTPS (range
+requests), which avoids downloading each year’s full file just to
+inspect its schema/key. Before ever offering `merge_households` for a
+new year, redo this check - do not extrapolate from 2010.
+
+\[LEARN:duckdb\] **`duckdb::dbExecute()` and `duckdb::dbGetQuery()` do
+not exist** - they are DBI generics, and `DBI` is only a *transitive*
+dependency of this package via `duckdb` (which `Depends: DBI`), not a
+direct `Imports`. Calling
+[`DBI::dbExecute()`](https://dbi.r-dbi.org/reference/dbExecute.html)
+from `R/` would put a Suggests-only package into package code. `duckdb`
+does export `dbSendQuery()` + `dbClearResult()` (and
+`dbQuoteIdentifier()`/`dbQuoteLiteral()`), which is the dependency-free
+way to run a bare SQL statement -
+`duckdb::dbClearResult(duckdb::dbSendQuery(con, sql))`.
+
+\[LEARN:arrow\] **`.data[[var]]` inside a lazy
+[`dplyr::summarise()`](https://dplyr.tidyverse.org/reference/summarise.html)
+on an arrow `Dataset` silently returns the wrong answer, not an error.**
+`df |> dplyr::summarise(n = sum(!is.na(.data[[probe]]))) |> dplyr::collect()`
+returned `0` for a column that was 100% non-`NA` when checked after
+[`dplyr::collect()`](https://dplyr.tidyverse.org/reference/compute.html)
+first (`sum(!is.na(dplyr::collect(df)[[probe]]))`). Arrow’s dplyr
+backend does not reliably translate dynamic `.data[[]]` column access
+inside a lazy verb - collect the (narrow) column first, then check in
+plain R, rather than trusting a lazy aggregate with dynamic column
+lookup.
+
+\[LEARN:api\] **A local reassignment inside a helper function does not
+propagate back to the caller’s variable of the same name - obvious in
+the abstract, easy to miss in a specific call chain.**
+[`merge_household_var()`](https://ipeagit.github.io/censobr/dev/reference/merge_household_var.md)
+first resolved numeric `columns` indices to names internally
+(`columns <- names(df)[columns]`), but
+[`read_population()`](https://ipeagit.github.io/censobr/dev/reference/read_population.md)’s
+own `columns` variable was untouched, so its *post-merge*
+`dplyr::select(df, dplyr::all_of(columns))` re-applied the original
+numeric indices against the merged (narrower) result and indexed out of
+bounds. **Superseded 2026-08-30**: rather than keep resolving numeric
+indices in every caller, `columns` is now character-only package-wide
+(`checkmate::assert_character(columns, null.ok = TRUE)` in all five
+readers - see the `[LEARN:api]` entry above), enforced at function entry
+before any of this code runs. The scenario this entry describes can no
+longer happen. The general lesson about reassignment-not-propagating
+stays true and worth remembering for other helpers, even though this
+specific instance no longer applies.

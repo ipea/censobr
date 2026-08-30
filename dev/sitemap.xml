@@ -19,6 +19,8 @@
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/download_is_incomplete.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/error_arg_not_declared.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/error_columns_absent.html</loc></url>
+<url><loc>https://ipeagit.github.io/censobr/dev/reference/error_merge_households_needs_columns.html</loc></url>
+<url><loc>https://ipeagit.github.io/censobr/dev/reference/error_merge_households_years.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/error_missing_datasets.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/error_missing_years.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/error_year_not_declared.html</loc></url>
