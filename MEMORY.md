@@ -212,6 +212,12 @@ because the first appears silent - a 0-byte output file usually means still runn
 [LEARN:pattern] A live `arrow::open_dataset()` Dataset does **not** lock its parquet file on
 Windows - verified directly. Do not blame Arrow for an `EBUSY` on a `.parquet`; look for another
 process first.
+contention. Check for a running `Rscript` before launching a suite, and never launch a second one
+because the first appears silent - a 0-byte output file usually means still running, not dead.
+
+[LEARN:pattern] A live `arrow::open_dataset()` Dataset does **not** lock its parquet file on
+Windows - verified directly. Do not blame Arrow for an `EBUSY` on a `.parquet`; look for another
+process first.
 [LEARN:docs] **Open item: `vignettes/census_tracts_data.Rmd:90`** calls `data_dictionary(year =
 2022, dataset = 'tracts')` in an evaluated chunk with `verbose` at its `TRUE` default. Knitting is
 non-interactive, so the file is no longer opened and the chunk now prints a machine-specific cache

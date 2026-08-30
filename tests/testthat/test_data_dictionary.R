@@ -49,6 +49,17 @@ test_that("data_dictionary", {
     testthat::expect_error( tester(year = 1980, dataset = d), 'microdata' )
   }
 
+  # in 2000 and 2010 they were superseded by the single Excel file
+  testthat::expect_error( tester(year = 2010, dataset = 'households') )
+  testthat::expect_error( tester(year = 2000, dataset = 'population') )
+
+  # these were never published, for any year: the error must say so and point
+  # to the microdata dictionary, not just list the valid options
+  for (d in c('families', 'mortality', 'emigration')) {
+    testthat::expect_error( tester(year = 2010, dataset = d), 'no data dictionary published' )
+    testthat::expect_error( tester(year = 1980, dataset = d), 'microdata' )
+  }
+
   # only one year at a time: a vector used to fail with a cryptic
   # "the condition has length > 1" from base R
   testthat::expect_error( data_dictionary(c(2000, 2010), 'microdata'), 'length 1' )
