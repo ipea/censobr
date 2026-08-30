@@ -379,3 +379,17 @@ is a real path in the user's cache - so the file gets deleted. Named `test_zz_` 
 `2010_population` parquet and the read tests failed on the re-download. **Diagnostic tell: vignettes
 passed in the same run, which requires read_population() to work - so the failure had to be
 test-ordering, not code.**
+
+[LEARN:refactor] **Do not route validation through a shared helper in this package.**
+`checkmate::assert_*()` has no `call` argument, so an extra frame permanently changes error
+attribution from `read_families()` to the internal helper - verified: 2-frame reports
+`inner(c(1,2))`, 3-frame reports `inner(year = year)`. That would degrade ~30 of the most common
+user-facing errors, and **no test would catch it**: every `expect_error` here matches message text,
+never `conditionCall`. Extract only code with **no `cli_abort` and no `checkmate`** -
+`open_censobr_data()` (`R/utils.R`) is the safe shape: URL + download + open, no validation.
+
+[LEARN:process] **Two of my three stated motivations for that refactor did not survive inspection.**
+'Assert drift' between readers was cosmetic (`assert_logical`'s `null.ok` already defaults to FALSE,
+so the variants were behaviourally identical), and both live `merge_households` guards were already
+correct. Only the copy-paste URL class was real. When justifying a refactor by citing past bugs,
+re-check that each cited bug is actually attributable to the structure being changed.

@@ -94,6 +94,37 @@ download_file <- function(file_url = parent.frame()$file_url,
   } # nocov end
 
 
+#' Build the release URL, download it, and open it as an arrow Dataset
+#'
+#' Contains no input validation, so that errors raised by the calling function
+#' keep being attributed to that function rather than to this helper.
+#'
+#' @param dataset String. Name used in the file, e.g. "population" or "tracts_basico".
+#' @param year Numeric. Year of reference.
+#' @param showProgress Logical.
+#' @param cache Logical.
+#' @param verbose Logical.
+#'
+#' @return An arrow `Dataset`, or `NULL` if the download or the file failed.
+#'
+#' @keywords internal
+open_censobr_data <- function(dataset, year, showProgress, cache, verbose) {
+
+  file_url <- paste0("https://github.com/ipea/censobr_prep_data/releases/download/",
+                     censobr_env$data_release, "/", year, "_", dataset, "_",
+                     censobr_env$data_release, ".parquet")
+
+  local_file <- download_file(file_url = file_url,
+                              showProgress = showProgress,
+                              cache = cache,
+                              verbose = verbose)
+
+  if (is.null(local_file)) { return(invisible(NULL)) }
+
+  # returns NULL if the cached file is corrupted
+  arrow_open_dataset(local_file)
+}
+
 #' Safely use arrow to open a Parquet file
 #'
 #' This function handles some failure modes, including if the Parquet file is

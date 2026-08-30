@@ -46,25 +46,14 @@ read_families <- function(year,
     error_missing_years(years)
     }
 
-  ### Get url
-  file_url <- paste0("https://github.com/ipea/censobr_prep_data/releases/download/",
-                     censobr_env$data_release, "/", year, "_families_",
-                     censobr_env$data_release, ".parquet")
+  ### download and open
+  df <- open_censobr_data(dataset = 'families',
+                          year = year,
+                          showProgress = showProgress,
+                          cache = cache,
+                          verbose = verbose)
 
-
-  ### Download
-  local_file <- download_file(file_url = file_url,
-                              showProgress = showProgress,
-                              cache = cache,
-                              verbose = verbose)
-
-  # check if download worked
-  if(is.null(local_file)) { return(invisible(NULL)) }
-
-  ### read data
-  df <- arrow_open_dataset(local_file)
-
-  # the cached file may be corrupted; arrow_open_dataset() returns NULL
+  # NULL if the download failed or the cached file is corrupted
   if (is.null(df)) { return(invisible(NULL)) }
 
   # ### merge household data
