@@ -48,7 +48,7 @@ data_dictionary <- function(year,
 
   ### check inputs
   if (missing(year) || is.null(year)) { error_year_not_declared() }
-  checkmate::assert_numeric(year, any.missing = FALSE)
+  checkmate::assert_number(year)
   checkmate::assert_logical(verbose, null.ok = FALSE)
 
   # data available for data sets:

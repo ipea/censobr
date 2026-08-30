@@ -1,5 +1,3 @@
-context("interview_manual")
-
 # skip tests because they take too much time
 skip_if(Sys.getenv("TEST_ONE") != "")
 testthat::skip_on_cran()
@@ -37,6 +35,9 @@ test_that("interview_manual", {
 test_that("interview_manual", {
 
   # Wrong date 4 digits
+  # only one year at a time: a vector used to fail with a cryptic
+  # "the condition has length > 1" from base R
+  testthat::expect_error( interview_manual(c(2000, 2010)), 'length 1' )
   # year must be declared by the user, whether omitted or passed as NULL
   testthat::expect_error( interview_manual(), 'declare' )
   testthat::expect_error( interview_manual(year = NULL), 'declare' )

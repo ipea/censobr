@@ -27,6 +27,11 @@
   the session is interactive, so scripted runs no longer launch a viewer.
 
 * bug fixes
+  * Requesting a column that does not exist now returns an informative error
+  naming the column, instead of an internal {dplyr} message.
+  * Passing more than one `year` now returns an informative error. Previously a
+  vector such as `year = c(2000, 2010)` failed with a cryptic "the condition has
+  length > 1" message from base R.
   * An incomplete download is now detected by comparing the size of the file
   with the size reported by the server, and is removed instead of being cached.
   Previously a partial download of a large file passed the size check and was

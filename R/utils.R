@@ -170,6 +170,21 @@ cache_message <- function(local_file = parent.frame()$local_file,
 
 
 
+#' Error when requested columns are absent from the data
+#'
+#' @param absent Character. Column names not found in the data set.
+#' @return An informative error
+#'
+#' @keywords internal
+error_columns_absent <- function(absent) {
+
+  cli::cli_abort(
+    c("Column{?s} {.val {absent}} not found in this data set.",
+      "i" = "Use {.code data_dictionary()} to see the variables available."),
+    call = rlang::caller_env()
+  )
+}
+
 #' Error when a required argument is not declared
 #'
 #' @param arg String. Name of the argument.

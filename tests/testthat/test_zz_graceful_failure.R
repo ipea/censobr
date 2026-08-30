@@ -1,4 +1,9 @@
-context("graceful_failure")
+# NOTE: this file is named test_zz_ deliberately so it runs LAST.
+# It exercises the real exported functions under mocked download failures, and
+# download_file() unlink()s the target on failure -- which is a real path in the
+# user's cache. Running earlier would delete files that the read_* tests need,
+# forcing them to re-download hundreds of MB (and failing if that download is
+# incomplete).
 
 # CRAN policy: the package must fail gracefully on internet problems. Every
 # function that downloads data must return NULL with an informative message,

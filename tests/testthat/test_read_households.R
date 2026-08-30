@@ -1,5 +1,3 @@
-context("read_households")
-
 # skip tests because they take too much time
 skip_if(Sys.getenv("TEST_ONE") != "")
 testthat::skip_on_cran()
@@ -131,12 +129,15 @@ test_that("read_households totals", {
 test_that("read_households errors", {
 
   # Wrong date 4 digits
+  # only one year at a time: a vector used to fail with a cryptic
+  # "the condition has length > 1" from base R
+  testthat::expect_error( read_households(c(2000, 2010)), 'length 1' )
   # year must be declared by the user, whether omitted or passed as NULL
   testthat::expect_error( read_households(), 'declare' )
   testthat::expect_error( read_households(year = NULL), 'declare' )
   testthat::expect_error(tester(year=999))
   testthat::expect_error(tester(year='999'))
-  testthat::expect_error(tester(columns = 'banana'))
+  testthat::expect_error( tester(columns = 'banana'), 'not found' )
   testthat::expect_error(tester(as_data_frame = 'banana'))
   testthat::expect_error(tester(showProgress = 'banana' ))
   testthat::expect_error(tester(cache = 'banana'))

@@ -1,5 +1,3 @@
-context("data_dictionary")
-
 # skip tests because they take too much time
 skip_if(Sys.getenv("TEST_ONE") != "")
 testthat::skip_on_cran()
@@ -51,6 +49,9 @@ test_that("data_dictionary", {
     testthat::expect_error( tester(year = 1980, dataset = d), 'microdata' )
   }
 
+  # only one year at a time: a vector used to fail with a cryptic
+  # "the condition has length > 1" from base R
+  testthat::expect_error( data_dictionary(c(2000, 2010), 'microdata'), 'length 1' )
   # year must be declared by the user, whether omitted or passed as NULL
   # dataset must be declared, and the error must list the options
   testthat::expect_error( data_dictionary(year = 2010), 'declare' )

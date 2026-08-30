@@ -1,5 +1,3 @@
-context("censobr_cache")
-
 # skip tests because they take too much time
 skip_if(Sys.getenv("TEST_ONE") != "")
 testthat::skip_on_cran()
@@ -65,7 +63,7 @@ test_that("censobr_cache", {
   censobr::read_emigration(year = 2010, showProgress = FALSE, cache = TRUE)
   testthat::expect_message(censobr_cache(list_files = TRUE, print_tree = TRUE))
   temp <- censobr_cache(list_files = TRUE, print_tree = TRUE)
-  testthat::expect_is(temp, "character")
+  testthat::expect_type(temp, "character")
 
   # deleting everything while print_tree = TRUE must not error on the missing dir
   testthat::expect_no_error( censobr_cache(delete_file = 'all', print_tree = TRUE) )

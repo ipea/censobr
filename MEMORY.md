@@ -347,7 +347,35 @@ to actually run examples, tests and vignettes.
 `Config/testthat/edition: 3` is in DESCRIPTION and `testthat::edition_get()` returns 3. My deferral
 reasoning turned out to be over-cautious on both counts: the 10 arrow-collected `expect_equal()`
 comparisons in `test_read_population.R` / `test_read_households.R` pass under waldo unchanged, and
-the 17 `context()` calls plus the one `expect_is()` produce no deprecation output in a real check
-run - even though they DO warn under an interactive `local_edition(3)`. Full
+the 17 `context()` calls and the one `expect_is()` DID warn under 3e - my earlier claim that they
+did not was a grep error (they surface in testthat's summary reporter, not as a check WARNING).
+Both were removed on 2026-08-29; the suite is now warning-free. Full
 `devtools::check(cran = FALSE, NOT_CRAN = 'true')`: Status OK, examples/tests/vignettes all executed.
 **Lesson: a risk that can only be settled by running it should be run, not deferred indefinitely.**
+
+[LEARN:api] **All 9 functions taking `year` use `checkmate::assert_number(year)`, not
+`assert_numeric()`.** `assert_numeric` accepts a vector, so `read_population(c(2000, 2010))` used to
+reach `if (isFALSE(year %in% years))` with a length-2 condition and die on base R's "the condition
+has length > 1". `assert_number` enforces length 1 and rejects NA. The `missing(year) ||
+is.null(year)` guard still runs first, so a missing year keeps its friendly message.
+
+[LEARN:api] **`columns` accepts numeric indices as well as names** - `read_families(2000,
+columns = c(1L, 2L))` returns code_muni/code_state. Undocumented but working, so any validation must
+guard with `is.character(columns)`; `setdiff()` coerces numerics and would falsely reject them.
+Absent names now raise `error_columns_absent()` (`R/utils.R`) naming the columns and pointing at
+`data_dictionary()`.
+
+[LEARN:process] **Edit-distance suggestions are useless for coded variable names.** I proposed
+`utils::adist` near-matches for mistyped columns; on censobr's real 251-column schema `"V0602"`
+matched 85 candidates, because census names are 5-character codes where everything is within edit
+distance 2. It would also have added an undeclared `utils` dependency. Check the suggestion quality
+against real data before shipping a did-you-mean.
+
+[LEARN:testing] **Graceful-failure tests are destructive to the cache and MUST run last.**
+`test_zz_graceful_failure.R` calls the real exported functions with real years under mocked download
+failures. `download_file()` `unlink()`s the target on failure, and with `cache = FALSE` that target
+is a real path in the user's cache - so the file gets deleted. Named `test_zz_` so it runs after the
+`read_*` tests; when it ran as `test_graceful_failure.R` (g < r) it wiped the 802 MB
+`2010_population` parquet and the read tests failed on the re-download. **Diagnostic tell: vignettes
+passed in the same run, which requires read_population() to work - so the failure had to be
+test-ordering, not code.**
