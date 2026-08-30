@@ -94,3 +94,28 @@ completion marker present, no truncation cap. `R CMD check --as-cran`: 0 errors,
 
 **Not done:** no adversarial review round on the `data_dictionary` option removal - the instruction
 was unambiguous and the change contained.
+
+---
+
+## Session close — 2026-08-29/30
+
+**Commits:** `b9674f5` fail gracefully · `bc942e5` httr2 · `42747c0` data dictionary ·
+`95d3b23` column errors · `6decaa1` reader refactor · `13a57c9` merge.
+`cran-comments.md` records 0 errors / 0 warnings / 0 notes for 0.6.0.900 (14m 32.9s).
+
+**Delivered:** httr2 download path with cleanup + truncation detection; the CRAN fail-gracefully
+contract closed and locked by 35 offline assertions; the `year`-must-be-declared rule across 9
+functions; `data_dictionary()` corrected per year and dataset with guiding errors; testthat
+edition 3; `open_censobr_data()` removing the duplicated download block.
+
+**Process that worked:** plan -> adversarial review -> implement. The review materially changed
+every one of the last four fixes and killed two outright (the `content-length` check as first
+drafted, and the full reader refactor).
+
+**Open, non-urgent:**
+1. CRAN-mode check (`cran = TRUE`, `NOT_CRAN = "false"`) has not run against the post-merge tree.
+   The merge only touched MEMORY.md, an auto log, and `test_data_dictionary.R` (+11 lines).
+2. `families` / `mortality` / `emigration` dictionaries are unpublished upstream - a
+   `censobr_prep_data` question, not a code one.
+3. Validation of `columns` happens after download, since the schema comes from the file. A schema
+   cache would fix it; out of scope.
