@@ -1,6 +1,18 @@
 # censobr dev
 
 
+* New features
+
+  * `read_population()` now accepts a `merge_households` parameter, bringing in
+  household-level variables from `read_households()` -- previously only `read_mortality()`
+  and `read_emigration()` supported this. Because merging all ~300 population + household
+  columns can require more than 20GB of memory, `read_population(merge_households = TRUE)`
+  **requires `columns` to be set** -- naming the columns you need keeps the operation to a few
+  seconds and a few dozen MB. It is only available for census years 1970, 2000 and 2010 -- 1960
+  has no documented household join key, 1980's household variables are already present in the
+  population microdata, and 1991's household key is not unique in the source data and would
+  multiply rows.
+
 * Major changes
 
   * All functions that take a `year` now require the user to declare it, and say
@@ -60,6 +72,21 @@
   * Download error messages now match their cause. A failed transfer no longer
   reports the local file as corrupted, and an incomplete download no longer
   reports the internet connection as faulty.
+  * `read_mortality()` and `read_emigration()` with `merge_households = TRUE` now honour
+  `cache = FALSE` for the household data too. Previously the household file was always
+  cached regardless of the `cache` argument.
+  * The temporary DuckDB database file created by `merge_households = TRUE` is now removed
+  when the merge finishes. Previously it was left behind in the session's temp directory.
+  * `columns` now only accepts a character vector of column names, in all five microdata
+  readers (`read_population()`, `read_households()`, `read_families()`, `read_mortality()`,
+  `read_emigration()`), matching its documented type. It previously also silently accepted
+  numeric column indices.
+
+* Notes
+
+  * The output of `read_mortality()` and `read_emigration()` with `merge_households = TRUE`
+  no longer preserves DuckDB's row insertion order (it never guaranteed one). If your code
+  relies on row order from this specific combination of arguments, sort explicitly.
 
 
 # censobr v0.6.0

@@ -106,6 +106,14 @@ test_that("read_mortality errors", {
   # missing labels
   testthat::expect_error(tester(year=2000, add_labels = 'pt'))
 
+  # columns only accepts character (a vector of column names) -- numeric
+  # indices are not supported, with or without merge_households
+  testthat::expect_error( tester(columns = c(1, 3)), 'character' )
+  testthat::expect_error(
+    tester(merge_households = TRUE, columns = 1L),
+    'character'
+    )
+
 })
 
 # # clean cache

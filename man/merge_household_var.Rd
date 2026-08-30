@@ -7,26 +7,46 @@
 merge_household_var(
   df,
   year = parent.frame()$year,
+  columns = NULL,
   add_labels = parent.frame()$add_labels,
   showProgress = parent.frame()$showProgress,
+  cache = TRUE,
   verbose = parent.frame()$verbose
 )
 }
 \arguments{
-\item{df}{An arrow \code{Dataset} passed from function above.}
+\item{df}{An arrow \code{Dataset} passed from function above. Must be a plain
+\code{FileSystemDataset} backed by a single local parquet file, i.e. called
+before any \code{dplyr::select()} or labelling step.}
 
 \item{year}{Numeric. Passed from function above.}
+
+\item{columns}{Character vector of column names, or \code{NULL} (the \code{columns}
+argument on the functions above is character-only, enforced by
+\code{checkmate::assert_character()} before this function is ever
+reached). When character, pushed down into the join so only the
+requested columns (plus the join keys) are read and written -- this
+is the difference between a multi-minute, multi-GB operation and a
+sub-second one. \code{NULL} reads the main table at full width.}
 
 \item{add_labels}{Character. Passed from function above.}
 
 \item{showProgress}{Logical. Passed from function above.}
 
+\item{cache}{Logical. Passed from function above.}
+
 \item{verbose}{Logical. Passed from function above.}
 }
 \value{
-An arrow \code{Dataset} with additional household variables.
+An arrow \code{Dataset} with additional household variables, or
+\code{invisible(NULL)} if the household data could not be downloaded or the
+merge failed.
 }
 \description{
-Add household variables to the data set
+Streams the main table through DuckDB's native parquet reader and joins it to
+the (already downloaded, already labelled) household table, writing the result
+to a temporary parquet file so a wide main table never round-trips through
+memory. See \verb{quality_reports/plans/2026-08-30_merge-households-read-population.md}
+for the design rationale and the memory measurements behind it.
 }
 \keyword{internal}

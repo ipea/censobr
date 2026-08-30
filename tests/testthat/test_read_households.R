@@ -138,6 +138,9 @@ test_that("read_households errors", {
   testthat::expect_error(tester(year=999))
   testthat::expect_error(tester(year='999'))
   testthat::expect_error( tester(columns = 'banana'), 'not found' )
+  # columns only accepts character (a vector of column names) -- numeric
+  # indices are not supported
+  testthat::expect_error( tester(columns = c(1, 3)), 'character' )
   testthat::expect_error(tester(as_data_frame = 'banana'))
   testthat::expect_error(tester(showProgress = 'banana' ))
   testthat::expect_error(tester(cache = 'banana'))

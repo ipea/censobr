@@ -7,20 +7,20 @@ testthat::skip_if_not_installed("arrow")
 tester <- function(year = 2010,
                    columns = NULL,
                    add_labels = NULL,
-                   # merge_households = FALSE,
                    as_data_frame = FALSE,
                    showProgress = FALSE,
                    cache = TRUE,
-                   verbose = TRUE) {
+                   verbose = TRUE,
+                   merge_households = FALSE) {
   read_population(
     year,
     columns,
     add_labels,
-    # merge_households,
     as_data_frame,
     showProgress,
     cache,
-    verbose
+    verbose,
+    merge_households
     )
   }
 
@@ -134,17 +134,51 @@ test_that("read_population check totals", {
 
 # Merge households vars -----------------------
 
-# test_that("population merge_households_vars", {
-#
-#   for(y in c(1970, 1980, 1991, 2000, 2010)){ # y = 2010
-#     message(y)
-#     df_hou <- censobr::read_households(year = y)
-#     df_test <- tester(year = y,
-#                       merge_households = TRUE,
-#                       showProgress = FALSE)
-#     testthat::expect_true( all(names(df_hou) %in% names(df_test)) )
-#   }
-# })
+test_that("read_population merge_households_vars", {
+
+  # merge_households requires columns -- for years that support it
+  for (y in c(1970, 2000, 2010)) { # y = 2010
+
+    hou_cols <- names(censobr::read_households(year = y, showProgress = FALSE, verbose = FALSE))
+    pop_cols <- names(tester(year = y))
+    # a column that only exists in the household table for this year
+    probe <- setdiff(hou_cols, pop_cols)[1]
+    testthat::expect_false(is.na(probe))
+
+    # `probe` only exists in the household table, so nrow() of the unmerged
+    # population is checked via a column guaranteed to exist on both sides
+    df_pop <- tester(year = y, columns = 'code_muni')
+    df_merged <- tester(year = y, columns = probe, merge_households = TRUE)
+
+    # row count is preserved by the LEFT JOIN
+    testthat::expect_equal(nrow(df_merged), nrow(df_pop))
+
+    # the requested household-only column is actually present, matches for at
+    # least some rows (nrow equality alone cannot detect a broken join key --
+    # it also holds at a 0% match rate), and nothing beyond the requested
+    # columns (plus no leaked join keys) survives the post-merge select
+    testthat::expect_true(probe %in% names(df_merged))
+    # collected locally rather than summarised lazily: arrow's dplyr backend
+    # does not reliably translate `.data[[probe]]` inside a lazy summarise()
+    matched_n <- sum(!is.na(dplyr::collect(df_merged)[[probe]]))
+    testthat::expect_gt(matched_n, 0)
+    testthat::expect_equal(names(df_merged), probe)
+  }
+
+  # a columns= request spanning both tables returns exactly those columns, in
+  # the requested order
+  df_both <- tester(year = 2010, columns = c('V0601', 'V4001'), merge_households = TRUE)
+  testthat::expect_equal(names(df_both), c('V0601', 'V4001'))
+
+  # numeric column indices are not supported under merge_households = TRUE --
+  # only character names are, matching the documented `columns` contract
+  pop_names_2010 <- names(tester(year = 2010))
+  idx <- which(pop_names_2010 == 'V0601')
+  testthat::expect_error(
+    tester(year = 2010, columns = idx, merge_households = TRUE),
+    'character'
+    )
+})
 
 
 # ERRORS and messages  -----------------------
@@ -160,6 +194,9 @@ test_that("read_population ERRORs", {
   testthat::expect_error(tester(year=999))
   testthat::expect_error(tester(year='999'))
   testthat::expect_error( tester(columns = 'banana'), 'not found' )
+  # columns only accepts character (a vector of column names) -- numeric
+  # indices are not supported
+  testthat::expect_error( tester(columns = c(1, 3)), 'character' )
   # testthat::expect_error(tester(as_data_frame = 'banana'))
   testthat::expect_error(read_population(year = 2010, as_data_frame = 'banana'))
   testthat::expect_error(tester(showProgress = 'banana' ))
@@ -172,6 +209,30 @@ test_that("read_population ERRORs", {
 
   # missing labels
   testthat::expect_error(tester(year=2000, add_labels = 'pt'))
+
+  # merge_households requires columns, and only supports years 1970/2000/2010
+  testthat::expect_error(tester(merge_households = TRUE), 'columns.*required')
+  testthat::expect_error(
+    tester(year = 1980, columns = 'V201', merge_households = TRUE),
+    '1970'
+    )
+  testthat::expect_error(
+    tester(year = 1960, columns = 'V2', merge_households = TRUE),
+    '1970'
+    )
+  testthat::expect_error(
+    tester(year = 1991, columns = 'V0109', merge_households = TRUE),
+    '1970'
+    )
+
+  # a bad column name under merge_households = TRUE is still attributed to
+  # read_population(), not to the internal merge helper
+  err <- tryCatch(
+    tester(columns = 'banana', merge_households = TRUE),
+    error = function(e) e
+    )
+  testthat::expect_match(conditionMessage(err), 'not found')
+  testthat::expect_match(paste(deparse(conditionCall(err)), collapse = ' '), 'read_population')
 
 })
 

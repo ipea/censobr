@@ -54,14 +54,15 @@ Finally, the package includes three functions to help users manage the data cach
 The syntax of all **{censobr}** functions to read data operate on the same logic so it becomes intuitive to download any data set using a single line of code. Like this:
 
 ```
-read_households(
-  year,          # year of reference
-  columns,       # select columns to read
-  add_labels,    # add labels to categorical variables
-  as_data_frame, # return an Arrow DataSet or a data.frame
-  showProgress,  # show download progress bar
-  cache,         # cache data for faster access later
-  verbose        # whether to print informative messages
+read_population(
+  year,             # year of reference
+  columns,          # select columns to read
+  add_labels,       # add labels to categorical variables
+  merge_households, # bring in household-level variables
+  as_data_frame,    # return an Arrow DataSet or a data.frame
+  showProgress,     # show download progress bar
+  cache,            # cache data for faster access later
+  verbose           # whether to print informative messages
   )
 ```
 

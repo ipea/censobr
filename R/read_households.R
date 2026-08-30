@@ -37,7 +37,7 @@ read_households <- function(year,
   ### check inputs
   if (missing(year) || is.null(year)) { error_year_not_declared() }
   checkmate::assert_number(year)
-  checkmate::assert_vector(columns, null.ok = TRUE)
+  checkmate::assert_character(columns, null.ok = TRUE)
   checkmate::assert_logical(as_data_frame)
   checkmate::assert_logical(verbose)
   checkmate::assert_choice(add_labels, choices = 'pt', null.ok = TRUE)
@@ -60,11 +60,8 @@ read_households <- function(year,
 
   ### Select
   if (!is.null(columns)) { # columns <- c('V0002','V0011')
-    # numeric indexing is also supported, so only check names
-    if (is.character(columns)) {
-      absent <- setdiff(columns, names(df))
-      if (length(absent) > 0) { error_columns_absent(absent) }
-    }
+    absent <- setdiff(columns, names(df))
+    if (length(absent) > 0) { error_columns_absent(absent) }
     df <- dplyr::select(df, dplyr::all_of(columns))
   }
 

@@ -11,14 +11,17 @@ read_population(
   as_data_frame = FALSE,
   showProgress = TRUE,
   cache = TRUE,
-  verbose = TRUE
+  verbose = TRUE,
+  merge_households = FALSE
 )
 }
 \arguments{
 \item{year}{Numeric. Year of reference in the format \code{yyyy}.}
 
 \item{columns}{String. A vector of column names to keep. The rest of the
-columns are not read. Defaults to \code{NULL} and read all columns.}
+columns are not read. Defaults to \code{NULL} and read all columns. If the
+user passes \code{merge_households = TRUE}, then the \code{columns} vector can
+also include the names of the households data set that should be kept.}
 
 \item{add_labels}{Character. Whether the function should add labels to the
 responses of categorical variables. When \code{add_labels = "pt"}, the
@@ -40,6 +43,12 @@ the function will download the data again and overwrite the local file.}
 
 \item{verbose}{A logical. Whether the function should print informative
 messages. Defaults to \code{TRUE}.}
+
+\item{merge_households}{Logical. Indicate whether the function should merge
+household variables to the output data. Defaults to \code{FALSE}. When
+\code{merge_households = TRUE}, it is mandatory to pass the \code{columns}
+argument to select which columns should be kept. See the Details
+section.}
 }
 \value{
 An arrow \code{Dataset} or a \code{"data.frame"} object.
@@ -47,6 +56,14 @@ An arrow \code{Dataset} or a \code{"data.frame"} object.
 \description{
 Download microdata of population records from Brazil's census. Data collected
 in the sample component of the questionnaire.
+}
+\details{
+\code{merge_households = TRUE} is only available for years 1970, 2000 and 2010, and
+requires \code{columns} to be set. Merging household variables into the full
+population microdata produces about 300 columns and can require more than
+20GB of memory; naming the columns you need keeps the operation fast and
+light, typically a few seconds. The merge writes a temporary parquet file
+that is removed when the R session ends.
 }
 \section{1960 Census}{
 

@@ -19,7 +19,9 @@ read_emigration(
 \item{year}{Numeric. Year of reference in the format \code{yyyy}.}
 
 \item{columns}{String. A vector of column names to keep. The rest of the
-columns are not read. Defaults to \code{NULL} and read all columns.}
+columns are not read. Defaults to \code{NULL} and read all columns. If the
+user passes \code{merge_households = TRUE}, then the \code{columns} vector can
+also include the names of the households data set that should be kept.}
 
 \item{add_labels}{Character. Whether the function should add labels to the
 responses of categorical variables. When \code{add_labels = "pt"}, the

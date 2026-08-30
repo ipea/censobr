@@ -260,6 +260,41 @@ error_missing_years <- function(y) { # nocov start
   )
 } # nocov end
 
+#' Error when merge_households is requested for a year that does not support it
+#'
+#' @param y Vector with the years for which the household merge is available
+#' @return An informative error
+#'
+#' @keywords internal
+error_merge_households_years <- function(y) { # nocov start
+
+  years_available <- paste(y, collapse = " ")
+  cli::cli_abort(
+    c("{.arg merge_households = TRUE} is currently only available for the years {years_available}.",
+      "i" = "1960 has no documented household key; 1980's household variables are already
+      present in the population microdata; 1991's household key is not unique in the
+      source data and would multiply rows."),
+    call = rlang::caller_env()
+  )
+} # nocov end
+
+#' Error when merge_households is requested without columns
+#'
+#' @return An informative error
+#'
+#' @keywords internal
+error_merge_households_needs_columns <- function() { # nocov start
+
+  cli::cli_abort(
+    c("{.arg columns} is required when {.arg merge_households = TRUE}.",
+      "i" = "Merging household variables into the population microdata produces about
+      300 columns and can require more than 20 GB of memory. Please use {.arg columns}
+      to select the variables you need -- they may come from either the population or
+      the household data set."),
+    call = rlang::caller_env()
+  )
+} # nocov end
+
 #' Error missing data sets
 #'
 #' @param d Vector with the data sets available

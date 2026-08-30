@@ -43,7 +43,7 @@ read_emigration <- function(year,
   ### check inputs
   if (missing(year) || is.null(year)) { error_year_not_declared() }
   checkmate::assert_number(year)
-  checkmate::assert_vector(columns, null.ok = TRUE)
+  checkmate::assert_character(columns, null.ok = TRUE)
   checkmate::assert_logical(as_data_frame, null.ok = FALSE)
   checkmate::assert_logical(merge_households, null.ok = FALSE)
   checkmate::assert_logical(verbose, null.ok = FALSE)
@@ -69,9 +69,14 @@ read_emigration <- function(year,
   if (isTRUE(merge_households)) {
     df <- merge_household_var(df,
                               year = year,
+                              columns = columns,
                               add_labels = add_labels,
                               showProgress = showProgress,
+                              cache = cache,
                               verbose = verbose)
+    # merge_household_var() returns a lazy Dataset; read_emigration() has
+    # always returned an in-memory Table for this path, so compute() it back
+    if (!is.null(df)) { df <- dplyr::compute(df) }
   }
 
   # merge_household_var() returns NULL if the household data could not be downloaded
@@ -79,11 +84,8 @@ read_emigration <- function(year,
 
   ### Select
   if (!is.null(columns)) { # columns <- c('V0002','V0011')
-    # numeric indexing is also supported, so only check names
-    if (is.character(columns)) {
-      absent <- setdiff(columns, names(df))
-      if (length(absent) > 0) { error_columns_absent(absent) }
-    }
+    absent <- setdiff(columns, names(df))
+    if (length(absent) > 0) { error_columns_absent(absent) }
     df <- dplyr::select(df, dplyr::all_of(columns))
   }
 
