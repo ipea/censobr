@@ -3,6 +3,7 @@
 export(censobr_cache)
 export(data_dictionary)
 export(get_censobr_cache_dir)
+export(import_microdata22_controlado)
 export(interview_manual)
 export(questionnaire)
 export(read_emigration)
