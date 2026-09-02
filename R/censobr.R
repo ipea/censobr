@@ -26,7 +26,19 @@ utils::globalVariables( c('year',
                           'cod_immediate',
                           'cod_urbanconentration',
                           'cod_muni',
-                          'cod_weightingarea'
+                          'cod_weightingarea',
+                          'code_region',
+                          'name_region',
+                          'code_state',
+                          'abbrev_state',
+                          'name_state',
+                          'code_meso',
+                          'code_micro',
+                          'code_intermediate',
+                          'code_immediate',
+                          'code_urban_concentration',
+                          'code_muni',
+                          'code_weighting'
                           ) )
 
 NULL

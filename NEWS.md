@@ -3,6 +3,24 @@
 
 * New features
 
+  * New function `import_microdata22_controlado()`, which brings the microdata of
+  the **2022** Population Census into censobr. IBGE releases the sample microdata
+  of 2022 under controlled access, so censobr is not allowed to redistribute them
+  and has nothing to download on the user's behalf. Users request the data in
+  `.csv` format at https://microdados.ibge.gov.br/ and pass the zip file to this
+  function once. It converts the four tables (`Domicilios`, `Familia`,
+  `Mortalidade` and `Pessoas`) to Parquet, adds the same geography columns
+  provided for the other censuses, and stores them in the censobr cache, where
+  they are read like any other census year. The zip file should be kept, because
+  the cache is versioned by data release and a censobr version that points to a
+  newer release will not find files imported under the previous one. See the new
+  vignette [Working with 2022 microdata](https://ipea.github.io/censobr/articles/microdata_2022.html).
+  Closes [#79](https://github.com/ipea/censobr/issues/79).
+  * `read_population()`, `read_households()`, `read_families()` and
+  `read_mortality()` now accept `year = 2022`, reading the data imported with
+  `import_microdata22_controlado()`. When the data have not been imported yet,
+  these functions return an informative error explaining how to obtain them
+  instead of attempting a download that cannot succeed.
   * `read_population()` now accepts a `merge_households` parameter, bringing in
   household-level variables from `read_households()` -- previously only `read_mortality()`
   and `read_emigration()` supported this. Because merging all ~300 population + household
@@ -72,7 +90,7 @@
   * Download error messages now match their cause. A failed transfer no longer
   reports the local file as corrupted, and an incomplete download no longer
   reports the internet connection as faulty.
-  * `read_mortality()` and `read_emigration()` with `merge_households = TRUE` now honour
+  * `read_mortality()` and `read_emigration()` with `merge_households = TRUE` now honor
   `cache = FALSE` for the household data too. Previously the household file was always
   cached regardless of the `cache` argument.
   * The temporary DuckDB database file created by `merge_households = TRUE` is now removed
