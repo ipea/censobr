@@ -38,3 +38,9 @@
   : Get path to cache directory for censobr files
 - [`set_censobr_cache_dir()`](https://ipeagit.github.io/censobr/dev/reference/set_censobr_cache_dir.md)
   : Set custom cache directory for censobr files
+
+## Support functions
+
+- [`import_microdata22_controlado()`](https://ipeagit.github.io/censobr/dev/reference/import_microdata22_controlado.md)
+  : Import the controlled-access microdata of the 2022 census into
+  censobr cache

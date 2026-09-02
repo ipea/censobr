@@ -7,6 +7,7 @@
 <url><loc>https://ipeagit.github.io/censobr/dev/articles/documentation.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/articles/index.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/articles/larger_than_memory.html</loc></url>
+<url><loc>https://ipeagit.github.io/censobr/dev/articles/microdata_2022.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/authors.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/index.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/news/index.html</loc></url>
@@ -25,6 +26,7 @@
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/error_missing_years.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/error_year_not_declared.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/get_censobr_cache_dir.html</loc></url>
+<url><loc>https://ipeagit.github.io/censobr/dev/reference/import_microdata22_controlado.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/index.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/interview_manual.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/merge_household_var.html</loc></url>
@@ -36,6 +38,7 @@
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/read_mortality.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/read_population.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/read_tracts.html</loc></url>
+<url><loc>https://ipeagit.github.io/censobr/dev/reference/schemas_microdata22.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/set_censobr_cache_dir.html</loc></url>
 <url><loc>https://ipeagit.github.io/censobr/dev/reference/using_default_censobr_cache_dir.html</loc></url>
 </urlset>

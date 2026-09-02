@@ -196,6 +196,12 @@ If you want to cite this package, you can cite it as:
 - [`set_censobr_cache_dir()`](https://ipeagit.github.io/censobr/dev/reference/set_censobr_cache_dir.md)
   : Set custom cache directory for censobr files
 
+## Support functions
+
+- [`import_microdata22_controlado()`](https://ipeagit.github.io/censobr/dev/reference/import_microdata22_controlado.md)
+  : Import the controlled-access microdata of the 2022 census into
+  censobr cache
+
 # Articles
 
 ### All vignettes
@@ -208,3 +214,5 @@ If you want to cite this package, you can cite it as:
   documentation](https://ipeagit.github.io/censobr/dev/articles/documentation.md):
 - [Working with larger-than-memory
   data](https://ipeagit.github.io/censobr/dev/articles/larger_than_memory.md):
+- [Working with 2022
+  microdata](https://ipeagit.github.io/censobr/dev/articles/microdata_2022.md):
