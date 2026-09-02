@@ -30,3 +30,6 @@ reference:
     - censobr_cache
     - get_censobr_cache_dir
     - set_censobr_cache_dir
+  - title: "Support functions"
+  - contents:
+    - import_microdata22_controlado

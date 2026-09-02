@@ -8,9 +8,9 @@
 #'
 #' Unlike the microdata of previous censuses, the 2022 controlled-access microdata
 #' are distributed by IBGE under controlled access and cannot be redistributed by
-#' `censobr` directly. Users need to request the data directly from IBGE at 
-#' \url{https://microdados.ibge.gov.br/} and run this function once on the zip file 
-#' they receive. From then on, the data are available locally like any other data 
+#' `censobr` directly. Users need to request the data directly from IBGE at
+#' \url{https://microdados.ibge.gov.br/} and run this function once on the zip file
+#' they receive. From then on, the data are available locally like any other data
 #' set cached by the package, and no download is attempted.
 #'
 #' One Parquet file is written per table, following the file naming convention
@@ -24,15 +24,15 @@
 #' | `Pessoas` | `2022_population_<data release>.parquet` |
 #'
 #' The `<data release>` suffix is the release of the `censobr` data pinned by
-#' the installed version of the package. A version of `censobr` that points to 
-#' a newer data release will not find files imported under the previous one, 
+#' the installed version of the package. A version of `censobr` that points to
+#' a newer data release will not find files imported under the previous one,
 #' so the zip file has to be imported again. We strongly recommend you store
-#' the original zip file in a save place so you can import it again in the 
+#' the original zip file in a save place so you can import it again in the
 #' future if necessary.
 #'
 #' @param zip_path String. Path to the original zip file with the controlled-microdata
-#'        of the 2022 census sample saved, as provided by IBGE. The original file is 
-#'        expected to hold one subdirectory per state, each containing the `csv` files 
+#'        of the 2022 census sample saved, as provided by IBGE. The original file is
+#'        expected to hold one subdirectory per state, each containing the `csv` files
 #'        of the `Domicilios`, `Familia`, `Mortalidade` and `Pessoas` tables.
 #'
 #' @return Returns `NULL` invisibly. The function is called for its side effect
@@ -44,13 +44,13 @@
 #'
 #' @examples \dontrun{
 #' # the zip file has to be requested from IBGE beforehand
-#' # The repo rule bans it for hiding broken examples, but here the example genuinely 
+#' # The repo rule bans it for hiding broken examples, but here the example genuinely
 #' # cannot run: it needs a restricted-access file only the user has.
-#' 
+#'
 #' # path to zip fil
-#' path_to_zip <- system.file("extdata/microdata_2022_controlado_fake.zip", 
+#' path_to_zip <- system.file("extdata/microdata_2022_controlado_fake.zip",
 #'                            package = "censobr")
-#' 
+#'
 #' # import controlled-microdata 2022.
 #' import_microdata22_controlado(
 #'   zip_path = path_to_zip
@@ -58,11 +58,7 @@
 #' }
 #'
 import_microdata22_controlado <- function(zip_path) {
-  
-  # zip_path <- "l:/# RAFAEL HENRIQUE MORAES PEREIRA #/microdados_censo_amostra_2022_csv_20260901_154554.zip"
- 
-  # "l:/# RAFAEL HENRIQUE MORAES PEREIRA #/Layout Microdados CD2022 - acesso Controlado.xlsx"
-  
+
   # check if file exists
   if (isFALSE(file.exists(zip_path))) {
     stop(paste('File does not exist' , zip_path))
@@ -71,16 +67,16 @@ import_microdata22_controlado <- function(zip_path) {
   # unzip file to temp dir
   temp <- tempfile(pattern = 'microdata_2022_controlado')
   dir.create(temp, showWarnings = FALSE)
-  
+
 
   cli::cli_alert_info("Unzinping files to temporary directory")
-  
+
   utils::unzip(zip_path, exdir = temp, overwrite = TRUE)
-  
+
   # detect files
   tempfiles <- list.files(
-    path = temp, 
-    recursive = TRUE, 
+    path = temp,
+    recursive = TRUE,
     full.names = TRUE
   )
 
@@ -91,14 +87,14 @@ import_microdata22_controlado <- function(zip_path) {
 
   # tables to read
   tables <- c('Domicilios', 'Familia', 'Mortalidade', 'Pessoas')
-  
+
   # dest directory. The cache dir is versioned by data release, so this has to
   # mirror how download_file() resolves the path of a downloaded file
   cache_dir <- get_censobr_cache_dir()
   cache_dir <- glue::glue("{cache_dir}/data_release_{censobr_env$data_release}")
   if (!dir.exists(cache_dir)) { dir.create(cache_dir, recursive = TRUE) }
 
-  
+
   for (i in tables) {
 
     # i = "Familia"
@@ -106,7 +102,7 @@ import_microdata22_controlado <- function(zip_path) {
       cli::cli_alert_info(
         paste("Saving", i, "microdata.")
       )
-    
+
     # detect files
     tbl_files <- tempfiles[grepl(i, tempfiles)]
 
@@ -129,9 +125,9 @@ import_microdata22_controlado <- function(zip_path) {
 
     # read with arrows
     arrw <- arrow::open_delim_dataset(
-      tbl_files, 
-      delim = ";", 
-      col_types = tbl_schema, 
+      tbl_files,
+      delim = ";",
+      col_types = tbl_schema,
       na = ""
     )
 
@@ -141,9 +137,9 @@ import_microdata22_controlado <- function(zip_path) {
     # save file to cache dir
     file_name <- paste0("2022_", tbl_name, "_", censobr_env$data_release, ".parquet")
     dest_file <- fs::path(cache_dir, file_name)
-    
+
     arrow::write_parquet(
-      x = arrw_censobr, 
+      x = arrw_censobr,
       sink = dest_file
     )
 
@@ -151,7 +147,7 @@ import_microdata22_controlado <- function(zip_path) {
 
   cli::cli_alert_info(
     paste(
-      "Finished saving 2022 controlled-microdata to cache dir at:", 
+      "Finished saving 2022 controlled-microdata to cache dir at:",
       cache_dir
     )
   )
@@ -323,7 +319,7 @@ schema_population <- function() {   # Pessoas -- 210 variables: 177 i8, 12 i16, 
 # Add basic geography variables
 #' @keywords internal
 add_geography_cols <- function(arrw, tbl_name){
-  
+
   cols_prefix <- switch(tbl_name,
     'households' = 'D',
     'families' = 'F',
@@ -433,15 +429,15 @@ add_geography_cols <- function(arrw, tbl_name){
       .default = NA_character_)
     )
 
-  
+
   ## reoder columns
-  arrw <- arrw |> 
+  arrw <- arrw |>
     dplyr::relocate(
       c(code_region, name_region, code_state, abbrev_state, name_state,
         code_meso, code_micro, code_intermediate, code_immediate,
         code_urban_concentration, code_muni, code_weighting)
     )
-  
+
   return(arrw)
 }
 

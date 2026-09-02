@@ -57,7 +57,7 @@ read_population <- function(year,
   checkmate::assert_choice(add_labels, choices = 'pt', null.ok = TRUE)
 
   # data available for the years:
-  years <- c(1960, 1970, 1980, 1991, 2000, 2010)
+  years <- c(1960, 1970, 1980, 1991, 2000, 2010, 2022)
   if (isFALSE(year %in% years)) {
     error_missing_years(years)
     }

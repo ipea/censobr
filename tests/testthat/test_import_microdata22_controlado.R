@@ -96,8 +96,13 @@ test_that("import_microdata22_controlado types the columns from the layout file"
     prefix <- tables$prefix[i]
 
     # 10 digit codes: the "area de ponderacao" goes above 2147483647 from state
-    # 22 onwards, so a 32 bit integer overflows
+    # 22 onwards, so a 32 bit integer overflows. The fixture carries Sao Paulo
+    # so the values really do exceed the ceiling, and not only the declaration
     testthat::expect_equal(col_type(df, paste0(prefix, "0090")), "int64")
+    weighting <- df |>
+      dplyr::select(dplyr::all_of(paste0(prefix, "0090"))) |>
+      dplyr::collect()
+    testthat::expect_gt(max(as.numeric(weighting[[1]])), 2147483647)
 
     # the sample weight carries 13 decimal places, which needs a double
     testthat::expect_equal(col_type(df, paste0(prefix, "0111")), "double")
@@ -158,11 +163,12 @@ test_that("import_microdata22_controlado adds the censobr geography columns", {
       dplyr::collect() |>
       as.data.frame()
 
-    # the fixture holds Rondonia and Acre, both in the North region
-    testthat::expect_setequal(states$code_state, c(11, 12))
-    testthat::expect_setequal(states$abbrev_state, c("RO", "AC"))
-    testthat::expect_setequal(states$name_state, c("Rondônia", "Acre"))
-    testthat::expect_setequal(states$name_region, "Norte")
+    # the fixture holds Rondonia, Acre and Sao Paulo
+    testthat::expect_setequal(states$code_state, c(11, 12, 35))
+    testthat::expect_setequal(states$abbrev_state, c("RO", "AC", "SP"))
+    testthat::expect_setequal(states$name_state,
+                              c("Rondônia", "Acre", "São Paulo"))
+    testthat::expect_setequal(states$name_region, c("Norte", "Sudeste"))
     # a code with no match would come back as NA
     testthat::expect_false(anyNA(states))
   }

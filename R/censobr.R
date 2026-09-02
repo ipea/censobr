@@ -17,6 +17,16 @@
 
 ## quiets concerns of R CMD check:
 utils::globalVariables( c('year',
-                          'temp_local_file') )
+                          'temp_local_file',
+                          'cod_region',
+                          'cod_state',
+                          'cod_meso',
+                          'cod_micro',
+                          'cod_intermediate',
+                          'cod_immediate',
+                          'cod_urbanconentration',
+                          'cod_muni',
+                          'cod_weightingarea'
+                          ) )
 
 NULL

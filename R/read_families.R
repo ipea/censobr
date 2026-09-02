@@ -41,7 +41,7 @@ read_families <- function(year,
   checkmate::assert_choice(add_labels, choices = 'pt', null.ok = TRUE)
 
   # data available for the years:
-  years <- c(2000)
+  years <- c(2000, 2022)
   if (isFALSE(year %in% years)) {
     error_missing_years(years)
     }
