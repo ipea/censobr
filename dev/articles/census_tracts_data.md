@@ -107,7 +107,7 @@ muni_bh <- geobr::read_municipality(
   filter(name_muni == "Belo Horizonte")
 #> ℹ Using year/date 2010
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/Rtmptlv57C/duckdb
+#> ℹ /tmp/Rtmpyt1nXh/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -237,12 +237,12 @@ head(tracts_df)
 #> # A tibble: 6 × 4
 #>   code_tract  V002   V003 income_pc
 #>        <dbl> <dbl>  <dbl>     <dbl>
-#> 1    2.93e14   132  30119      228.
-#> 2    2.93e14  1422 326770      230.
-#> 3    2.93e14   807 143512      178.
-#> 4    2.93e14   637 146616      230.
-#> 5    2.93e14   678 112334      166.
-#> 6    2.93e14   131  30786      235.
+#> 1    1.10e14   956 522231      546.
+#> 2    1.10e14   859 406191      473.
+#> 3    1.10e14   661 241587      365.
+#> 4    1.10e14   266  88502      333.
+#> 5    1.10e14  1206 262860      218.
+#> 6    1.10e14   816 262968      322.
 ```
 
 Finally, we can merge the spatial data with our per capita income

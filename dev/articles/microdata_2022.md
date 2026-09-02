@@ -31,13 +31,12 @@ state, each with four tables:
 | `Mortalidade`   | mortality  |
 | `Pessoas`       | population |
 
-## Step 2. Import it, once
+## Step 2. Import it
 
 Once you have downloaded the original zip file with the data, you only
 need to pass the path to the zip file to
 [`import_microdata22_controlado()`](https://ipeagit.github.io/censobr/dev/reference/import_microdata22_controlado.md).
-
-Here’s an example using a tiny **fake** data set with the same structure
+Here’s an example using a tiny *fake* data set with the same structure
 as the IBGE file.
 
 ``` r
@@ -53,8 +52,9 @@ fake_zip <- system.file(
 censobr::import_microdata22_controlado(zip_path = fake_zip)
 ```
 
-The function unzips the file, converts each of the four tables to
-Parquet, and saves them in the **{censobr}** cache directory. Depending
+The function unzips the file, read each of the four tables, adds
+geography columns following the {geobr} convention, and save the data
+sets as `.parquet` files in the **{censobr}** cache directory. Depending
 on your machine this takes a few minutes, most of it spent on the
 `Pessoas` table.
 

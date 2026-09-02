@@ -457,10 +457,10 @@ into the data set with <code><a href="https://pillar.r-lib.org/reference/glimpse
 <code class="sourceCode R"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">pop</span><span class="op">)</span></span>
 <span><span class="co">#&gt; FileSystemDataset with 1 Parquet file (query)</span></span>
 <span><span class="co">#&gt; 20,635,472 rows x 4 columns</span></span>
-<span><span class="co">#&gt; $ abbrev_state <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "AC", "AC", "AC", "AC", "AC", "AC", "AC", "AC", "AC", "A…</span></span>
-<span><span class="co">#&gt; $ V0606        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Amarela", "Parda", "Parda", "Branca", "Parda", "Branca"…</span></span>
-<span><span class="co">#&gt; $ V0010        <span style="color: #949494; font-style: italic;">&lt;double&gt;</span> 8.083000, 9.718624, 9.718624, 9.718624, 9.513442, 9.5134…</span></span>
-<span><span class="co">#&gt; $ V6400        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Sem instrução e fundamental incompleto", "Sem instrução…</span></span>
+<span><span class="co">#&gt; $ abbrev_state <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "RO", "RO", "RO", "RO", "RO", "RO", "RO", "RO", "RO", "R…</span></span>
+<span><span class="co">#&gt; $ V0606        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Parda", "Parda", "Parda", "Parda", "Branca", "Parda", "…</span></span>
+<span><span class="co">#&gt; $ V0010        <span style="color: #949494; font-style: italic;">&lt;double&gt;</span> 11.996452, 11.996452, 11.996452, 10.298796, 10.298796, 7…</span></span>
+<span><span class="co">#&gt; $ V6400        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> <span style="color: #BB0000;">NA</span>, "Sem instrução e fundamental incompleto", "Sem instr…</span></span>
 <span><span class="co">#&gt; Call `print()` for query details</span></span></code></pre></div>
 <p>In the example below, we use the <code>dplyr</code> syntax to (a)
 filter observations for the state of Rio de Janeiro, (b) group
@@ -671,7 +671,7 @@ directory is persistent across R sessions.</p>
 <span></span>
 <span><span class="fu">censobr</span><span class="fu">::</span><span class="fu"><a href="../reference/set_censobr_cache_dir.html">set_censobr_cache_dir</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">tempf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> censobr files will be cached at</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">/tmp/Rtmp40xJss/my_temp_dir</span>.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #0000BB;">/tmp/Rtmp644odQ/my_temp_dir</span>.</span></span></code></pre></div>
 <p>Mind you that the data is saved in a directory inside the cache
 directory set by the user and which is versioned according to the
 version of the latest data release.</p>
@@ -684,7 +684,7 @@ version of the latest data release.</p>
 <span>  list_files <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>  print_tree <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/Rtmp40xJss/my_temp_dir</span></span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/Rtmp644odQ/my_temp_dir</span></span></span>
 <span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">data_release_v0.6.0</span></span></span>
 <span><span class="co">#&gt;     └── 2010_emigration_v0.6.0.parquet</span></span></code></pre></div>
 <p>If you do not remember the location of the cache, you can always run
