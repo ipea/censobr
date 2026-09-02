@@ -17,16 +17,23 @@ tables <- data.frame(
   stringsAsFactors = FALSE
 )
 
-# Import once, into a temporary cache directory. The user's own cache
-# configuration is put back afterwards, whether the import succeeds or not.
-release_dir <- (function() {
-
+# set_censobr_cache_dir() records the path in a config file that persists across
+# sessions, so every test that moves the cache has to put the user's own
+# configuration back, whether it passes or not
+cache_config_restorer <- function() {
   config_file <- get_config_cache_file()
   had_config  <- file.exists(config_file)
   old_config  <- if (had_config) readLines(config_file) else NULL
-  on.exit({
+  function() {
     if (had_config) writeLines(old_config, config_file) else unlink(config_file)
-  }, add = TRUE)
+  }
+}
+
+# Import once, into a temporary cache directory.
+release_dir <- (function() {
+
+  restore <- cache_config_restorer()
+  on.exit(restore(), add = TRUE)
 
   cache <- tempfile("censobr_cache_")
   dir.create(cache, recursive = TRUE)
@@ -229,4 +236,57 @@ test_that("import_microdata22_controlado errors", {
     import_microdata22_controlado(zip_path = "banana.zip"), "does not exist"
   )
   testthat::expect_error(import_microdata22_controlado())
+})
+
+
+# The read_ functions point users to the import -----------------------
+
+test_that("read_ functions ask for the 2022 microdata to be imported", {
+
+  restore <- cache_config_restorer()
+  on.exit(restore(), add = TRUE)
+
+  empty_cache <- tempfile("censobr_empty_")
+  dir.create(empty_cache, recursive = TRUE)
+  set_censobr_cache_dir(path = empty_cache, verbose = FALSE)
+
+  # IBGE does not let censobr redistribute these files, so an empty cache is not
+  # something a download can fix. The error has to say so, and say what to do.
+  for (f in list(read_population, read_households, read_families, read_mortality)) {
+    testthat::expect_error(f(year = 2022), "not distributed")
+    testthat::expect_error(f(year = 2022), "import")
+    testthat::expect_error(f(year = 2022), "microdados.ibge.gov.br")
+  }
+
+  # the error belongs to the function the user called, not to the internal
+  # helper that raises it
+  err <- rlang::catch_cnd(read_population(year = 2022))
+  testthat::expect_match(deparse(conditionCall(err))[1], "read_population")
+
+  # a year that censobr does distribute must not take this path
+  testthat::expect_error(read_population(year = 1999), "currently available")
+})
+
+
+test_that("read_ functions find the 2022 microdata once imported", {
+
+  restore <- cache_config_restorer()
+  on.exit(restore(), add = TRUE)
+
+  set_censobr_cache_dir(path = dirname(release_dir), verbose = FALSE)
+
+  readers <- list(population = read_population, households = read_households,
+                  families   = read_families,   mortality  = read_mortality)
+
+  for (nm in names(readers)) {
+    df <- readers[[nm]](year = 2022, verbose = FALSE)
+    testthat::expect_s3_class(df, "Dataset")
+    testthat::expect_gt(nrow(df), 0)
+    testthat::expect_true("name_state" %in% names(df))
+  }
+
+  # nothing is downloaded for 2022, so cache = FALSE must not try to
+  testthat::expect_s3_class(
+    read_population(year = 2022, cache = FALSE, verbose = FALSE), "Dataset"
+  )
 })

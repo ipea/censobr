@@ -50,11 +50,11 @@ future if necessary.
 \examples{
 \dontrun{
 # the zip file has to be requested from IBGE beforehand
-# The repo rule bans it for hiding broken examples, but here the example genuinely 
+# The repo rule bans it for hiding broken examples, but here the example genuinely
 # cannot run: it needs a restricted-access file only the user has.
 
 # path to zip fil
-path_to_zip <- system.file("extdata/microdata_2022_controlado_fake.zip", 
+path_to_zip <- system.file("extdata/microdata_2022_controlado_fake.zip",
                            package = "censobr")
 
 # import controlled-microdata 2022.

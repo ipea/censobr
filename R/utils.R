@@ -110,9 +110,29 @@ download_file <- function(file_url = parent.frame()$file_url,
 #' @keywords internal
 open_censobr_data <- function(dataset, year, showProgress, cache, verbose) {
 
+  file_name <- paste0(year, "_", dataset, "_", censobr_env$data_release, ".parquet")
+
+  # IBGE releases the 2022 microdata under controlled access, so there is no
+  # file for censobr to download. It has to be in the cache already, put there
+  # by import_microdata22_controlado()
+  if (year == 2022) {
+
+    local_file <- fs::path(
+      get_censobr_cache_dir(),
+      paste0("data_release_", censobr_env$data_release),
+      file_name
+    )
+
+    if (isFALSE(file.exists(local_file))) {
+      error_microdata22_not_imported(call = rlang::caller_env())
+    }
+
+    # returns NULL if the cached file is corrupted
+    return(arrow_open_dataset(local_file))
+  }
+
   file_url <- paste0("https://github.com/ipea/censobr_prep_data/releases/download/",
-                     censobr_env$data_release, "/", year, "_", dataset, "_",
-                     censobr_env$data_release, ".parquet")
+                     censobr_env$data_release, "/", file_name)
 
   local_file <- download_file(file_url = file_url,
                               showProgress = showProgress,
@@ -312,3 +332,25 @@ error_missing_datasets <- function(d) { # nocov start
 
 
 
+
+#' Error when the 2022 microdata have not been imported yet
+#'
+#' @param call Environment used to attribute the error to the `read_` function
+#'        the user called, and not to this helper.
+#' @return An informative error
+#'
+#' @keywords internal
+error_microdata22_not_imported <- function(call = rlang::caller_env()) { # nocov start
+
+  cli::cli_abort(
+    c("The microdata of the 2022 census are not distributed by {.pkg censobr}.",
+      "i" = "IBGE releases them under controlled access, so they cannot be
+             downloaded automatically. Please request the data in {.file .csv}
+             format at {.url https://microdados.ibge.gov.br/}, and then import
+             the zip file once with
+             {.run censobr::import_microdata22_controlado()}.",
+      "i" = "See {.url https://ipea.github.io/censobr/articles/microdata_2022.html}
+             or run {.run vignette('microdata_2022', package = 'censobr')}."),
+    call = call
+  )
+} # nocov end
