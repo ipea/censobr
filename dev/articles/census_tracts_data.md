@@ -107,7 +107,7 @@ muni_bh <- geobr::read_municipality(
   filter(name_muni == "Belo Horizonte")
 #> ℹ Using year/date 2010
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpOoJHLj/duckdb
+#> ℹ /tmp/Rtmp2tcaSD/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
