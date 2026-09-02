@@ -99,7 +99,10 @@ merge_household_var <- function(df,
   # this improves performance a bit but only for migration and death data sets
   if (nrow(df) < nrow(df_household)) {
 
-    key_values <- df |> dplyr::select(key_key) |> unique() |> dplyr::collect()
+    key_values <- df |>
+      dplyr::select(dplyr::all_of(key_key)) |>
+      unique() |>
+      dplyr::collect()
     key_values <- key_values[[1]]
     df_household <- dplyr::filter(df_household, get(key_key) %in% key_values)
   }

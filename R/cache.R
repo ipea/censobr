@@ -194,17 +194,28 @@ censobr_cache <- function(list_files = TRUE,
     # Delete ALL file
     if (delete_file=='all') {
 
-      # delete any files from censobr, current and old data releases
-      # unlink(
-      #   list.files(cache_dir, full.names = TRUE, recursive = FALSE, all.files = TRUE),
-      #   recursive = TRUE,
-      #   force     = TRUE   # harmless on Unix, helpful on Windows
-      # )
-      fs::dir_delete(cache_dir)
+      # arrow memory-maps the Parquet files it has open, and Windows refuses to
+      # remove a file that is still mapped. Collecting the datasets the user no
+      # longer references releases those handles first.
+      invisible(gc(verbose = FALSE))
 
-      if (isTRUE(verbose)) {
-        cli::cli_alert_success("The following cache directory has been deleted: {cache_dir}")
-        }
+      # delete any files from censobr, current and old data releases.
+      # unlink() reports failure instead of throwing, which matters because a
+      # file still open in the session is not an error the user can act on here
+      unlink(cache_dir, recursive = TRUE, force = TRUE)
+
+      locked <- list.files(cache_dir, recursive = TRUE, full.names = TRUE)
+
+      if (length(locked) == 0) {
+        if (isTRUE(verbose)) {
+          cli::cli_alert_success("The following cache directory has been deleted: {cache_dir}")
+          }
+      } else {
+        n <- length(locked)
+        cli::cli_alert_warning(
+          "{n} file{?s} could not be removed because {?it is/they are} still open in this R session. Restart R and run the function again to delete {?it/them}."
+        )
+      }
     }
   }
 
