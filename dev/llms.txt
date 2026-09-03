@@ -9,7 +9,7 @@ coverage](https://codecov.io/gh/ipea/censobr/branch/main/graph/badge.svg)](https
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-yellow.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R-CMD-check](https://github.com/ipea/censobr/actions/workflows/R-CMD-check.yaml/badge.svg?branch=main)](https://github.com/ipea/censobr/actions?query=branch%3Amain)
-[![Paper](https://img.shields.io/badge/DOI-10.1590%2Fdados--2026--69--1--006-blue)](https://doi.org/10.1590/dados.2026.69.1.006)
+[![Paper](https://img.shields.io/badge/DOI-10.1590%2Fdados--2026--69--1--006-blue)](https://doi.org/10.1590/dados.2026.69.1.006x)
 
 **{censobr}** is an R package to download data from Brazil’s Population
 Census. It provides a very simple and efficient way to download and read
