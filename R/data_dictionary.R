@@ -70,7 +70,7 @@ data_dictionary <- function(year,
     }
 
   # check year / data availability
-  if(dataset == 'microdata'){ years <- c(2000, 2010) }
+  if(dataset == 'microdata'){ years <- c(2000, 2010, 2022) }
   if(dataset == 'tracts'){ years <- c(1970, 1980, 1991, 2000, 2010, 2022) }
   # the per-dataset dictionaries were superseded by the single Excel file in
   # 2000 and 2010, but remain the only ones available for earlier censuses
