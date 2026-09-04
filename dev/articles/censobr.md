@@ -156,9 +156,9 @@ dplyr::glimpse(pop)
 #> FileSystemDataset with 1 Parquet file (query)
 #> 20,635,472 rows x 4 columns
 #> $ abbrev_state <string> "RO", "RO", "RO", "RO", "RO", "RO", "RO", "RO", "RO", "R…
-#> $ V0606        <string> "Parda", "Parda", "Branca", "Branca", "Parda", "Parda", …
-#> $ V0010        <double> 8.705865, 8.705865, 9.818689, 9.495608, 9.495608, 9.4956…
-#> $ V6400        <string> "Sem instrução e fundamental incompleto", "Sem instrução…
+#> $ V0606        <string> "Parda", "Parda", "Parda", "Parda", "Branca", "Parda", "…
+#> $ V0010        <double> 11.996452, 11.996452, 11.996452, 10.298796, 10.298796, 7…
+#> $ V6400        <string> NA, "Sem instrução e fundamental incompleto", "Sem instr…
 #> Call `print()` for query details
 ```
 
@@ -425,7 +425,7 @@ tempf <- fs::path_temp(pattern = "my_temp_dir")
 
 censobr::set_censobr_cache_dir(path = tempf)
 #> ℹ censobr files will be cached at
-#> /tmp/RtmpXJXQod/my_temp_dir.
+#> /tmp/RtmpPa9wk4/my_temp_dir.
 ```
 
 Mind you that the data is saved in a directory inside the cache
@@ -442,7 +442,7 @@ censobr::censobr_cache(
   list_files = TRUE, 
   print_tree = TRUE
   )
-#> /tmp/RtmpXJXQod/my_temp_dir
+#> /tmp/RtmpPa9wk4/my_temp_dir
 #> └── data_release_v0.6.0
 #>     └── 2010_emigration_v0.6.0.parquet
 ```

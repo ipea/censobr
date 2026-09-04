@@ -26,7 +26,7 @@ data_dictionary(
   `c("microdata", "tracts", "population", "households")`. In the case of
   `"microdata"`, the function opens a single Excel file with the data
   dictionary of all variables of the microdata, available for the years
-  2000 and 2010. For earlier censuses, use `"population"` or
+  2000, 2010 and 2022. For earlier censuses, use `"population"` or
   `"households"`, which open a separate file per data set.
 
 - showProgress:

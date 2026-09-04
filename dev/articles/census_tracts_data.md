@@ -51,7 +51,7 @@ dom <- read_tracts(
   dataset = 'Domicilio', 
   showProgress = FALSE
   )
-#> ℹ Downloading data and storing it locally for future use.
+#> ℹ Reading data cached locally.
 
 names(dom)[c(30:33,119:121, 526:528)]
 #>  [1] "domicilio01_V00001" "domicilio01_V00002" "domicilio01_V00003"
@@ -107,7 +107,7 @@ muni_bh <- geobr::read_municipality(
   filter(name_muni == "Belo Horizonte")
 #> ℹ Using year/date 2010
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmptEgdCs/duckdb
+#> ℹ /tmp/Rtmp92bUqV/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -215,7 +215,7 @@ tract_basico <- censobr::read_tracts(
   dataset = "Basico", 
   showProgress = FALSE
   )
-#> ℹ Downloading data and storing it locally for future use.
+#> ℹ Reading data cached locally.
 
 tract_income <- censobr::read_tracts(
   year = 2010,
@@ -237,12 +237,12 @@ head(tracts_df)
 #> # A tibble: 6 × 4
 #>   code_tract  V002   V003 income_pc
 #>        <dbl> <dbl>  <dbl>     <dbl>
-#> 1    1.10e14   956 522231      546.
-#> 2    1.10e14   859 406191      473.
-#> 3    1.10e14   661 241587      365.
-#> 4    1.10e14   266  88502      333.
-#> 5    1.10e14  1206 262860      218.
-#> 6    1.10e14   816 262968      322.
+#> 1    2.21e14   714 145414      204.
+#> 2    2.21e14   436  47457      109.
+#> 3    2.21e14   287  45302      158.
+#> 4    2.21e14   331  47624      144.
+#> 5    2.21e14   846 133232      157.
+#> 6    2.21e14   196  45780      234.
 ```
 
 Finally, we can merge the spatial data with our per capita income

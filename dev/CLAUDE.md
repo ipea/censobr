@@ -97,7 +97,7 @@ reference when they disagree.
 | [`read_families()`](https://ipeagit.github.io/censobr/dev/reference/read_families.md) | 2000 |
 | [`read_mortality()`](https://ipeagit.github.io/censobr/dev/reference/read_mortality.md), [`read_emigration()`](https://ipeagit.github.io/censobr/dev/reference/read_emigration.md) | 2010 |
 | [`questionnaire()`](https://ipeagit.github.io/censobr/dev/reference/questionnaire.md), [`interview_manual()`](https://ipeagit.github.io/censobr/dev/reference/interview_manual.md) | 1960, 1970, 1980, 1991, 2000, 2010, 2022 |
-| `data_dictionary(dataset = "microdata")` | 2000, 2010 |
+| `data_dictionary(dataset = "microdata")` | 2000, 2010, 2022 |
 | `data_dictionary(dataset = "tracts")` | 1970, 1980, 1991, 2000, 2010, 2022 |
 
 [`read_tracts()`](https://ipeagit.github.io/censobr/dev/reference/read_tracts.md)
