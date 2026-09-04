@@ -50,7 +50,7 @@ read_mortality <- function(year,
   checkmate::assert_choice(add_labels, choices = 'pt', null.ok = TRUE)
 
   # available for the years:
-  years <- c(2010, 2022)
+  years <- censobr_years("mortality")
   if (isFALSE(year %in% years)) {
     error_missing_years(years)
     }

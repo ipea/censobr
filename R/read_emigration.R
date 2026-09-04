@@ -50,7 +50,7 @@ read_emigration <- function(year,
   checkmate::assert_choice(add_labels, choices = 'pt', null.ok = TRUE)
 
   # data available for the years:
-  years <- c(2010)
+  years <- censobr_years("emigration")
   if (isFALSE(year %in% years)) {
     error_missing_years(years)
     }

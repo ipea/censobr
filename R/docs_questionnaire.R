@@ -39,7 +39,7 @@ questionnaire <- function(year,
   checkmate::assert_logical(verbose, null.ok = FALSE)
 
   # data available for the years:
-  years <- c(1960, 1970, 1980, 1991, 2000, 2010, 2022)
+  years <- censobr_years("questionnaire")
   if (isFALSE(year %in% years)) {
     years_available <- paste(years, collapse = " ")
     cli::cli_abort(
