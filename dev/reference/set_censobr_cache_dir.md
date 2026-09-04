@@ -39,7 +39,7 @@ Other Cache data:
 # Set custom cache directory
 tempd <- tempdir()
 set_censobr_cache_dir(path = tempd)
-#> ℹ censobr files will be cached at /tmp/RtmpCQeIlH.
+#> ℹ censobr files will be cached at /tmp/Rtmpu08XlM.
 
 # back to default path
 set_censobr_cache_dir(path = NULL)

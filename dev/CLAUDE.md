@@ -86,16 +86,17 @@ effect.
 
 ## Year × dataset availability
 
-Hard-coded as `years <- c(...)` in **9 separate files**. There is no
-single constant — all copies must move together, and this table is the
-reference when they disagree.
+Registered once in `R/availability.R` as `.censobr_availability`, read
+through `censobr_years(key)`. A new census release is added there, not
+in the nine call sites.
 
 | Function / dataset | Years |
 |----|----|
-| [`read_population()`](https://ipeagit.github.io/censobr/dev/reference/read_population.md), [`read_households()`](https://ipeagit.github.io/censobr/dev/reference/read_households.md) | 1960, 1970, 1980, 1991, 2000, 2010 |
+| [`read_population()`](https://ipeagit.github.io/censobr/dev/reference/read_population.md), [`read_households()`](https://ipeagit.github.io/censobr/dev/reference/read_households.md) | 1960, 1970, 1980, 1991, 2000, 2010, 2022 |
 | [`read_tracts()`](https://ipeagit.github.io/censobr/dev/reference/read_tracts.md) | 2000, 2010, 2022 |
-| [`read_families()`](https://ipeagit.github.io/censobr/dev/reference/read_families.md) | 2000 |
-| [`read_mortality()`](https://ipeagit.github.io/censobr/dev/reference/read_mortality.md), [`read_emigration()`](https://ipeagit.github.io/censobr/dev/reference/read_emigration.md) | 2010 |
+| [`read_families()`](https://ipeagit.github.io/censobr/dev/reference/read_families.md) | 2000, 2022 |
+| [`read_mortality()`](https://ipeagit.github.io/censobr/dev/reference/read_mortality.md) | 2010, 2022 |
+| [`read_emigration()`](https://ipeagit.github.io/censobr/dev/reference/read_emigration.md) | 2010 |
 | [`questionnaire()`](https://ipeagit.github.io/censobr/dev/reference/questionnaire.md), [`interview_manual()`](https://ipeagit.github.io/censobr/dev/reference/interview_manual.md) | 1960, 1970, 1980, 1991, 2000, 2010, 2022 |
 | `data_dictionary(dataset = "microdata")` | 2000, 2010, 2022 |
 | `data_dictionary(dataset = "tracts")` | 1970, 1980, 1991, 2000, 2010, 2022 |

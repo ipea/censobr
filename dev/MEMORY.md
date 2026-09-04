@@ -51,6 +51,15 @@ guarantee the package is built on.
 no shared constant. Any change to supported years must touch every
 relevant copy — the reference table is in
 [CLAUDE.md](https://ipeagit.github.io/censobr/dev/CLAUDE.md).
+**Superseded 2026-09-04:** the nine copies were replaced by
+`.censobr_availability` in `R/availability.R`, read through
+`censobr_years(key)`. A new census release is added there. Three sets
+are still deliberately outside the registry — see the `[LEARN:api]`
+entry in the 2026-09-04 session below before registering anything else.
+This drift is what produced the 2022
+[`data_dictionary()`](https://ipeagit.github.io/censobr/dev/reference/data_dictionary.md)
+bug: `a0bc4aa` added 2022 to the year list but left three error strings
+saying “2000 and 2010”.
 
 ------------------------------------------------------------------------
 
@@ -75,10 +84,13 @@ r5r install URL (`tests/tests_rafa/test_rafa.R:66`). Verify each org
 path with `git ls-remote https://github.com/<org>/<repo>` before a bulk
 rename; the migration is per-repo, not org-wide.
 
-\[LEARN:defect\] `DESCRIPTION` has no `Config/testthat/edition: 3`,
-which `.claude/rules/r-package-conventions.md` requires. The suite
-appears to be written in 3e style; adding the field makes it explicit
-rather than incidental.
+\[LEARN:defect\] **FIXED — verified present 2026-09-04.** `DESCRIPTION`
+has no `Config/testthat/edition: 3`, which
+`.claude/rules/r-package-conventions.md` requires. The suite appears to
+be written in 3e style; adding the field makes it explicit rather than
+incidental. (`DESCRIPTION` now carries the field; CLAUDE.md’s “Known
+follow-ups” still lists 3e as deferred and is itself stale on this
+point.)
 
 \[LEARN:defect\] **FIXED 2026-08-28** (now `assert_choice`).
 `read_population(year, add_labels = "pt")` validated `add_labels` for
@@ -365,11 +377,15 @@ number of 10 failures reached” cap hiding the rest.
 \[LEARN:api\]
 **[`data_dictionary()`](https://ipeagit.github.io/censobr/dev/reference/data_dictionary.md)
 file format depends on year AND dataset.** `"microdata"` opens a single
-Excel file, published only for **2000 and 2010**. For the 1960, 1970,
-1980 and 1991 censuses the per-dataset HTML dictionaries are still the
-only ones, and `"population"` / `"households"` are valid options for
-exactly those years. `"families"`, `"mortality"` and `"emigration"` were
-never published for any year and are removed.
+Excel file, published only for **2000 and 2010**. **Corrected
+2026-09-04**: 2022 was added in `a0bc4aa`, so the microdata dictionary
+now covers **2000, 2010 and 2022** (`2022_dictionary_microdata.xlsx`,
+~1.7 MB in the `censo_docs` release). The rest of this entry still
+holds. For the 1960, 1970, 1980 and 1991 censuses the per-dataset HTML
+dictionaries are still the only ones, and `"population"` /
+`"households"` are valid options for exactly those years. `"families"`,
+`"mortality"` and `"emigration"` were never published for any year and
+are removed.
 
 \[LEARN:process\] **I broke working functionality by testing one year
 and generalising.** Told that the 2010 microdata dictionary should come
@@ -644,3 +660,85 @@ before any of this code runs. The scenario this entry describes can no
 longer happen. The general lesson about reassignment-not-propagating
 stays true and worth remembering for other helpers, even though this
 specific instance no longer applies.
+
+------------------------------------------------------------------------
+
+## Session 2026-09-04 — year-availability registry + vignette cache leak
+
+\[LEARN:defect\] **The four chunks in `vignettes/censobr.Rmd`’s cache
+section are one unit and must share the same eval guard — never add
+`eval=TRUE` to any of them.** The file sets a global
+`eval = identical(tolower(Sys.getenv("NOT_CRAN")), "true")` at line 17,
+but the cache section overrode it with explicit `eval=TRUE`, so
+`set_censobr_cache_dir(fs::path_temp(...))` ran during `R CMD check`
+**and on the reader’s machine**, writing the persistent config file at
+`R_user_dir("censobr","config")/cache_dir` — outside
+[`tempdir()`](https://rdrr.io/r/base/tempfile.html), which CRAN forbids
+and which `tests/testthat/test_import_microdata22_controlado.R:3-5`
+already skips on CRAN for that exact reason. It left this machine’s
+cache pointing at a vanished temp dir, hiding 945 MB of downloaded
+parquet. **The trap when fixing it:** the four chunks are save →
+redirect → download → restore, so guarding only the two that *write the
+config* (redirect, restore) is **worse than doing nothing** — the
+redirect is skipped while
+[`read_emigration()`](https://ipeagit.github.io/censobr/dev/reference/read_emigration.md)
+still runs, dumping the download into the reader’s real cache dir and
+printing their actual cache tree. Guard all four or none.
+
+\[LEARN:process\] **A bug reported against “the dev version” may be a
+stale *installed* build, not a source defect — check `GithubSHA1` in the
+installed DESCRIPTION before reading `R/`.**
+`data_dictionary(2022, "microdata")` was reported broken while the
+source was already correct: the installed package was at `6f9d451`, one
+commit behind `a0bc4aa`, so `years <- c(2000, 2010)` rejected 2022 at
+input validation, before any download. Two minutes of
+`read.dcf(system.file("DESCRIPTION", package = "censobr"))` would have
+skipped the whole investigation. Reproduce against the **installed**
+package first, then against
+[`pkgload::load_all()`](https://pkgload.r-lib.org/reference/load_all.html)
+— if they differ, the answer is a reinstall.
+
+\[LEARN:defect\] **A gutted `curl` install reports itself as a network
+failure.** censobr imports {httr2}, not {curl} — but httr2
+`Imports: curl`, and a partially-installed curl (DESCRIPTION and `libs/`
+present, `NAMESPACE` and `R/` missing, from an install run while another
+R session held `curl.dll`) does **not** fail at load:
+`loadNamespace("httr2")` succeeds and only
+[`httr2::req_perform()`](https://httr2.r-lib.org/reference/req_perform.html)
+aborts with *“package ‘curl’ does not have a namespace”*.
+[`download_file()`](https://ipeagit.github.io/censobr/dev/reference/download_file.md)
+catches that in its non-`httr2_http` branch and prints *“Download
+failed. Please check your internet connection and try again.”* — sending
+you after the network instead of the library. When downloads fail
+wholesale, verify `loadNamespace("curl")` before trusting that message.
+
+\[LEARN:api\] **`R/availability.R` is now the single source of truth for
+census year availability** (`.censobr_availability`, read via
+`censobr_years(key)`); add a new census release there, not in the nine
+call sites. **Three exclusions are deliberate — do not “finish the job”
+by registering them.** (1) Labeller years (`R/add_labels_*.R:9`) and
+`merge_households` years are *narrower* than their readers and one is
+inconsistent — `add_labels_families` covers `c(2000, 2010)` while
+`read_families` serves `c(2000, 2022)`, so any `labels ⊆ reader`
+invariant test fails on day one and forces an availability *decision*
+inside what must stay a transcription-only refactor. (2)
+`R/data_dictionary.R:98`’s `c(1960, 1970, 1980, 1991)` means “pre-2000
+censuses” and equals `dictionary_population` only by coincidence. (3)
+[`read_tracts()`](https://ipeagit.github.io/censobr/dev/reference/read_tracts.md)’s
+per-census dataset lists are a year×dataset matrix of a different shape.
+
+\[LEARN:workflow\] **The year guards are not uniform, so there is
+nothing to unify into a single `check_year()` helper.** Six sites call
+`error_missing_years(years)`; `docs_questionnaire.R:43-47` and
+`docs_interview_manual.R:37-41` build their own `cli_abort` from
+`paste(years, collapse = " ")`; `data_dictionary.R:96-111` has a bespoke
+abort plus a pre-2000 redirect branch. Wrapping them would also add a
+frame under
+[`error_missing_years()`](https://ipeagit.github.io/censobr/dev/reference/error_missing_years.md)’s
+`call = rlang::caller_env()`, re-attributing every year error away from
+the public function. Refactor the *lookup*, leave the *guard* alone.
+
+\[LEARN:process\] **`NEWS.md` has two `* bug fixes` headings** (dev at
+~line 60, an older release at ~160). A scripted edit anchored on that
+string must target the first occurrence, or it silently lands the bullet
+in a shipped release section.

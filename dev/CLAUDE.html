@@ -85,20 +85,20 @@
 <hr></div>
 <div class="section level2">
 <h2 id="year--dataset-availability">Year × dataset availability<a class="anchor" aria-label="anchor" href="#year--dataset-availability"></a></h2>
-<p>Hard-coded as <code>years &lt;- c(...)</code> in <strong>9 separate files</strong>. There is no single constant — all copies must move together, and this table is the reference when they disagree.</p>
+<p>Registered once in <code>R/availability.R</code> as <code>.censobr_availability</code>, read through <code>censobr_years(key)</code>. A new census release is added there, not in the nine call sites.</p>
 <table class="table"><colgroup><col width="50%"><col width="50%"></colgroup><thead><tr><th>Function / dataset</th>
 <th>Years</th>
 </tr></thead><tbody><tr><td>
 <code><a href="reference/read_population.html">read_population()</a></code>, <code><a href="reference/read_households.html">read_households()</a></code>
 </td>
-<td>1960, 1970, 1980, 1991, 2000, 2010</td>
+<td>1960, 1970, 1980, 1991, 2000, 2010, 2022</td>
 </tr><tr><td><code><a href="reference/read_tracts.html">read_tracts()</a></code></td>
 <td>2000, 2010, 2022</td>
 </tr><tr><td><code><a href="reference/read_families.html">read_families()</a></code></td>
-<td>2000</td>
-</tr><tr><td>
-<code><a href="reference/read_mortality.html">read_mortality()</a></code>, <code><a href="reference/read_emigration.html">read_emigration()</a></code>
-</td>
+<td>2000, 2022</td>
+</tr><tr><td><code><a href="reference/read_mortality.html">read_mortality()</a></code></td>
+<td>2010, 2022</td>
+</tr><tr><td><code><a href="reference/read_emigration.html">read_emigration()</a></code></td>
 <td>2010</td>
 </tr><tr><td>
 <code><a href="reference/questionnaire.html">questionnaire()</a></code>, <code><a href="reference/interview_manual.html">interview_manual()</a></code>
