@@ -62,15 +62,16 @@ do not edit it expecting an effect.
 
 ## Year × dataset availability
 
-Hard-coded as `years <- c(...)` in **9 separate files**. There is no single constant — all copies
-must move together, and this table is the reference when they disagree.
+Registered once in `R/availability.R` as `.censobr_availability`, read through `censobr_years(key)`.
+A new census release is added there, not in the nine call sites.
 
 | Function / dataset | Years |
 |---|---|
-| `read_population()`, `read_households()` | 1960, 1970, 1980, 1991, 2000, 2010 |
+| `read_population()`, `read_households()` | 1960, 1970, 1980, 1991, 2000, 2010, 2022 |
 | `read_tracts()` | 2000, 2010, 2022 |
-| `read_families()` | 2000 |
-| `read_mortality()`, `read_emigration()` | 2010 |
+| `read_families()` | 2000, 2022 |
+| `read_mortality()` | 2010, 2022 |
+| `read_emigration()` | 2010 |
 | `questionnaire()`, `interview_manual()` | 1960, 1970, 1980, 1991, 2000, 2010, 2022 |
 | `data_dictionary(dataset = "microdata")` | 2000, 2010, 2022 |
 | `data_dictionary(dataset = "tracts")` | 1970, 1980, 1991, 2000, 2010, 2022 |

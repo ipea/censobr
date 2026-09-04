@@ -68,7 +68,7 @@ read_tracts <- function(year,
 
 
   # data available for the years:
-  years <- c(2000, 2010, 2022)
+  years <- censobr_years("tracts")
   if (isFALSE(year %in% years)) {
     error_missing_years(years)
   }
