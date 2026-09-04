@@ -72,7 +72,7 @@ must move together, and this table is the reference when they disagree.
 | `read_families()` | 2000 |
 | `read_mortality()`, `read_emigration()` | 2010 |
 | `questionnaire()`, `interview_manual()` | 1960, 1970, 1980, 1991, 2000, 2010, 2022 |
-| `data_dictionary(dataset = "microdata")` | 2000, 2010 |
+| `data_dictionary(dataset = "microdata")` | 2000, 2010, 2022 |
 | `data_dictionary(dataset = "tracts")` | 1970, 1980, 1991, 2000, 2010, 2022 |
 
 `read_tracts()` datasets differ per census — 2000 (6), 2010 (8), 2022 (9); the authoritative lists

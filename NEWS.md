@@ -21,6 +21,7 @@
   `import_microdata22_controlado()`. When the data have not been imported yet,
   these functions return an informative error explaining how to obtain them
   instead of attempting a download that cannot succeed.
+  * `data_dictionary()` now accepts `year = 2022` for `dataset = "microdata"`
   * `read_population()` now accepts a `merge_households` parameter, bringing in
   household-level variables from `read_households()` -- previously only `read_mortality()`
   and `read_emigration()` supported this. Because merging all ~300 population + household
@@ -50,7 +51,7 @@
   dictionary was published for those data sets and pointing to the microdata
   dictionary instead. The `"population"` and `"households"`
   dictionaries remain available for the 1960, 1970, 1980 and 1991 censuses; for
-  2000 and 2010 they were superseded by the single Excel file opened with
+  2000 onward they were superseded by the single Excel file opened with
   `dataset = "microdata"`.
   * `data_dictionary()`, `questionnaire()` and `interview_manual()` now return the
   path to the downloaded file. The file is only opened when `verbose = TRUE` and

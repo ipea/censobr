@@ -387,6 +387,13 @@ censobr::censobr_cache(delete_file = "all")
 
 By default, **{censobr}** files are saved in the 'User' directory. However, users can run the function `set_censobr_cache_dir()` to set custom cache directory. This directory is persistent across R sessions.
 
+```{r, eval=TRUE, warning=FALSE, include=FALSE}
+# set_censobr_cache_dir() records the path in a config file that persists across
+# sessions, so building this vignette must not leave the reader's cache pointing
+# at a temporary directory. Remember the current setting and put it back at the end.
+original_cache_dir <- censobr::get_censobr_cache_dir()
+```
+
 ```{r, eval=TRUE, warning=FALSE}
 tempf <- fs::path_temp(pattern = "my_temp_dir")
 
@@ -407,5 +414,10 @@ censobr::censobr_cache(
 ```
 
 If you do not remember the location of the cache, you can always run `get_censobr_cache_dir()` to return the path of the cache directory in use, or run `set_censobr_cache_dir(path = NULL)` to set the default cache directory back.
+
+```{r, eval=TRUE, warning=FALSE, include=FALSE}
+# restore the cache directory the reader had before this vignette ran
+censobr::set_censobr_cache_dir(path = original_cache_dir, verbose = FALSE)
+```
 
 

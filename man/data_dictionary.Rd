@@ -19,7 +19,7 @@ data_dictionary(
 include \code{c("microdata", "tracts", "population", "households")}. In the
 case of \code{"microdata"}, the function opens a single Excel file with the
 data dictionary of all variables of the microdata, available for the
-years 2000 and 2010. For earlier censuses, use \code{"population"} or
+years 2000, 2010 and 2022. For earlier censuses, use \code{"population"} or
 \code{"households"}, which open a separate file per data set.}
 
 \item{showProgress}{Logical. Defaults to \code{TRUE} display download progress
