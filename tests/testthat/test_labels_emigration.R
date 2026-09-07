@@ -27,7 +27,25 @@ test_that("add_labels_emigration", {
 
 
 
- })
+})
+
+test_that("emigration YAML labels preserve mapped and unmatched values", {
+  arrw <- arrow::arrow_table(data.frame(
+    V1006 = c("2", "7", NA_character_),
+    V0303 = c("9", "8", NA_character_),
+    V1005 = c("8", "9", NA_character_),
+    V3061 = c("8000710", "8000826", "8999999"),
+    stringsAsFactors = FALSE
+  ))
+
+  output <- censobr:::add_labels_emigration(arrw, year = 2010, lang = "pt") |>
+    dplyr::collect()
+
+  testthat::expect_equal(output$V1006, c("Rural", NA_character_, NA_character_))
+  testthat::expect_equal(output$V0303, c("Ignorado", NA_character_, NA_character_))
+  testthat::expect_equal(output$V1005, c("Área rural exclusive aglomerado rural", NA_character_, NA_character_))
+  testthat::expect_equal(output$V3061, c("África do SUL", "Escócia", NA_character_))
+})
 
 
 # ERRORS and messages  -----------------------

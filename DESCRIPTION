@@ -41,7 +41,8 @@ Imports:
     glue,
     httr2 (>= 1.0.0),
     rlang,
-    tools
+    tools,
+    yaml
 Suggests:
     covr,
     DBI,

@@ -1,0 +1,130 @@
+schema_version: 1
+dataset: households
+year: 2000
+language: pt
+imports:
+  - ../_shared/geography.yml
+mappings:
+  - use: urban_rural
+    variables: [V1006]
+  - variables: [V1004]
+    unmatched: null
+    levels:
+      - {code: "01", label: "Belém"}
+      - {code: "02", label: "Grande São Luís"}
+      - {code: "03", label: "Fortaleza"}
+      - {code: "04", label: "Natal"}
+      - {code: "05", label: "Recife"}
+      - {code: "06", label: "Maceió"}
+      - {code: "07", label: "Salvador"}
+      - {code: "08", label: "Belo Horizonte"}
+      - {code: "09", label: "Colar Metropolitano da RM de Belo Horizonte"}
+      - {code: "10", label: "Vale do Aço"}
+      - {code: "11", label: "Colar Metropolitano da RM do Vale do Aço"}
+      - {code: "12", label: "Grande Vitória"}
+      - {code: "13", label: "Rio de Janeiro"}
+      - {code: "14", label: "São Paulo"}
+      - {code: "15", label: "Baixada Santista"}
+      - {code: "16", label: "Campinas"}
+      - {code: "17", label: "Curitiba"}
+      - {code: "18", label: "Londrina"}
+      - {code: "19", label: "Maringá"}
+      - {code: "20", label: "Florianópolis"}
+      - {code: "21", label: "Área de Expansão Metropolitana da RM de Florianópolis"}
+      - {code: "22", label: "Núcleo Metropolitano da RM Vale do Itajaí"}
+      - {code: "23", label: "Área de Expansão Metropolitana da RM Vale do Itajaí"}
+      - {code: "24", label: "Norte/Nordeste Catarinense"}
+      - {code: "25", label: "Área de Expansão Metropolitana da RM Norte/Nordeste Catarinense"}
+      - {code: "26", label: "Porto Alegre"}
+      - {code: "27", label: "Goiânia"}
+      - {code: "28", label: "RIDE (Região Integrada de Desenvolvimento do Distrito Federal e Entorno)"}
+  - variables: [V1005]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Área urbanizada de vila ou cidade"}
+      - {code: "2", label: "Área não urbanizada de vila ou cidade"}
+      - {code: "3", label: "Área urbanizada isolada"}
+      - {code: "4", label: "Rural - extensão urbana"}
+      - {code: "5", label: "Rural - povoado"}
+      - {code: "6", label: "Rural - núcleo"}
+      - {code: "7", label: "Rural - outros aglomerados"}
+      - {code: "8", label: "Rural - exclusive os aglomerados rurais"}
+  - variables: [V1007]
+    unmatched: null
+    levels:
+      - {code: "0", label: "Setor comum ou não especial"}
+      - {code: "1", label: "Setor especial de aglomerado subnormal"}
+      - {code: "2", label: "Setor especial de quartéis, bases militares, etc."}
+      - {code: "3", label: "Setor especial de alojamento, acampamentos, etc."}
+      - {code: "4", label: "Setor especial de embarcações, barcos, navios, etc."}
+      - {code: "5", label: "Setor especial de aldeia indígena"}
+      - {code: "6", label: "Setor especial de penitenciárias, colônias penais, presídios, cadeias, etc."}
+      - {code: "7", label: "Setor especial de asilos, orfanatos, conventos, hospitais, etc."}
+  - variables: [V0201]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Particular permanente"}
+      - {code: "2", label: "Particular improvisado"}
+      - {code: "3", label: "Coletivo"}
+  - variables: [V0202]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Casa"}
+      - {code: "2", label: "Apartamento"}
+      - {code: "3", label: "Cômodo"}
+  - variables: [V0205]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Próprio, já pago"}
+      - {code: "2", label: "Próprio, ainda pagando"}
+      - {code: "3", label: "Alugado"}
+      - {code: "4", label: "Cedido por empregador"}
+      - {code: "5", label: "Cedido de outra forma"}
+      - {code: "6", label: "Outra Condição"}
+  - variables: [V0206]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Próprio"}
+      - {code: "2", label: "Cedido"}
+      - {code: "3", label: "Outra condição"}
+  - variables: [V0207]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Rede geral"}
+      - {code: "2", label: "Poço ou nascente (na propriedade)"}
+      - {code: "3", label: "Outra"}
+  - variables: [V0208]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Canalizada em pelo menos um cômodo"}
+      - {code: "2", label: "Canalizada só na propriedade ou terreno"}
+      - {code: "3", label: "Não canalizada"}
+  - variables: [V0211]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Rede geral de esgoto ou pluvial"}
+      - {code: "2", label: "Fossa séptica"}
+      - {code: "3", label: "Fossa rudimentar"}
+      - {code: "4", label: "Vala"}
+      - {code: "5", label: "Rio, lago ou mar"}
+      - {code: "6", label: "Outro escoadouro"}
+  - variables: [V0212]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Coletado por serviço de limpeza"}
+      - {code: "2", label: "Colocado em caçamba de serviço de limpeza"}
+      - {code: "3", label: "Queimado (na propriedade)"}
+      - {code: "4", label: "Enterrado (na propriedade)"}
+      - {code: "5", label: "Jogado em terreno baldio ou logradouro"}
+      - {code: "6", label: "Jogado em rio, lago ou mar"}
+      - {code: "7", label: "Tem outro destino"}
+  - variables: [V1113]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Total"}
+      - {code: "2", label: "Parcial"}
+      - {code: "3", label: "Não Existe"}
+  - variables: [V0210, V0213, V0214, V0215, V0216, V0217, V0218, V0219, V0220, V1111, V1112]
+    unmatched: "Não"
+    levels:
+      - {code: "1", label: "Sim"}

@@ -13,51 +13,12 @@ add_labels_population <- function(arrw,
   # names of columns present in the data
   cols <- names(arrw) # nocov start
 
-  # ALL YEARS ------------------------------------------------------------------
-
-  # urban vs rural
-  if ('V1006' %in% cols) {
-    arrw <- mutate(arrw, V1006 = case_when(
-      V1006 == '1' ~'Urbana',
-      V1006 == '2' ~'Rural'))
-  }
-
-
   # YEAR 2010 ------------------------------------------------------------------
     if (year == 2010 & lang == 'pt') {
 
-      # RELACAO DE PARENTESCO OU DE CONVIVENCIA COM A PESSOA RESPONSAVEL PELO DOMICILIO
-      if ('V0502' %in% cols) {
-        arrw <- mutate(arrw, V0502 = case_when(
-          V0502 == '01' ~ 'Pessoa respons\u00e1vel pelo domic\u00edlio ',
-          V0502 == '02' ~ 'C\u00f4njuge ou companheiro(a) de sexo diferente',
-          V0502 == '03' ~ 'C\u00f4njuge ou companheiro(a) do mesmo sexo',
-          V0502 == '04' ~ 'Filho(a) do respons\u00e1vel e do c\u00f4njuge',
-          V0502 == '05' ~ 'Filho(a) somente do respons\u00e1vel',
-          V0502 == '06' ~ 'Enteado(a)',
-          V0502 == '07' ~ 'Genro ou nora',
-          V0502 == '08' ~ 'Pai, m\u00e3e, padrasto ou madrasta',
-          V0502 == '09' ~ 'Sogro(a)',
-          V0502 == '10' ~ 'Neto(a)',
-          V0502 == '11' ~ 'Bisneto(a)',
-          V0502 == '12' ~ 'Irm\u00e3o ou irm\u00e3',
-          V0502 == '13' ~ 'Av\u00f4 ou av\u00f3',
-          V0502 == '14' ~ 'Outro parente',
-          V0502 == '15' ~ 'Agregado(a)',
-          V0502 == '16' ~ 'Convivente',
-          V0502 == '17' ~ 'Pensionista',
-          V0502 == '18' ~ 'Empregado(a) dom\u00e9stico(a)',
-          V0502 == '19' ~ 'Parente do(a) empregado(a)  dom\u00e9stico(a)',
-          V0502 == '20' ~ 'Individual em domic\u00edlio coletivo'))
-          }
-
-      # sex
-      if ('V0601' %in% cols) {
-        arrw <- arrw |> mutate(V0601 = case_when(
-          V0601 == '1' ~ 'Masculino',
-          V0601 == '2' ~ 'Feminino',
-          V0601==  '9' ~ 'Ignorado'))
-      }
+      # YAML-backed pilot: these maps are compiled into one mutate().
+      config <- load_label_config(dataset = "population", year = year, lang = lang)
+      arrw <- apply_label_config(arrw, config)
 
       # FORMA DE DECLARACAO DA IDADE:
       if ('V6040' %in% cols) {

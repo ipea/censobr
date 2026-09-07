@@ -1,0 +1,12 @@
+schema_version: 1
+dataset: population
+year: 2010
+language: pt
+imports:
+  - ../common/geography.yml
+mappings:
+  - use: urban_rural
+    variables:
+      - name: V1006
+        alias: urban_rural
+        description: Situação urbana ou rural

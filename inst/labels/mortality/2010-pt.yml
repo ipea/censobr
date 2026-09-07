@@ -1,0 +1,69 @@
+schema_version: 1
+dataset: mortality
+year: 2010
+language: pt
+imports:
+  - ../_shared/geography.yml
+mappings:
+  - use: urban_rural
+    variables: [V1006]
+  - variables:
+      - V0704
+    unmatched: null
+    levels:
+      - code: "1"
+        label: "Masculino"
+      - code: "2"
+        label: "Feminino"
+      - code: "9"
+        label: "Ignorado"
+  - variables:
+      - V0703
+    unmatched: null
+    levels:
+      - code: "01"
+        label: "Agosto de 2009"
+      - code: "02"
+        label: "Setembro de 2009"
+      - code: "03"
+        label: "Outubro de 2009"
+      - code: "04"
+        label: "Novembro de 2009"
+      - code: "05"
+        label: "Dezembro de 2009"
+      - code: "06"
+        label: "Janeiro de 2010"
+      - code: "07"
+        label: "Fevereiro de 2010"
+      - code: "08"
+        label: "Março de 2010"
+      - code: "09"
+        label: "Abril de 2010"
+      - code: "10"
+        label: "Maio de 2010"
+      - code: "11"
+        label: "Junho de 2010"
+      - code: "12"
+        label: "Julho de 2010"
+      - code: "99"
+        label: "Ignorado"
+  - variables:
+      - V1005
+    unmatched: null
+    levels:
+      - code: "1"
+        label: "Área urbanizada"
+      - code: "2"
+        label: "Área não urbanizada"
+      - code: "3"
+        label: "Área urbanizada isolada"
+      - code: "4"
+        label: "Área rural de extensão urbana"
+      - code: "5"
+        label: "Aglomerado rural (povoado)"
+      - code: "6"
+        label: "Aglomerado rural (núcleo)"
+      - code: "7"
+        label: "Aglomerado rural (outros)"
+      - code: "8"
+        label: "Área rural exclusive aglomerado rural"

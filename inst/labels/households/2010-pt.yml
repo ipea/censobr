@@ -1,0 +1,136 @@
+schema_version: 1
+dataset: households
+year: 2010
+language: pt
+imports:
+  - ../_shared/geography.yml
+mappings:
+  - use: urban_rural
+    variables: [V1006]
+  - variables: [V4001]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Domicílio particular permanente ocupado"}
+      - {code: "2", label: "Domicílio particular permanente ocupado sem entrevista realizada"}
+      - {code: "5", label: "Domicílio particular improvisado ocupado"}
+      - {code: "6", label: "Domicílio coletivo com morador"}
+  - variables: [V4002]
+    unmatched: null
+    levels:
+      - {code: "11", label: "Casa"}
+      - {code: "12", label: "Casa de vila ou em condomínio"}
+      - {code: "13", label: "Apartamento"}
+      - {code: "14", label: "Habitação em: casa de cômodos, cortiço ou cabeça de porco"}
+      - {code: "15", label: "Oca ou maloca "}
+      - {code: "51", label: "Tenda ou barraca"}
+      - {code: "52", label: "Dentro de estabelecimento"}
+      - {code: "53", label: "Outro (vagão, trailer, gruta, etc)"}
+      - {code: "61", label: "Asilo, orfanato e similares  com morador"}
+      - {code: "62", label: "Hotel, pensão e similares com morador"}
+      - {code: "63", label: "Alojamento de trabalhadores com morador"}
+      - {code: "64", label: "Penitenciária, presídio ou casa de detenção com morador"}
+  - variables: [V0201]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Próprio de algum morador - já pago"}
+      - {code: "2", label: "Próprio de algum morador - ainda pagando"}
+      - {code: "3", label: "Alugado"}
+      - {code: "4", label: "Cedido por empregador"}
+      - {code: "5", label: "Cedido de outra forma"}
+      - {code: "6", label: "Outra condição"}
+  - variables: [V0202]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Alvenaria com revestimento"}
+      - {code: "2", label: "Alvenaria sem revestimento"}
+      - {code: "3", label: "Madeira apropriada para construção (aparelhada)"}
+      - {code: "4", label: "Taipa revestida"}
+      - {code: "5", label: "Taipa não revestida"}
+      - {code: "6", label: "Madeira aproveitada"}
+      - {code: "7", label: "Palha"}
+      - {code: "8", label: "Outro material"}
+      - {code: "9", label: "Sem parede"}
+  - variables: [V0207]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Rede geral de esgoto ou pluvial"}
+      - {code: "2", label: "Fossa séptica"}
+      - {code: "3", label: "Fossa rudimentar"}
+      - {code: "4", label: "Vala"}
+      - {code: "5", label: "Rio, lago ou mar"}
+      - {code: "6", label: "Outro"}
+  - variables: [V0208]
+    unmatched: null
+    levels:
+      - {code: "01", label: "Rede geral de distribuição"}
+      - {code: "02", label: "Poço ou nascente na propriedade"}
+      - {code: "03", label: "Poço ou nascente fora da propriedade"}
+      - {code: "04", label: "Carro-pipa"}
+      - {code: "05", label: "Água da chuva armazenada em cisterna"}
+      - {code: "06", label: "Água da chuva armazenada de outra forma"}
+      - {code: "07", label: "Rios, açudes, lagos e igarapés"}
+      - {code: "08", label: "Outra"}
+      - {code: "09", label: "Poço ou nascente na aldeia"}
+      - {code: "10", label: "Poço ou nascente fora da aldeia"}
+  - variables: [V0209]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Sim, em pelo menos um cômodo"}
+      - {code: "2", label: "Sim, só na propriedade ou terreno"}
+      - {code: "3", label: "Não"}
+  - variables: [V0210]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Coletado diretamente por serviço de limpeza"}
+      - {code: "2", label: "Colocado em caçamba de serviço de limpeza"}
+      - {code: "3", label: "Queimado (na propriedade)"}
+      - {code: "4", label: "Enterrado (na propriedade)"}
+      - {code: "5", label: "Jogado em terreno baldio ou logradouro"}
+      - {code: "6", label: "Jogado em rio, lago ou mar"}
+      - {code: "7", label: "Tem outro destino"}
+  - variables: [V0211]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Sim, de companhia distribuidora"}
+      - {code: "2", label: "Sim, de outras fontes"}
+      - {code: "3", label: "Não existe energia elétrica"}
+  - variables: [V0212]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Sim, de uso exclusivo"}
+      - {code: "2", label: "Sim, de uso comum "}
+      - {code: "3", label: "Não tem medidor ou relógio"}
+  - variables: [V0402]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Apenas um morador"}
+      - {code: "2", label: "Mais de um morador"}
+      - {code: "9", label: "Ignorado"}
+  - variables: [V6600]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Unipessoal"}
+      - {code: "2", label: "Nuclear"}
+      - {code: "3", label: "Estendida"}
+      - {code: "4", label: "Composta"}
+  - variables: [V6210]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Adequada"}
+      - {code: "2", label: "Semi-adequada"}
+      - {code: "3", label: "Inadequada"}
+  - variables: [V1005]
+    unmatched: null
+    levels:
+      - {code: "1", label: "Área urbanizada"}
+      - {code: "2", label: "Área não urbanizada"}
+      - {code: "3", label: "Área urbanizada isolada"}
+      - {code: "4", label: "Área rural de extensão urbana"}
+      - {code: "5", label: "Aglomerado rural (povoado)"}
+      - {code: "6", label: "Aglomerado rural (núcleo)"}
+      - {code: "7", label: "Aglomerado rural (outros)"}
+      - {code: "8", label: "Área rural exclusive aglomerado rural"}
+  - variables: [V0206, V0213, V0214, V0215, V0216, V0217, V0218, V0219, V0220, V0221, V0222, V0301, V0701]
+    unmatched: "Não"
+    levels:
+      - {code: "1", label: "Sim"}

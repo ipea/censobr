@@ -3,6 +3,10 @@
 
 * New features
 
+  * `label_variable_metadata()` returns the optional aliases and descriptions
+  declared for variables in the label configuration. These metadata help users
+  interpret the original variable names and do not rename, add or remove data
+  columns.
   * New function `import_microdata22_controlado()`, which brings the microdata of
   the **2022** Population Census into censobr. IBGE releases the sample microdata
   of 2022 under controlled access, so censobr is not allowed to redistribute them

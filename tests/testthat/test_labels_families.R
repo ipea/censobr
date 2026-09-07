@@ -29,6 +29,28 @@ test_that("add_labels_families", {
  })
 
 
+test_that("add_labels_families preserves mapped and unmatched values", {
+
+  input <- arrow::arrow_table(data.frame(
+    V1004 = c("01", "99", NA_character_),
+    CODV0404 = c("0", "8", NA_character_),
+    CODV0404_2 = c("01", "99", NA_character_),
+    stringsAsFactors = FALSE
+  ))
+
+  output <- censobr:::add_labels_families(input, year = 2000, lang = "pt") |>
+    dplyr::collect()
+
+  testthat::expect_identical(output$V1004, c("Belém", NA_character_, NA_character_))
+  testthat::expect_identical(output$CODV0404, c(
+    "Única (uma só família vive no domicílio)", NA_character_, NA_character_
+  ))
+  testthat::expect_identical(output$CODV0404_2, c(
+    "Casal sem filhos", NA_character_, NA_character_
+  ))
+})
+
+
 # ERRORS and messages  -----------------------
 test_that("add_labels_families", {
 

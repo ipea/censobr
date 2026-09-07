@@ -30,7 +30,25 @@ test_that("add_labels_mortality", {
 
 
 
- })
+})
+
+test_that("mortality YAML labels preserve mapped and unmatched values", {
+  arrw <- arrow::arrow_table(data.frame(
+    V1006 = c("1", "7", NA_character_),
+    V0704 = c("2", "8", NA_character_),
+    V0703 = c("08", "00", NA_character_),
+    V1005 = c("1", "9", NA_character_),
+    stringsAsFactors = FALSE
+  ))
+
+  output <- censobr:::add_labels_mortality(arrw, year = 2010, lang = "pt") |>
+    dplyr::collect()
+
+  testthat::expect_equal(output$V1006, c("Urbana", NA_character_, NA_character_))
+  testthat::expect_equal(output$V0704, c("Feminino", NA_character_, NA_character_))
+  testthat::expect_equal(output$V0703, c("Março de 2010", NA_character_, NA_character_))
+  testthat::expect_equal(output$V1005, c("Área urbanizada", NA_character_, NA_character_))
+})
 
 
 # ERRORS and messages  -----------------------

@@ -1,0 +1,63 @@
+schema_version: 1
+dataset: population
+year: 2010
+language: pt
+imports:
+  - ../_shared/geography.yml
+mappings:
+  - use: urban_rural
+    variables: [V1006]
+  - variables:
+      - V0502
+    unmatched: null
+    levels:
+      - code: "01"
+        label: "Pessoa responsável pelo domicílio "
+      - code: "02"
+        label: "Cônjuge ou companheiro(a) de sexo diferente"
+      - code: "03"
+        label: "Cônjuge ou companheiro(a) do mesmo sexo"
+      - code: "04"
+        label: "Filho(a) do responsável e do cônjuge"
+      - code: "05"
+        label: "Filho(a) somente do responsável"
+      - code: "06"
+        label: "Enteado(a)"
+      - code: "07"
+        label: "Genro ou nora"
+      - code: "08"
+        label: "Pai, mãe, padrasto ou madrasta"
+      - code: "09"
+        label: "Sogro(a)"
+      - code: "10"
+        label: "Neto(a)"
+      - code: "11"
+        label: "Bisneto(a)"
+      - code: "12"
+        label: "Irmão ou irmã"
+      - code: "13"
+        label: "Avô ou avó"
+      - code: "14"
+        label: "Outro parente"
+      - code: "15"
+        label: "Agregado(a)"
+      - code: "16"
+        label: "Convivente"
+      - code: "17"
+        label: "Pensionista"
+      - code: "18"
+        label: "Empregado(a) doméstico(a)"
+      - code: "19"
+        label: "Parente do(a) empregado(a)  doméstico(a)"
+      - code: "20"
+        label: "Individual em domicílio coletivo"
+  - variables:
+      - V0601
+    unmatched: null
+    levels:
+      - code: "1"
+        label: "Masculino"
+      - code: "2"
+        label: "Feminino"
+      - code: "9"
+        label: "Ignorado"

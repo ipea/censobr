@@ -1,0 +1,9 @@
+schema_version: 1
+definitions:
+  urban_rural:
+    unmatched: null
+    levels:
+      - code: "1"
+        label: "Urbana"
+      - code: "2"
+        label: "Rural"
