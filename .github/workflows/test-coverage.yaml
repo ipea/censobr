@@ -20,6 +20,12 @@ jobs:
 
       - uses: r-lib/actions/setup-r@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2.13.0
 
+      - name: Setup r2u (binary CRAN packages for Ubuntu)
+        uses: eddelbuettel/github-actions/r2u-setup@master
+
+      - name: Install arrow and duckdb as apt binaries
+        run: sudo apt-get install -y --no-install-recommends r-cran-arrow r-cran-duckdb
+
       - uses: r-lib/actions/setup-r-dependencies@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2.13.0
         with:
           extra-packages: any::covr, any::xml2
