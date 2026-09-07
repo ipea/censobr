@@ -34,6 +34,23 @@ remotes::install_github("ipea/censobr", ref="dev")
 
 ```
 
+### Faster installation on Ubuntu/Debian (optional)
+
+**{censobr}** depends on `arrow` and `duckdb`, which can take a long time to compile from source.
+On Ubuntu, you can install pre-compiled binaries for these two packages via
+[r2u](https://github.com/eddelbuettel/r2u) before installing **{censobr}**:
+
+```bash
+# one-time setup of the r2u binary repository
+# (pick the script matching your Ubuntu release: see https://github.com/eddelbuettel/r2u)
+wget -q -O- https://raw.githubusercontent.com/eddelbuettel/r2u/master/inst/scripts/add_cranapt_noble.sh | sudo bash
+
+sudo apt-get install -y r-cran-arrow r-cran-duckdb
+```
+
+Then install **{censobr}** as usual — `install.packages()` will detect that `arrow` and `duckdb`
+are already installed and skip building them from source.
+
 
 # Basic usage
 
