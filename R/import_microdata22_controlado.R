@@ -61,6 +61,9 @@
 #'
 #' # check files in cache dir
 #' censobr::censobr_cache()
+#'
+#' # set cache back to original dir
+#' censobr::set_censobr_cache_dir(path = NULL)
 #' }
 #'
 import_microdata22 <- function(zip_path, verbose = TRUE) {

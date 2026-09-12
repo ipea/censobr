@@ -69,6 +69,9 @@ censobr::import_microdata22(zip_path = path_to_zip)
 
 # check files in cache dir
 censobr::censobr_cache()
+
+# set cache back to original dir
+censobr::set_censobr_cache_dir(path = NULL)
 }
 
 }

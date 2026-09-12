@@ -8,16 +8,19 @@
 #'
 #' @keywords internal
 download_is_incomplete <- function(actual, expected, encoding) {
-
   # no file, or a body too small to be a real data set
-  if (is.na(actual) || actual < 5000) { return(TRUE) }
+  if (is.na(actual) || actual < 5000) {
+    return(TRUE)
+  }
 
   # the server size can only be compared with the bytes on disk when the
   # response was not compressed: curl decompresses on the fly, so the two
   # would legitimately differ
   if (is.null(encoding) && !is.null(expected)) {
     expected <- suppressWarnings(as.numeric(expected))
-    if (!is.na(expected)) { return(actual != expected) }
+    if (!is.na(expected)) {
+      return(actual != expected)
+    }
   }
 
   return(FALSE)
@@ -33,10 +36,13 @@ download_is_incomplete <- function(actual, expected, encoding) {
 #' @return A string to the address of the file
 #'
 #' @keywords internal
-download_file <- function(file_url = parent.frame()$file_url,
-                          showProgress = parent.frame()$showProgress,
-                          cache = parent.frame()$cache,
-                          verbose = parent.frame()$verbose){ # nocov start
+download_file <- function(
+  file_url = parent.frame()$file_url,
+  showProgress = parent.frame()$showProgress,
+  cache = parent.frame()$cache,
+  verbose = parent.frame()$verbose
+) {
+  # nocov start
 
   # check input
   checkmate::assert_logical(showProgress)
@@ -45,7 +51,9 @@ download_file <- function(file_url = parent.frame()$file_url,
   # create local dir / cache dir is versioned
   cache_dir <- get_censobr_cache_dir()
   cache_dir <- glue::glue("{cache_dir}/data_release_{censobr_env$data_release}")
-  if (!dir.exists(cache_dir)) { dir.create(cache_dir, recursive=TRUE) }
+  if (!dir.exists(cache_dir)) {
+    dir.create(cache_dir, recursive = TRUE)
+  }
 
   # path to local file
   file_name <- basename(file_url)
@@ -61,18 +69,27 @@ download_file <- function(file_url = parent.frame()$file_url,
 
   # download file
   req <- httr2::request(file_url)
-  if (isTRUE(showProgress)) { req <- httr2::req_progress(req) }
+  if (isTRUE(showProgress)) {
+    req <- httr2::req_progress(req)
+  }
 
-  resp <- tryCatch(httr2::req_perform(req, path = local_file), error = function(e) e)
+  resp <- tryCatch(
+    httr2::req_perform(req, path = local_file),
+    error = function(e) e
+  )
 
   # a failed download must not be left behind: download_file() treats an
   # existing file as a valid cache hit on the next call
   if (inherits(resp, 'error')) {
     unlink(local_file)
     if (inherits(resp, 'httr2_http')) {
-      cli::cli_alert_danger("The file is not available at the source. Please try again later.")
+      cli::cli_alert_danger(
+        "The file is not available at the source. Please try again later."
+      )
     } else {
-      cli::cli_alert_danger("Download failed. Please check your internet connection and try again.")
+      cli::cli_alert_danger(
+        "Download failed. Please check your internet connection and try again."
+      )
     }
     return(invisible(NULL))
   }
@@ -80,18 +97,24 @@ download_file <- function(file_url = parent.frame()$file_url,
   # verify the download is complete. The size reported by the server can only be
   # compared with the bytes on disk when the response was not compressed, since
   # curl decompresses on the fly and the two would legitimately differ.
-  actual <- if (file.exists(local_file)) file.info(local_file)$size else NA_real_
+  actual <- if (file.exists(local_file)) {
+    file.info(local_file)$size
+  } else {
+    NA_real_
+  }
   encoding <- httr2::resp_header(resp, "content-encoding")
   expected <- httr2::resp_header(resp, "content-length")
 
   if (isTRUE(download_is_incomplete(actual, expected, encoding))) {
     unlink(local_file)
-    cli::cli_alert_danger("The downloaded file is incomplete. Please try again.")
+    cli::cli_alert_danger(
+      "The downloaded file is incomplete. Please try again."
+    )
     return(invisible(NULL))
   }
 
   return(local_file)
-  } # nocov end
+} # nocov end
 
 
 #' Build the release URL, download it, and open it as an arrow Dataset
@@ -109,13 +132,21 @@ download_file <- function(file_url = parent.frame()$file_url,
 #'
 #' @keywords internal
 open_censobr_data <- function(dataset, year, showProgress, cache, verbose) {
-
-  file_name <- paste0(year, "_", dataset, "_", censobr_env$data_release, ".parquet")
+  file_name <- paste0(
+    year,
+    "_",
+    dataset,
+    "_",
+    censobr_env$data_release,
+    ".parquet"
+  )
 
   # IBGE releases the 2022 microdata under controlled access, so there is no
   # file for censobr to download. It has to be in the cache already, put there
   # by import_microdata22_controlado()
   if (year == 2022) {
+    # check first if controlled-access data is available
+    file_name <- gsub("_v", ".controlado_v", file_name)
 
     local_file <- fs::path(
       get_censobr_cache_dir(),
@@ -123,23 +154,34 @@ open_censobr_data <- function(dataset, year, showProgress, cache, verbose) {
       file_name
     )
 
+    # if controlled-access microdata is not available
+    # Throw warning and proceed to download public data
     if (isFALSE(file.exists(local_file))) {
-      error_microdata22_not_imported(call = rlang::caller_env())
+      warning_microdata22_not_imported(call = rlang::caller_env())
+      file_name <- gsub(".controlado", ".publico", file_name)
     }
 
     # returns NULL if the cached file is corrupted
     return(arrow_open_dataset(local_file))
   }
 
-  file_url <- paste0("https://github.com/ipea/censobr_prep_data/releases/download/",
-                     censobr_env$data_release, "/", file_name)
+  file_url <- paste0(
+    "https://github.com/ipea/censobr_prep_data/releases/download/",
+    censobr_env$data_release,
+    "/",
+    file_name
+  )
 
-  local_file <- download_file(file_url = file_url,
-                              showProgress = showProgress,
-                              cache = cache,
-                              verbose = verbose)
+  local_file <- download_file(
+    file_url = file_url,
+    showProgress = showProgress,
+    cache = cache,
+    verbose = verbose
+  )
 
-  if (is.null(local_file)) { return(invisible(NULL)) }
+  if (is.null(local_file)) {
+    return(invisible(NULL))
+  }
 
   # returns NULL if the cached file is corrupted
   arrow_open_dataset(local_file)
@@ -154,11 +196,12 @@ open_censobr_data <- function(dataset, year, showProgress, cache, verbose) {
 #' @return An `arrow::Dataset`
 #'
 #' @keywords internal
-arrow_open_dataset <- function(filename){ # nocov start
+arrow_open_dataset <- function(filename) {
+  # nocov start
 
   tryCatch(
     arrow::open_dataset(filename),
-    error = function(e){
+    error = function(e) {
       # remove the corrupted file so the next call downloads it again, and
       # fail gracefully instead of throwing (CRAN policy)
       unlink(filename)
@@ -183,11 +226,14 @@ arrow_open_dataset <- function(filename){ # nocov start
 #' @return A message
 #'
 #' @keywords internal
-cache_message <- function(local_file = parent.frame()$local_file,
-                          cache = parent.frame()$cache,
-                          verbose = parent.frame()$verbose){ # nocov start
+cache_message <- function(
+  local_file = parent.frame()$local_file,
+  cache = parent.frame()$cache,
+  verbose = parent.frame()$verbose
+) {
+  # nocov start
 
-#  local_file <- 'C:\\Users\\user\\AppData\\Local/R/cache/R/censobr_v0.1/2010_deaths.parquet'
+  #  local_file <- 'C:\\Users\\user\\AppData\\Local/R/cache/R/censobr_v0.1/2010_deaths.parquet'
 
   # name of local file
   file_name <- basename(local_file[1])
@@ -195,30 +241,32 @@ cache_message <- function(local_file = parent.frame()$local_file,
 
   if (isTRUE(verbose)) {
     ## if file already exists
-      # YES cache
-      if (file.exists(local_file) & isTRUE(cache)) {
-         cli::cli_alert_info('Reading data cached locally.')
-         }
+    # YES cache
+    if (file.exists(local_file) & isTRUE(cache)) {
+      cli::cli_alert_info('Reading data cached locally.')
+    }
 
-      # NO cache
-      if (file.exists(local_file) & isFALSE(cache)) {
-          cli::cli_alert_info('Overwriting data cached locally.')
-         }
+    # NO cache
+    if (file.exists(local_file) & isFALSE(cache)) {
+      cli::cli_alert_info('Overwriting data cached locally.')
+    }
 
     ## if file does not exist yet
     # YES cache
     if (!file.exists(local_file) & isTRUE(cache)) {
-      cli::cli_alert_info('Downloading data and storing it locally for future use.')
+      cli::cli_alert_info(
+        'Downloading data and storing it locally for future use.'
+      )
     }
 
     # NO cache
     if (!file.exists(local_file) & isFALSE(cache)) {
-      cli::cli_alert_info("Downloading data. Setting 'cache = TRUE' is strongly recommended to speed up future use. File will be stored locally at: {dir_name}")
-      }
+      cli::cli_alert_info(
+        "Downloading data. Setting 'cache = TRUE' is strongly recommended to speed up future use. File will be stored locally at: {dir_name}"
+      )
     }
-  } # nocov end
-
-
+  }
+} # nocov end
 
 
 #' Error when requested columns are absent from the data
@@ -228,10 +276,11 @@ cache_message <- function(local_file = parent.frame()$local_file,
 #'
 #' @keywords internal
 error_columns_absent <- function(absent) {
-
   cli::cli_abort(
-    c("Column{?s} {.val {absent}} not found in this data set.",
-      "i" = "Use {.code data_dictionary()} to see the variables available."),
+    c(
+      "Column{?s} {.val {absent}} not found in this data set.",
+      "i" = "Use {.code data_dictionary()} to see the variables available."
+    ),
     call = rlang::caller_env()
   )
 }
@@ -243,11 +292,11 @@ error_columns_absent <- function(absent) {
 #' @return An informative error
 #'
 #' @keywords internal
-error_arg_not_declared <- function(arg, options) { # nocov start
+error_arg_not_declared <- function(arg, options) {
+  # nocov start
 
   cli::cli_abort(
-    c("Please declare the {.arg {arg}}.",
-      "i" = "Options: {options}."),
+    c("Please declare the {.arg {arg}}.", "i" = "Options: {options}."),
     call = rlang::caller_env()
   )
 } # nocov end
@@ -257,7 +306,8 @@ error_arg_not_declared <- function(arg, options) { # nocov start
 #' @return An informative error
 #'
 #' @keywords internal
-error_year_not_declared <- function() { # nocov start
+error_year_not_declared <- function() {
+  # nocov start
 
   cli::cli_abort(
     "Please declare the {.arg year} of the census.",
@@ -271,7 +321,8 @@ error_year_not_declared <- function() { # nocov start
 #' @return An informative error
 #'
 #' @keywords internal
-error_missing_years <- function(y) { # nocov start
+error_missing_years <- function(y) {
+  # nocov start
 
   years_available <- paste(y, collapse = " ")
   cli::cli_abort(
@@ -286,14 +337,17 @@ error_missing_years <- function(y) { # nocov start
 #' @return An informative error
 #'
 #' @keywords internal
-error_merge_households_years <- function(y) { # nocov start
+error_merge_households_years <- function(y) {
+  # nocov start
 
   years_available <- paste(y, collapse = " ")
   cli::cli_abort(
-    c("{.arg merge_households = TRUE} is currently only available for the years {years_available}.",
+    c(
+      "{.arg merge_households = TRUE} is currently only available for the years {years_available}.",
       "i" = "1960 has no documented household key; 1980's household variables are already
       present in the population microdata; 1991's household key is not unique in the
-      source data and would multiply rows."),
+      source data and would multiply rows."
+    ),
     call = rlang::caller_env()
   )
 } # nocov end
@@ -303,14 +357,17 @@ error_merge_households_years <- function(y) { # nocov start
 #' @return An informative error
 #'
 #' @keywords internal
-error_merge_households_needs_columns <- function() { # nocov start
+error_merge_households_needs_columns <- function() {
+  # nocov start
 
   cli::cli_abort(
-    c("{.arg columns} is required when {.arg merge_households = TRUE}.",
+    c(
+      "{.arg columns} is required when {.arg merge_households = TRUE}.",
       "i" = "Merging household variables into the population microdata produces about
       300 columns and can require more than 20 GB of memory. Please use {.arg columns}
       to select the variables you need -- they may come from either the population or
-      the household data set."),
+      the household data set."
+    ),
     call = rlang::caller_env()
   )
 } # nocov end
@@ -321,7 +378,8 @@ error_merge_households_needs_columns <- function() { # nocov start
 #' @return An informative error
 #'
 #' @keywords internal
-error_missing_datasets <- function(d) { # nocov start
+error_missing_datasets <- function(d) {
+  # nocov start
 
   datasets_available <- paste(d, collapse = ", ")
   cli::cli_abort(
@@ -331,26 +389,29 @@ error_missing_datasets <- function(d) { # nocov start
 } # nocov end
 
 
-
-
-#' Error when the 2022 microdata have not been imported yet
+#' Warning when the 2022 microdata have not been imported yet
 #'
 #' @param call Environment used to attribute the error to the `read_` function
 #'        the user called, and not to this helper.
 #' @return An informative error
 #'
 #' @keywords internal
-error_microdata22_not_imported <- function(call = rlang::caller_env()) { # nocov start
+warning_microdata22_not_imported <- function(call = rlang::caller_env()) {
+  # nocov start
 
-  cli::cli_abort(
-    c("The microdata of the 2022 census are not distributed by {.pkg censobr}.",
-      "i" = "IBGE releases them under controlled access, so they cannot be
-             downloaded automatically. Please request the data in {.file .csv}
+  cli::cli_alert_warning(
+    c(
+      "You are currently using the public version of the 2022 census microdata, 
+      which includes fewer variables. The complete set of 2022 microdata cannot be 
+      distributed directly by {.pkg censobr}.",
+      "i" = "IBGE releases the complete data set under controlled access, so they 
+             cannot be downloaded automatically. Please request the data in {.file .csv}
              format at {.url https://microdados.ibge.gov.br/}, and then import
              the zip file once with
-             {.run censobr::import_microdata22_controlado()}.",
+             {.run censobr::import_microdata22()}.",
       "i" = "See {.url https://ipea.github.io/censobr/articles/microdata_2022.html}
-             or run {.run vignette('microdata_2022', package = 'censobr')}."),
+             or run {.run vignette('microdata_2022', package = 'censobr')}."
+    ),
     call = call
   )
 } # nocov end
