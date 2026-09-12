@@ -36,49 +36,6 @@ add_labels_population <- function(arrw,
     # codigo, P1030/P1040 atividade/grande grupo ocupacional, P1140/P1150
     # municipio/pais de trabalho) are simply skipped when absent.
 
-    # GRANDE REGIAO
-    if ('P0010' %in% cols) {
-      arrw <- mutate(arrw, P0010 = case_when(
-        P0010 == '1' ~ 'Regi\u00e3o Norte',
-        P0010 == '2' ~ 'Regi\u00e3o Nordeste',
-        P0010 == '3' ~ 'Regi\u00e3o Sudeste',
-        P0010 == '4' ~ 'Regi\u00e3o Sul',
-        P0010 == '5' ~ 'Regi\u00e3o Centro-oeste'
-      ))
-    }
-
-    # UNIDADE DA FEDERACAO
-    if ('P0020' %in% cols) {
-      arrw <- mutate(arrw, P0020 = case_when(
-        P0020 == '11' ~ 'Rond\u00f4nia',
-        P0020 == '12' ~ 'Acre',
-        P0020 == '13' ~ 'Amazonas',
-        P0020 == '14' ~ 'Roraima',
-        P0020 == '15' ~ 'Par\u00e1',
-        P0020 == '16' ~ 'Amap\u00e1',
-        P0020 == '17' ~ 'Tocantins',
-        P0020 == '21' ~ 'Maranh\u00e3o',
-        P0020 == '22' ~ 'Piau\u00ed',
-        P0020 == '23' ~ 'Cear\u00e1',
-        P0020 == '24' ~ 'Rio Grande do Norte',
-        P0020 == '25' ~ 'Para\u00edba',
-        P0020 == '26' ~ 'Pernambuco',
-        P0020 == '27' ~ 'Alagoas',
-        P0020 == '28' ~ 'Sergipe',
-        P0020 == '29' ~ 'Bahia',
-        P0020 == '31' ~ 'Minas Gerais',
-        P0020 == '32' ~ 'Esp\u00edrito Santo',
-        P0020 == '33' ~ 'Rio de Janeiro',
-        P0020 == '35' ~ 'S\u00e3o Paulo',
-        P0020 == '41' ~ 'Paran\u00e1',
-        P0020 == '42' ~ 'Santa Catarina',
-        P0020 == '43' ~ 'Rio Grande do Sul',
-        P0020 == '50' ~ 'Mato Grosso do Sul',
-        P0020 == '51' ~ 'Mato Grosso',
-        P0020 == '52' ~ 'Goi\u00e1s',
-        P0020 == '53' ~ 'Distrito Federal'
-      ))
-    }
 
     # SITUACAO DO SETOR
     if ('P0120' %in% cols) {
