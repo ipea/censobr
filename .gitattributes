@@ -3,3 +3,7 @@
 
 # Interpretar .rmd como R
 *.Rmd linguist-language=R
+
+# YAML requires spaces for indentation.
+*.yml whitespace=-indent-with-non-tab
+*.yaml whitespace=-indent-with-non-tab

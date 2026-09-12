@@ -22,29 +22,29 @@ jobs:
         config:
         - {os: windows-latest, r: 'release'}
         - {os: macOS-latest, r: 'release'}
-        - {os: ubuntu-22.04, r: 'devel', rspm: "https://packagemanager.rstudio.com/cran/__linux__/jammy/latest"}
-        - {os: ubuntu-22.04, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/jammy/latest"}
-        - {os: ubuntu-22.04, r: 'oldrel', rspm: "https://packagemanager.rstudio.com/cran/__linux__/jammy/latest"}
+        - {os: ubuntu-24.04, r: 'devel', rspm: "https://packagemanager.rstudio.com/cran/__linux__/noble/latest"}
+        - {os: ubuntu-24.04, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/noble/latest"}
+        - {os: ubuntu-24.04, r: 'oldrel', rspm: "https://packagemanager.rstudio.com/cran/__linux__/noble/latest"}
 
     env:
       RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-r@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2.13.0
         with:
           r-version: ${{ matrix.config.r }}
 
-      - uses: r-lib/actions/setup-pandoc@v2
+      - uses: r-lib/actions/setup-pandoc@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2.13.0
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
+      - uses: r-lib/actions/setup-r-dependencies@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2.13.0
         with:
           extra-packages: any::rcmdcheck
           needs: check
 
-      - uses: r-lib/actions/check-r-package@v2
+      - uses: r-lib/actions/check-r-package@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2.13.0
         env:
           _R_CHECK_CRAN_INCOMING_: false
           NOT_CRAN: false
