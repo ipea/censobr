@@ -348,9 +348,7 @@ error_merge_households_years <- function(y) {
   cli::cli_abort(
     c(
       "{.arg merge_households = TRUE} is currently only available for the years {years_available}.",
-      "i" = "1960 has no documented household key; 1980's household variables are already
-      present in the population microdata; 1991's household key is not unique in the
-      source data and would multiply rows."
+      "i" = "1960 has no documented household key."
     ),
     call = rlang::caller_env()
   )

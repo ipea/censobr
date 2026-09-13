@@ -23,7 +23,9 @@
 #'
 #' @details
 #' `merge_households = TRUE` is only available for years 1970, 2000, 2010 and
-#' 2022, and requires `columns` to be set. Merging household variables into the full
+#' 2022, and requires `columns` to be set. For 1980 and 1991 the population
+#' microdata already include all variables of the household data set, so
+#' `merge_households = TRUE` has no effect and a message says so. Merging household variables into the full
 #' population microdata produces about 300 columns and can require more than
 #' 20GB of memory; naming the columns you need keeps the operation fast and
 #' light, typically a few seconds. The merge writes a temporary parquet file
@@ -101,7 +103,8 @@ read_population <- function(
 
   ### merge household data
   if (isTRUE(merge_households)) {
-    if (isTRUE(verbose)) {
+    # 1980 and 1991 are not merged (merge_household_var() explains why)
+    if (isTRUE(verbose) && isFALSE(year %in% c(1980, 1991))) {
       cli::cli_alert_info(
         'Merging household variables. This can take a moment.'
       )

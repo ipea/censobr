@@ -195,6 +195,20 @@ test_that("read_population merge_households_vars", {
   testthat::expect_equal(chk_2022$n_key_equal, chk_2022$n)
   testthat::expect_equal(chk_2022$n_hou_na, 0)
 
+  # 1980 and 1991: the population microdata already carry every household
+  # variable, so merge_households = TRUE is answered with a message and the
+  # data are returned as usual, the household variable served from the
+  # population file
+  for (y in c(1980, 1991)) {
+    hou_var <- if (y == 1980) 'V201' else 'V0201'
+    testthat::expect_message(
+      df_y <- tester(year = y, columns = hou_var, merge_households = TRUE),
+      'already includes'
+      )
+    testthat::expect_equal(names(df_y), hou_var)
+    testthat::expect_true(is(df_y, "ArrowObject"))
+  }
+
   # numeric column indices are not supported under merge_households = TRUE --
   # only character names are, matching the documented `columns` contract
   pop_names_2010 <- names(tester(year = 2010))
@@ -236,17 +250,10 @@ test_that("read_population ERRORs", {
   testthat::expect_error(tester(year=2000, add_labels = 'pt'))
 
   # merge_households requires columns, and only supports years 1970/2000/2010/2022
+  # (1980 and 1991 are accepted and answered with a message -- see the merge test)
   testthat::expect_error(tester(merge_households = TRUE), 'columns.*required')
   testthat::expect_error(
-    tester(year = 1980, columns = 'V201', merge_households = TRUE),
-    '1970'
-    )
-  testthat::expect_error(
     tester(year = 1960, columns = 'V2', merge_households = TRUE),
-    '1970'
-    )
-  testthat::expect_error(
-    tester(year = 1991, columns = 'V0109', merge_households = TRUE),
     '1970'
     )
 

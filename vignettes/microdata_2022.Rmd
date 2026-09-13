@@ -29,7 +29,7 @@ no file for the package to download on your behalf.
 What the package can do is read the file **you** obtained from IBGE and store it
 in the local **{censobr}** cache, in the same format and under the same naming
 convention as every other census year. That is what
-`import_microdata22_controlado()` is for.
+`import_microdata22()` is for.
 
 ## Step 1. Get the data from IBGE
 
@@ -50,7 +50,7 @@ with four tables:
 ## Step 2. Import it
 
 Once you have downloaded the original zip file with the data, you only need to
-pass the path to the zip file to `import_microdata22_controlado()`. Here's an 
+pass the path to the zip file to `import_microdata22()`. Here's an 
 example using a tiny *fake* data set with the same structure as the IBGE
 file.
 
@@ -63,7 +63,7 @@ fake_zip <- system.file(
   package = "censobr"
   )
 
-censobr::import_microdata22_controlado(zip_path = fake_zip)
+censobr::import_microdata22(zip_path = fake_zip)
 
 ```
 

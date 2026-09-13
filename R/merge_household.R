@@ -27,21 +27,30 @@
 #'        merge failed.
 #'
 #' @keywords internal
-merge_household_var <- function(df,
-                                year = parent.frame()$year,
-                                columns = NULL,
-                                add_labels = parent.frame()$add_labels,
-                                showProgress = parent.frame()$showProgress,
-                                cache = TRUE,
-                                verbose = parent.frame()$verbose){
+merge_household_var <- function(
+  df,
+  year = parent.frame()$year,
+  columns = NULL,
+  add_labels = parent.frame()$add_labels,
+  showProgress = parent.frame()$showProgress,
+  cache = TRUE,
+  verbose = parent.frame()$verbose
+) {
+  # no need to merge household variables in 1991 and 1980
+  if (year %in% c(1980, 1991)) {
+    cli::cli_inform(
+      "The population data set of 1980 and 1991 already includes all variables from the household data set."
+    )
+    return(df)
+  }
 
   # years for which the household join key is documented, present in both
   # tables, unique, and adds variables not already in the main table -- see
-  # Phase 0 of the plan referenced above. 1960 has no documented key; 1980's
-  # household variables are already present in the population microdata; 1991's
-  # household key is not unique in the source data (it multiplies rows ~74x).
+  # Phase 0 of the plan referenced above. 1960 has no documented key.
   merge_years <- censobr_years("merge_households")
-  if (isFALSE(year %in% merge_years)) { error_merge_households_years(merge_years) }
+  if (isFALSE(year %in% merge_years)) {
+    error_merge_households_years(merge_years)
+  }
 
   # local path of the main table, for duckdb's native parquet reader
   main_path <- df$files[1]
@@ -56,7 +65,7 @@ merge_household_var <- function(df,
       showProgress = showProgress,
       cache = cache,
       verbose = verbose
-      )
+    )
   }
 
   # 2022: when the main table is the public release, the reader that called us
@@ -64,7 +73,8 @@ merge_household_var <- function(df,
   # read_households() would repeat the same warning for the household table,
   # attributed to itself, so that copy is muffled here. If only the household
   # file is public, nothing is muffled and its own warning goes through.
-  main_is_public <- year == 2022 && grepl('.publico', basename(main_path), fixed = TRUE)
+  main_is_public <- year == 2022 &&
+    grepl('.publico', basename(main_path), fixed = TRUE)
   df_household <- if (isTRUE(main_is_public)) {
     withCallingHandlers(
       read_hou(),
@@ -79,7 +89,9 @@ merge_household_var <- function(df,
   }
 
   # fail gracefully if the household data could not be downloaded
-  if (is.null(df_household)) { return(invisible(NULL)) }
+  if (is.null(df_household)) {
+    return(invisible(NULL))
+  }
 
   # set vars to merge. `key_main` / `key_hou` name the household identifier on
   # each side of the join; `key_geo` are the extra (identically named) columns
@@ -87,7 +99,7 @@ merge_household_var <- function(df,
   if (year == 1970) {
     key_geo <- c('code_state', 'code_muni')
     key_main <- key_hou <- 'id_household'
-    }
+  }
 
   if (year %in% c(2000, 2010)) {
     key_geo <- c('code_state', 'code_muni')
@@ -137,7 +149,6 @@ merge_household_var <- function(df,
   # pre-filter right-hand table that matches key values in left-hand table
   # this improves performance a bit but only for migration and death data sets
   if (nrow(df) < nrow(df_household)) {
-
     key_values <- df |>
       dplyr::select(dplyr::all_of(key_main)) |>
       unique() |>
@@ -163,68 +174,111 @@ merge_household_var <- function(df,
   # suppressMessages(): silences duckdb's one-time driver notice about where it
   # stores extensions/secrets, which is unconditional and ignores `verbose`
   con <- suppressMessages(duckdb::dbConnect(duckdb::duckdb(), dbdir = db_path))
-  on.exit({
-    try(duckdb::dbDisconnect(con), silent = TRUE)
-    unlink(db_path)
-    }, add = TRUE)
+  on.exit(
+    {
+      try(duckdb::dbDisconnect(con), silent = TRUE)
+      unlink(db_path)
+    },
+    add = TRUE
+  )
 
   # duckdb does not export dbExecute()/dbGetQuery() (they are DBI generics, and
   # DBI is only a transitive dependency via duckdb, not a direct Imports of
   # this package) -- dbSendQuery() + dbClearResult() are what duckdb exports
-  duckdb_exec <- function(sql) { duckdb::dbClearResult(duckdb::dbSendQuery(con, sql)) }
+  duckdb_exec <- function(sql) {
+    duckdb::dbClearResult(duckdb::dbSendQuery(con, sql))
+  }
 
   duckdb_exec("SET preserve_insertion_order = false;")
   # duckdb_exec("SET memory_limit = '4GB';")
   # CRAN allows at most 2 cores during R CMD check; never let duckdb detect
   # and use every core on the check farm
-  if (Sys.getenv('_R_CHECK_LIMIT_CORES_') != '') { duckdb_exec("SET threads = 2;") }
+  if (Sys.getenv('_R_CHECK_LIMIT_CORES_') != '') {
+    duckdb_exec("SET threads = 2;")
+  }
   duckdb_exec(paste0(
-    "SET temp_directory = ", duckdb::dbQuoteLiteral(con, normalizePath(tempdir(), winslash = '/')), ";"
-    ))
+    "SET temp_directory = ",
+    duckdb::dbQuoteLiteral(con, normalizePath(tempdir(), winslash = '/')),
+    ";"
+  ))
 
   duckdb::duckdb_register_arrow(con, 'df_household', df_household)
-  on.exit(try(duckdb::duckdb_unregister_arrow(con, 'df_household'), silent = TRUE), add = TRUE)
+  on.exit(
+    try(duckdb::duckdb_unregister_arrow(con, 'df_household'), silent = TRUE),
+    add = TRUE
+  )
 
   # the main-table projection is pushed down inside its own subquery; the
   # outer SELECT * then picks up both sides' (already narrowed) columns after
   # the join -- listing main_keep in the outer SELECT would silently drop any
   # requested column that only exists on the household side
-  main_cols_sql <- paste(duckdb::dbQuoteIdentifier(con, main_keep), collapse = ', ')
-  main_path_sql <- duckdb::dbQuoteLiteral(con, normalizePath(main_path, winslash = '/'))
-  main_sql <- sprintf('(SELECT %s FROM read_parquet(%s)) AS main', main_cols_sql, main_path_sql)
+  main_cols_sql <- paste(
+    duckdb::dbQuoteIdentifier(con, main_keep),
+    collapse = ', '
+  )
+  main_path_sql <- duckdb::dbQuoteLiteral(
+    con,
+    normalizePath(main_path, winslash = '/')
+  )
+  main_sql <- sprintf(
+    '(SELECT %s FROM read_parquet(%s)) AS main',
+    main_cols_sql,
+    main_path_sql
+  )
 
   # USING when the keys share their names (one copy of each key in the output);
   # ON when they differ (2022), in which case both identifiers survive in the
   # output -- e.g. P0100 and D0100 -- and the caller's post-merge select drops
   # whichever was not requested
   join_condition <- if (identical(keys_main, keys_hou)) {
-    paste0('USING (', paste(duckdb::dbQuoteIdentifier(con, keys_main), collapse = ', '), ')')
+    paste0(
+      'USING (',
+      paste(duckdb::dbQuoteIdentifier(con, keys_main), collapse = ', '),
+      ')'
+    )
   } else {
-    paste0('ON ', paste(
-      sprintf('main.%s = df_household.%s',
-              duckdb::dbQuoteIdentifier(con, keys_main),
-              duckdb::dbQuoteIdentifier(con, keys_hou)),
-      collapse = ' AND '
-      ))
+    paste0(
+      'ON ',
+      paste(
+        sprintf(
+          'main.%s = df_household.%s',
+          duckdb::dbQuoteIdentifier(con, keys_main),
+          duckdb::dbQuoteIdentifier(con, keys_hou)
+        ),
+        collapse = ' AND '
+      )
+    )
   }
 
   out_path <- tempfile(pattern = 'censobr_merged', fileext = '.parquet')
-  out_path_sql <- duckdb::dbQuoteLiteral(con, normalizePath(out_path, winslash = '/', mustWork = FALSE))
+  out_path_sql <- duckdb::dbQuoteLiteral(
+    con,
+    normalizePath(out_path, winslash = '/', mustWork = FALSE)
+  )
 
   query_match <- sprintf(
     "COPY (SELECT * FROM %s LEFT JOIN df_household %s) TO %s (FORMAT PARQUET, COMPRESSION ZSTD);",
-    main_sql, join_condition, out_path_sql
-    )
+    main_sql,
+    join_condition,
+    out_path_sql
+  )
 
-  ok <- tryCatch({ duckdb_exec(query_match); TRUE },
-                 error = function(e) FALSE)
+  ok <- tryCatch(
+    {
+      duckdb_exec(query_match)
+      TRUE
+    },
+    error = function(e) FALSE
+  )
 
   if (isFALSE(ok)) {
     unlink(out_path)
     if (isTRUE(verbose)) {
-      cli::cli_alert_danger("Merging household variables failed, possibly due to insufficient
-                            memory. Try again with a narrower {.arg columns} selection.")
-      }
+      cli::cli_alert_danger(
+        "Merging household variables failed, possibly due to insufficient
+                            memory. Try again with a narrower {.arg columns} selection."
+      )
+    }
     return(invisible(NULL))
   }
 
@@ -236,8 +290,10 @@ merge_household_var <- function(df,
   if (is.null(df_out)) {
     unlink(out_path)
     if (isTRUE(verbose)) {
-      cli::cli_alert_danger("The merged data set could not be opened. Please try again.")
-      }
+      cli::cli_alert_danger(
+        "The merged data set could not be opened. Please try again."
+      )
+    }
     return(invisible(NULL))
   }
 
