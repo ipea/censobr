@@ -17,6 +17,9 @@ Authors@R:
       person(given="Neal", family="Richardson", 
              email="neal.p.richardson@gmail.com", 
              role=c("ctb")),
+      person(given="Haydee", family="Svab", 
+             email="haydee.svab@gmail.com", 
+             role=c("ctb")),
       person(given = "Ipea - Institute for Applied Economic Research",
              role = c("cph", "fnd")))
 Description: Easy access to data from Brazil's population censuses. The package
