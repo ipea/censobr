@@ -50,7 +50,13 @@ imported <- function(censo_name) {
   arrow::open_dataset(
     file.path(
       release_dir,
-      paste0("2022_", censo_name, "_", censobr_env$data_release, ".parquet")
+      paste0(
+        "2022_",
+        censo_name,
+        ".controlado_",
+        censobr_env$data_release,
+        ".parquet"
+      )
     )
   )
 }
@@ -272,34 +278,115 @@ test_that("import_microdata22 errors", {
 
 # The read_ functions point users to the import -----------------------
 
-test_that("read_ functions ask for the 2022 microdata to be imported", {
+test_that("read_ functions fall back to the public 2022 microdata, with a warning", {
   restore <- cache_config_restorer()
   on.exit(restore(), add = TRUE)
 
-  empty_cache <- tempfile("censobr_empty_")
-  dir.create(empty_cache, recursive = TRUE)
-  set_censobr_cache_dir(path = empty_cache, verbose = FALSE)
+  fallback_cache <- tempfile("censobr_fallback_")
+  release <- file.path(
+    fallback_cache,
+    paste0("data_release_", censobr_env$data_release)
+  )
+  dir.create(release, recursive = TRUE)
+  set_censobr_cache_dir(path = fallback_cache, verbose = FALSE)
 
-  # IBGE does not let censobr redistribute these files, so an empty cache is not
-  # something a download can fix. The error has to say so, and say what to do.
+  # IBGE publishes a reduced, public version of the 2022 microdata, which the
+  # read_ functions download when the controlled data have not been imported.
+  # Standing those files in from the fixture keeps the test off the network --
+  # the fallback only has to find them in the cache.
+  for (nm in tables$censo) {
+    file.copy(
+      file.path(
+        release_dir,
+        paste0("2022_", nm, ".controlado_", censobr_env$data_release, ".parquet")
+      ),
+      file.path(
+        release,
+        paste0("2022_", nm, ".publico_", censobr_env$data_release, ".parquet")
+      )
+    )
+  }
+
+  # the user has to be told they are on the reduced data, and how to get the
+  # complete set
   for (f in list(
     read_population,
     read_households,
     read_families,
     read_mortality
   )) {
-    testthat::expect_error(f(year = 2022), "not distributed")
-    testthat::expect_error(f(year = 2022), "import")
-    testthat::expect_error(f(year = 2022), "microdados.ibge.gov.br")
+    testthat::expect_warning(f(year = 2022, verbose = FALSE), "public version")
+    testthat::expect_warning(f(year = 2022, verbose = FALSE), "import")
+    testthat::expect_warning(
+      f(year = 2022, verbose = FALSE),
+      "microdados.ibge.gov.br"
+    )
   }
 
-  # the error belongs to the function the user called, not to the internal
+  # the warning belongs to the function the user called, not to the internal
   # helper that raises it
-  err <- rlang::catch_cnd(read_population(year = 2022))
-  testthat::expect_match(deparse(conditionCall(err))[1], "read_population")
+  w <- rlang::catch_cnd(read_population(year = 2022, verbose = FALSE))
+  testthat::expect_s3_class(w, "warning")
+  testthat::expect_match(deparse(conditionCall(w))[1], "read_population")
+
+  # and the fallback has to actually return the public data
+  df <- suppressWarnings(read_population(year = 2022, verbose = FALSE))
+  testthat::expect_s3_class(df, "Dataset")
+  testthat::expect_gt(nrow(df), 0)
 
   # a year that censobr does distribute must not take this path
   testthat::expect_error(read_population(year = 1999), "currently available")
+})
+
+
+test_that("cache = FALSE downloads the public 2022 microdata again", {
+  restore <- cache_config_restorer()
+  on.exit(restore(), add = TRUE)
+
+  fallback_cache <- tempfile("censobr_fallback_")
+  release <- file.path(
+    fallback_cache,
+    paste0("data_release_", censobr_env$data_release)
+  )
+  dir.create(release, recursive = TRUE)
+  set_censobr_cache_dir(path = fallback_cache, verbose = FALSE)
+
+  # a public file already in the cache must not short-circuit the download
+  file.copy(
+    file.path(
+      release_dir,
+      paste0("2022_population.controlado_", censobr_env$data_release, ".parquet")
+    ),
+    file.path(
+      release,
+      paste0("2022_population.publico_", censobr_env$data_release, ".parquet")
+    )
+  )
+
+  # the public data go through download_file() like every other year, so the
+  # downloader is what has to be asked. Stubbed to stay off the network
+  requested <- character()
+  testthat::local_mocked_bindings(
+    download_file = function(file_url, cache, ...) {
+      requested <<- c(requested, paste(file_url, cache))
+      invisible(NULL)
+    }
+  )
+
+  suppressWarnings(read_population(year = 2022, cache = FALSE, verbose = FALSE))
+  suppressWarnings(read_population(year = 2022, cache = TRUE, verbose = FALSE))
+
+  public_url <- paste0(
+    "https://github.com/ipea/censobr_prep_data/releases/download/",
+    censobr_env$data_release,
+    "/2022_population.publico_",
+    censobr_env$data_release,
+    ".parquet"
+  )
+  testthat::expect_equal(
+    requested,
+    c(paste(public_url, "FALSE"), paste(public_url, "TRUE"))
+  )
 })
 
 
@@ -317,7 +404,9 @@ test_that("read_ functions find the 2022 microdata once imported", {
   )
 
   for (nm in names(readers)) {
-    df <- readers[[nm]](year = 2022, verbose = FALSE)
+    # imported data takes precedence over the public files, and the fallback
+    # warning must not fire when the complete data are there
+    testthat::expect_no_warning(df <- readers[[nm]](year = 2022, verbose = FALSE))
     testthat::expect_s3_class(df, "Dataset")
     testthat::expect_gt(nrow(df), 0)
     testthat::expect_true("name_state" %in% names(df))

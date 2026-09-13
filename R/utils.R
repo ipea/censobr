@@ -144,8 +144,9 @@ open_censobr_data <- function(dataset, year, showProgress, cache, verbose) {
   # IBGE releases the 2022 microdata under controlled access, so there is no
   # file for censobr to download. It has to be in the cache already, put there
   # by import_microdata22_controlado()
+
   if (year == 2022) {
-    # check first if controlled-access data is available
+    # check first if controlled-access data is available in cache
     file_name <- gsub("_v", ".controlado_v", file_name)
 
     local_file <- fs::path(
@@ -154,15 +155,18 @@ open_censobr_data <- function(dataset, year, showProgress, cache, verbose) {
       file_name
     )
 
-    # if controlled-access microdata is not available
-    # Throw warning and proceed to download public data
-    if (isFALSE(file.exists(local_file))) {
-      warning_microdata22_not_imported(call = rlang::caller_env())
-      file_name <- gsub(".controlado", ".publico", file_name)
+    # the controlled-access data take precedence whenever they are in the
+    # cache, whatever the value of `cache`: they cannot be downloaded, so
+    # there is nothing to refresh. Returns NULL if the file is corrupted
+    if (isTRUE(file.exists(local_file))) {
+      return(arrow_open_dataset(local_file))
     }
 
-    # returns NULL if the cached file is corrupted
-    return(arrow_open_dataset(local_file))
+    # otherwise warn and fall through to the public data, which go through
+    # download_file() like every other year: reused from the cache when
+    # `cache = TRUE`, downloaded again when `cache = FALSE`
+    warning_microdata22_not_imported(call = rlang::caller_env())
+    file_name <- gsub(".controlado", ".publico", file_name, fixed = TRUE)
   }
 
   file_url <- paste0(
@@ -391,15 +395,15 @@ error_missing_datasets <- function(d) {
 
 #' Warning when the 2022 microdata have not been imported yet
 #'
-#' @param call Environment used to attribute the error to the `read_` function
+#' @param call Environment used to attribute a warning to the `read_` function
 #'        the user called, and not to this helper.
-#' @return An informative error
+#' @return An informative warning
 #'
 #' @keywords internal
 warning_microdata22_not_imported <- function(call = rlang::caller_env()) {
   # nocov start
 
-  cli::cli_alert_warning(
+  cli::cli_warn(
     c(
       "You are currently using the public version of the 2022 census microdata, 
       which includes fewer variables. The complete set of 2022 microdata cannot be 
@@ -407,8 +411,7 @@ warning_microdata22_not_imported <- function(call = rlang::caller_env()) {
       "i" = "IBGE releases the complete data set under controlled access, so they 
              cannot be downloaded automatically. Please request the data in {.file .csv}
              format at {.url https://microdados.ibge.gov.br/}, and then import
-             the zip file once with
-             {.run censobr::import_microdata22()}.",
+             the zip file once using the function {.run censobr::import_microdata22()}.",
       "i" = "See {.url https://ipea.github.io/censobr/articles/microdata_2022.html}
              or run {.run vignette('microdata_2022', package = 'censobr')}."
     ),

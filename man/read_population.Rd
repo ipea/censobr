@@ -58,8 +58,8 @@ Download microdata of population records from Brazil's census. Data collected
 in the sample component of the questionnaire.
 }
 \details{
-\code{merge_households = TRUE} is only available for years 1970, 2000 and 2010, and
-requires \code{columns} to be set. Merging household variables into the full
+\code{merge_households = TRUE} is only available for years 1970, 2000, 2010 and
+2022, and requires \code{columns} to be set. Merging household variables into the full
 population microdata produces about 300 columns and can require more than
 20GB of memory; naming the columns you need keeps the operation fast and
 light, typically a few seconds. The merge writes a temporary parquet file

@@ -22,8 +22,8 @@
 #' @template 1960_census_section
 #'
 #' @details
-#' `merge_households = TRUE` is only available for years 1970, 2000 and 2010, and
-#' requires `columns` to be set. Merging household variables into the full
+#' `merge_households = TRUE` is only available for years 1970, 2000, 2010 and
+#' 2022, and requires `columns` to be set. Merging household variables into the full
 #' population microdata produces about 300 columns and can require more than
 #' 20GB of memory; naming the columns you need keeps the operation fast and
 #' light, typically a few seconds. The merge writes a temporary parquet file
@@ -66,9 +66,9 @@ read_population <- function(
   }
 
   # add_labels() aborts on unsupported years -- check before downloading
-  if (!is.null(add_labels) && isFALSE(year %in% c(2010))) {
+  if (!is.null(add_labels) && isFALSE(year %in% c(2000, 2010, 2022))) {
     cli::cli_abort(
-      "Labels for this data are only available for the year c(2010)",
+      "Labels for this data are only available for the year c(2000, 2010, 2022)",
       call = rlang::caller_env()
     )
   }
@@ -79,8 +79,9 @@ read_population <- function(
     if (is.null(columns)) {
       error_merge_households_needs_columns()
     }
-    if (isFALSE(year %in% c(1970, 2000, 2010))) {
-      error_merge_households_years(c(1970, 2000, 2010))
+    merge_years <- censobr_years("merge_households")
+    if (isFALSE(year %in% merge_years)) {
+      error_merge_households_years(merge_years)
     }
   }
 

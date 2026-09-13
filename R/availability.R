@@ -7,6 +7,9 @@
   families              = c(2000, 2022),
   mortality             = c(2010, 2022),
   emigration            = c(2010),
+  # years for which merge_households = TRUE is available; the household join
+  # keys are chosen per year in merge_household_var()
+  merge_households      = c(1970, 2000, 2010, 2022),
   tracts                = c(2000, 2010, 2022),
   questionnaire         = c(1960, 1970, 1980, 1991, 2000, 2010, 2022),
   interview_manual      = c(1960, 1970, 1980, 1991, 2000, 2010, 2022),

@@ -7,11 +7,11 @@
 warning_microdata22_not_imported(call = rlang::caller_env())
 }
 \arguments{
-\item{call}{Environment used to attribute the error to the \code{read_} function
+\item{call}{Environment used to attribute a warning to the \code{read_} function
 the user called, and not to this helper.}
 }
 \value{
-An informative error
+An informative warning
 }
 \description{
 Warning when the 2022 microdata have not been imported yet
