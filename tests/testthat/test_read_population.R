@@ -85,6 +85,46 @@ test_that("read_population read", {
 
   testthat::expect_true(paste('\u00c1rea urbanizada') %in% test4$V1005)
 
+  # 1960 labels: codes are stored as integers in this release, and the
+  # labelled query must stay lazy
+  testthat::expect_warning(
+    test1960 <- tester(year = 1960, add_labels = 'pt',
+                       columns = c('uf', 'V206', 'V215'),
+                       showProgress = FALSE),
+    'two different releases'
+    )
+  testthat::expect_s3_class(test1960, 'arrow_dplyr_query')
+  test1960 <- test1960 |> dplyr::distinct(V206, V215) |> dplyr::collect()
+  testthat::expect_true('Parda' %in% test1960$V206)
+  testthat::expect_true('Somente casamento religioso' %in% test1960$V215)
+
+  # 1970 labels
+  test1970 <- tester(year = 1970, add_labels = 'pt',
+                     columns = c('abbrev_state', 'V035', 'V040'),
+                     showProgress = FALSE) |>
+    dplyr::distinct(V035, V040) |>
+    dplyr::collect()
+  testthat::expect_true('Sim' %in% test1970$V035)
+  testthat::expect_true('Casamento civil e religioso' %in% test1970$V040)
+
+  # 1980 labels: codes are strings, except V536 which is a number
+  test1980 <- tester(year = 1980, add_labels = 'pt',
+                     columns = c('abbrev_state', 'V509', 'V536'),
+                     showProgress = FALSE) |>
+    dplyr::distinct(V509, V536) |>
+    dplyr::collect()
+  testthat::expect_true('Parda' %in% test1980$V509)
+  testthat::expect_true('De 49 horas e mais' %in% test1980$V536)
+
+  # 1991 labels: codes are strings without leading zeros
+  test1991 <- tester(year = 1991, add_labels = 'pt',
+                     columns = c('abbrev_state', 'V0302', 'V0349'),
+                     showProgress = FALSE) |>
+    dplyr::distinct(V0302, V0349) |>
+    dplyr::collect()
+  testthat::expect_true('Cunhado(a)' %in% test1991$V0302)
+  testthat::expect_true('Empregador' %in% test1991$V0349)
+
   # no message
   testthat::expect_no_message(tester(verbose = FALSE))
 
@@ -206,7 +246,9 @@ test_that("read_population merge_households_vars", {
       'already includes'
       )
     testthat::expect_equal(names(df_y), hou_var)
-    testthat::expect_true(is(df_y, "ArrowObject"))
+    # a columns= selection on an arrow Dataset is a lazy arrow_dplyr_query,
+    # not an ArrowObject -- the point is that it was not collected
+    testthat::expect_s3_class(df_y, "arrow_dplyr_query")
   }
 
   # numeric column indices are not supported under merge_households = TRUE --
@@ -246,8 +288,8 @@ test_that("read_population ERRORs", {
   testthat::expect_error(tester(verbose='banana'))
 
 
-  # missing labels
-  testthat::expect_error(tester(year=2000, add_labels = 'pt'))
+  # labels exist for every census year; the 'only available' guard can only
+  # trigger for a year that is not in the data registry, which errors earlier
 
   # merge_households requires columns, and only supports years 1970/2000/2010/2022
   # (1980 and 1991 are accepted and answered with a message -- see the merge test)

@@ -25,6 +25,9 @@ which includes the following news files or edits:
   the controlled-access data.  
   * `add_labels = "pt"` now works for all years and tables in years 2000, 
   2010 and 2022.
+  * `add_labels = "pt"` now also labels the 1960, 1970, 1980 and 1991 population
+  and households microdata, so labels are available for every census, e.g.
+  `read_population(1991, add_labels = "pt")` and `read_households(1991, add_labels = "pt")`.
   * `merge_households` parameter now works for all years since 1970.
   * `read_population()` now accepts a `merge_households` parameter -- previously only 
   `read_mortality()` and `read_emigration()` supported this. Because merging all ~300 population + household

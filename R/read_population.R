@@ -68,9 +68,9 @@ read_population <- function(
   }
 
   # add_labels() aborts on unsupported years -- check before downloading
-  if (!is.null(add_labels) && isFALSE(year %in% c(2000, 2010, 2022))) {
+  if (!is.null(add_labels) && isFALSE(year %in% c(1960, 1970, 1980, 1991, 2000, 2010, 2022))) {
     cli::cli_abort(
-      "Labels for this data are only available for the year c(2000, 2010, 2022)",
+      "Labels for this data are only available for the years c(1960, 1970, 1980, 1991, 2000, 2010, 2022)",
       call = rlang::caller_env()
     )
   }

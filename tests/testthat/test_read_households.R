@@ -77,6 +77,42 @@ test_that("read_households reading", {
   test5 <- test5 |> dplyr::filter(abbrev_state == 'CE') |> as.data.frame()
   testthat::expect_true(paste('\u00c1rea urbanizada de vila ou cidade') %in% test5$V1005)
 
+  # 1960 labels: codes are stored as integers in this release, and the
+  # labelled query must stay lazy
+  testthat::expect_warning(
+    test1960 <- tester(year = 1960, add_labels = 'pt',
+                       columns = c('uf', 'V102', 'V105')),
+    'two different releases'
+    )
+  testthat::expect_s3_class(test1960, 'arrow_dplyr_query')
+  test1960 <- test1960 |> dplyr::distinct(V102, V105) |> dplyr::collect()
+  testthat::expect_true('R\u00fastico' %in% test1960$V102)
+  testthat::expect_true('Rede geral com canaliza\u00e7\u00e3o interna' %in% test1960$V105)
+
+  # 1970 labels
+  test1970 <- tester(year = 1970, add_labels = 'pt',
+                     columns = c('abbrev_state', 'V009', 'V019')) |>
+    dplyr::distinct(V009, V019) |>
+    dplyr::collect()
+  testthat::expect_true('Pr\u00f3prio j\u00e1 pago' %in% test1970$V009)
+  testthat::expect_true('N\u00e3o tem' %in% test1970$V019)
+
+  # 1980 labels: codes are strings
+  test1980 <- tester(year = 1980, add_labels = 'pt',
+                     columns = c('abbrev_state', 'V203', 'V220')) |>
+    dplyr::distinct(V203, V220) |>
+    dplyr::collect()
+  testthat::expect_true('Alvenaria' %in% test1980$V203)
+  testthat::expect_true('Preto e branco' %in% test1980$V220)
+
+  # 1991 labels: codes are strings without leading zeros
+  test1991 <- tester(year = 1991, add_labels = 'pt',
+                     columns = c('abbrev_state', 'V0206', 'V2013')) |>
+    dplyr::distinct(V0206, V2013) |>
+    dplyr::collect()
+  testthat::expect_true('Vala negra' %in% test1991$V0206)
+  testthat::expect_true('Mais de 20 a 30 salários mínimos' %in% test1991$V2013)
+
   # no message
   testthat::expect_no_message(tester(verbose = FALSE))
 
