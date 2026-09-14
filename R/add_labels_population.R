@@ -2138,8 +2138,10 @@ add_labels_population <- function(
     # V210 residencia anterior, V214 curso completo, V216 ano do casamento,
     # V221 ocupacao habitual, V223b ramo de atividade) are left as codes, as
     # are the numeric variables (V100, V112, V113, V204b, V217, V218, the
-    # censobr_* ids, weights and counts) and the geography codes
-    # code_muni_1960, V116 and V117.
+    # censobr_* ids, weights and counts), the record-identification and
+    # sample-design variables (V001-V004, V200, V201, censobr_estrato,
+    # censobr_upa, censobr_usa), the two censobr_diag_*_vars text columns, and
+    # the geography codes code_muni_1960, V116 and V117.
 
     # FONTE DA INFORMACAO SOBRE O REGISTRO (variavel adicionada pelo censobr)
     if ('censobr_source' %in% cols) {
@@ -2378,8 +2380,8 @@ add_labels_population <- function(
           V202 == 2 ~ 'Mulher presente',
           V202 == 3 ~ 'Homem ausente',
           V202 == 4 ~ 'Mulher ausente',
-          V202 == 5 ~ 'Homem n\u00e3o morador',
-          V202 == 6 ~ 'Mulher n\u00e3o morador'
+          V202 == 5 ~ 'Homem n\u00e3o morador presente',
+          V202 == 6 ~ 'Mulher n\u00e3o morador presente'
         )
       )
     }
@@ -2450,13 +2452,15 @@ add_labels_population <- function(
       )
     }
 
-    # NACIONALIDADE
+    # NACIONALIDADE. Both sources are followed except on the wording of the
+    # naturalised category: the questionnaire reads 'Naturalizado brasileiro',
+    # which is used here and in every other census year.
     if ('V208' %in% cols) {
       arrw <- dplyr::mutate(
         arrw,
         V208 = dplyr::case_when(
           V208 == 9 ~ 'Brasileiro nato',
-          V208 == 0 ~ 'Brasileiro naturalizado',
+          V208 == 0 ~ 'Naturalizado brasileiro',
           V208 == 1 ~ 'Estrangeiro'
         )
       )
@@ -2475,8 +2479,10 @@ add_labels_population <- function(
       )
     }
 
-    # TEMPO DE IMIGRACAO. Code 0 is not listed in the dictionary; it is the
-    # 'not applicable' code (its count equals that of V209 == 2).
+    # TEMPO DE IMIGRACAO. Code 0 is not numbered in the dictionary; it is the
+    # state its unnumbered trailing line describes. Verified in the v0.7.0 file:
+    # V299 == 0 occurs 10447853 times and coincides exactly with V209 == 2
+    # (neither value ever pairs with any other), so it is the not-applicable code.
     if ('V299' %in% cols) {
       arrw <- dplyr::mutate(
         arrw,
@@ -2543,10 +2549,11 @@ add_labels_population <- function(
       )
     }
 
-    # ESTADO CONJUGAL. The dictionary prints codes 7 and 8 both as 'Somente
-    # Casamento'; the questionnaire (item P, codes 56-59) reads 'Casamento civil
-    # e religioso / Somente casamento civil / Somente casamento religioso /
-    # Outra', which is what is used here.
+    # ESTADO CONJUGAL. Codes 6-8 follow the questionnaire (item P, boxes 56-58:
+    # 'Casamento civil e religioso / Somente casamento civil / Somente casamento
+    # religioso'), which the dictionary now matches. Code 9 keeps the
+    # dictionary's 'Vivendo maritalmente', which is what questionnaire box 59
+    # ('Outra', asked only of people living with a partner) substantively means.
     if ('V215' %in% cols) {
       arrw <- dplyr::mutate(
         arrw,
@@ -2621,7 +2628,7 @@ add_labels_population <- function(
       arrw <- dplyr::mutate(
         arrw,
         V224 = dplyr::case_when(
-          V224 == 0 ~ 'Membro da fam\u00edlia',
+          V224 == 0 ~ 'Membro de fam\u00edlia ou institui\u00e7\u00e3o',
           V224 == 1 ~ 'Ignorado',
           V224 == 5 ~ 'Empregado p\u00fablico',
           V224 == 6 ~ 'Empregado particular',
@@ -2642,7 +2649,7 @@ add_labels_population <- function(
         dplyr::across(
           all_of(diag_vars_1960),
           ~ case_when(
-            .x == 2 ~ 'Problema n\u00e3o corrigido, mas ignor\u00e1vel (valores inv\u00e1lidos marcados como missing)',
+            .x == 2 ~ 'Problema n\u00e3o corrigido, mas ignor\u00e1vel (valores inv\u00e1lidos, n\u00e3o listados no dicion\u00e1rio, marcados como missing)',
             .x == 3 ~ 'Registro n\u00e3o problem\u00e1tico'
           )
         )
@@ -2652,11 +2659,15 @@ add_labels_population <- function(
 
   # YEAR 1970 ------------------------------------------------------------------
   if (year == 1970 & lang == 'pt') {
-    # NOTE: labels transcribed from the 1970 population dictionary,
-    # `data_dictionary(1970, "population")`, normalised to sentence case and
-    # cross-checked against the 1970 sample questionnaire (CD 1.01,
-    # `questionnaire(1970)`); where the two disagree the comment on the
-    # variable says which was used. Codes are stored as doubles, so the
+    # NOTE: labels transcribed from the 1970 population dictionary, normalised to
+    # sentence case and cross-checked against the 1970 sample questionnaire
+    # (CD 1.01, `questionnaire(1970)`); where the two disagree the comment on the
+    # variable says which was used. CAVEAT: the dictionary currently served by
+    # `data_dictionary(1970, ...)` is an earlier edition that miscodes V010, V025,
+    # V031, V034, V035, V036, V037, V038 and V040; the labels here follow the
+    # corrected dictionary, which the observed distributions confirm (e.g. V035
+    # alfabetizacao: code 1 = 12944644, code 2 = 8159423, code 0 = 17688, so 1 is
+    # 'Sim' and 0 is 'Sem declaracao', not the reverse). Codes are stored as doubles, so the
     # comparisons below are numeric. Variables whose categories live in the
     # dictionary's auxiliary files (V027 idade, V030 naturalidade, V033 UF
     # anterior, V039 curso, V044 ocupacao, V045 atividade, V050 filhos
@@ -2664,13 +2675,15 @@ add_labels_population <- function(
     # V020, V021, V041, V053, V054, ids), the geography codes V001-V003 and
     # the state/region columns censobr already provides as names.
 
-    # SITUACAO DO DOMICILIO
+    # SITUACAO DO DOMICILIO. The dictionary writes these in the masculine
+    # ('URBANO', 'SUBURBANO'); the questionnaire prints 'Urbana', 'Suburbana',
+    # 'Rural', which is used here and in every other census year.
     if ('V004' %in% cols) {
       arrw <- dplyr::mutate(
         arrw,
         V004 = dplyr::case_when(
-          V004 == 0 ~ 'Urbano',
-          V004 == 1 ~ 'Suburbano',
+          V004 == 0 ~ 'Urbana',
+          V004 == 1 ~ 'Suburbana',
           V004 == 2 ~ 'Rural'
         )
       )
@@ -2684,8 +2697,8 @@ add_labels_population <- function(
           V006 == 0 ~ 'Pessoa s\u00f3',
           V006 == 1 ~ '\u00danica',
           V006 == 2 ~ 'Principal',
-          V006 == 3 ~ 'Secund\u00e1ria parente',
-          V006 == 4 ~ 'Secund\u00e1ria n\u00e3o parente'
+          V006 == 3 ~ 'Secund\u00e1rio parente',
+          V006 == 4 ~ 'Secund\u00e1rio n\u00e3o parente'
         )
       )
     }
@@ -2734,14 +2747,14 @@ add_labels_population <- function(
       arrw <- dplyr::mutate(
         arrw,
         V010 = dplyr::case_when(
-          V010 == 1 ~ 'At\u00e9 15',
-          V010 == 2 ~ 'De 16 a 30',
-          V010 == 3 ~ 'De 31 a 60',
-          V010 == 4 ~ 'De 61 a 120',
-          V010 == 5 ~ 'De 121 a 240',
-          V010 == 6 ~ 'De 241 a 480',
-          V010 == 7 ~ 'De 481 a 960',
-          V010 == 8 ~ 'De 961 e mais',
+          V010 == 1 ~ 'At\u00e9 15 NCr$',
+          V010 == 2 ~ 'De 16 a 30 NCr$',
+          V010 == 3 ~ 'De 31 a 60 NCr$',
+          V010 == 4 ~ 'De 61 a 120 NCr$',
+          V010 == 5 ~ 'De 121 a 240 NCr$',
+          V010 == 6 ~ 'De 241 a 480 NCr$',
+          V010 == 7 ~ 'De 481 a 960 NCr$',
+          V010 == 8 ~ 'De 961 NCr$ e mais',
           V010 == 9 ~ 'N\u00e3o paga aluguel',
           V010 == 0 ~ 'Sem declara\u00e7\u00e3o'
         )
@@ -2839,7 +2852,7 @@ add_labels_population <- function(
         V024 = dplyr::case_when(
           V024 == 0 ~ 'Morador presente',
           V024 == 1 ~ 'Morador ausente',
-          V024 == 2 ~ 'N\u00e3o morador'
+          V024 == 2 ~ 'N\u00e3o morador presente'
         )
       )
     }
@@ -2854,7 +2867,7 @@ add_labels_population <- function(
           V025 == 1 ~ 'Chefe da fam\u00edlia',
           V025 == 2 ~ 'C\u00f4njuge',
           V025 == 3 ~ 'Filho',
-          V025 == 4 ~ 'Pais e sogros',
+          V025 == 4 ~ 'Pais ou sogros',
           V025 == 5 ~ 'Outro parente',
           V025 == 6 ~ 'Agregado',
           V025 == 7 ~ 'Pensionista ou h\u00f3spede',
@@ -2894,13 +2907,15 @@ add_labels_population <- function(
       )
     }
 
-    # NACIONALIDADE
+    # NACIONALIDADE. Both sources are followed except on the wording of the
+    # naturalised category: the questionnaire reads 'Naturalizado brasileiro',
+    # which is used here and in every other census year.
     if ('V029' %in% cols) {
       arrw <- dplyr::mutate(
         arrw,
         V029 = dplyr::case_when(
           V029 == 0 ~ 'Brasileiro nato',
-          V029 == 1 ~ 'Brasileiro naturalizado',
+          V029 == 1 ~ 'Naturalizado brasileiro',
           V029 == 2 ~ 'Estrangeiro'
         )
       )
@@ -2991,7 +3006,9 @@ add_labels_population <- function(
       )
     }
 
-    # ULTIMA SERIE QUE CONCLUIU COM APROVACAO
+    # ULTIMA SERIE QUE CONCLUIU COM APROVACAO. Code 1 follows the questionnaire
+    # (item 17, box 1 'Cursa 1o elementar', box 2 '1a serie'); the earlier HTML
+    # dictionary printed code 1 as '1a serie do elementar', duplicating code 2.
     if ('V037' %in% cols) {
       arrw <- dplyr::mutate(
         arrw,
@@ -3205,10 +3222,11 @@ add_labels_population <- function(
     # add_labels_households(). Codes are stored as strings, except V517 and
     # V536, which are numbers. Variables whose categories live in the
     # dictionary's auxiliary files (V211 tempo de residencia, V512 UF/pais de
-    # nascimento, V518/V527 UF e municipio, V525 curso, V530/V542 ocupacao,
-    # V532/V544 ramo, V606 idade) are left as codes, as are the numeric
-    # variables (V212, V213, V602-V613, V605 idade em meses, V557, V570, ids)
-    # and the geography codes V2-V6, which censobr already provides as names.
+    # nascimento, V525 curso, V530/V542 ocupacao, V532/V544 ramo, V606 idade)
+    # are left as codes, as are the 6-digit UF+municipio identifiers V518/V527,
+    # the numeric variables (V212, V213, V602-V604, V606-V613, V557, V570, ids),
+    # V605 (idade em meses, whose 12 categories are just the month count) and
+    # the geography codes V2-V6, which censobr already provides as names.
 
     # SITUACAO DO DOMICILIO
     if ('V198' %in% cols) {
@@ -3430,12 +3448,13 @@ add_labels_population <- function(
       )
     }
 
-    # SITUACAO DA PESSOA (variavel 598)
+    # SITUACAO DA PESSOA (variavel 598). The dictionary writes code 0 in the
+    # masculine ('urbano'); 'Urbana' is used here, as in every other census year.
     if ('V598' %in% cols) {
       arrw <- dplyr::mutate(
         arrw,
         V598 = dplyr::case_when(
-          V598 == '0' ~ 'Urbano',
+          V598 == '0' ~ 'Urbana',
           V598 == '1' ~ 'Rural'
         )
       )
@@ -3551,13 +3570,15 @@ add_labels_population <- function(
       )
     }
 
-    # NACIONALIDADE
+    # NACIONALIDADE. Both sources are followed except on the wording of the
+    # naturalised category: the questionnaire reads 'Naturalizado brasileiro',
+    # which is used here and in every other census year.
     if ('V511' %in% cols) {
       arrw <- dplyr::mutate(
         arrw,
         V511 = dplyr::case_when(
           V511 == '2' ~ 'Brasileiro nato',
-          V511 == '4' ~ 'Brasileiro naturalizado',
+          V511 == '4' ~ 'Naturalizado brasileiro',
           V511 == '6' ~ 'Estrangeiro'
         )
       )
@@ -3611,7 +3632,7 @@ add_labels_population <- function(
           V516 == '3' ~ '3 anos',
           V516 == '4' ~ '4 anos',
           V516 == '5' ~ '5 anos',
-          V516 == '6' ~ 'De 6 a 9 anos',
+          V516 == '6' ~ '6 a 9 anos',
           V516 == '7' ~ '10 anos ou mais',
           V516 == '8' ~ 'Nasceu',
           V516 == '9' ~ 'Sem declara\u00e7\u00e3o'
@@ -3631,7 +3652,7 @@ add_labels_population <- function(
           V517 == 3 ~ '3 anos',
           V517 == 4 ~ '4 anos',
           V517 == 5 ~ '5 anos',
-          V517 == 6 ~ 'De 6 a 9 anos',
+          V517 == 6 ~ '6 a 9 anos',
           V517 == 7 ~ '10 anos ou mais',
           V517 == 8 ~ 'Nasceu',
           V517 == 9 ~ 'Sem declara\u00e7\u00e3o'
@@ -3728,9 +3749,9 @@ add_labels_population <- function(
       )
     }
 
-    # GRAU DA ULTIMA SERIE CONCLUIDA COM APROVACAO. The dictionary as first
-    # published pointed to the categories of V521, but the questionnaire (item 24) and the observed
-    # distribution use a different coding, which is what is used here.
+    # GRAU DA ULTIMA SERIE CONCLUIDA COM APROVACAO. The dictionary (VAR 524,
+    # CATEG=9) carries its own 9-code list, which agrees with questionnaire item
+    # 24 and with the observed distribution.
     if ('V524' %in% cols) {
       arrw <- dplyr::mutate(
         arrw,
@@ -3847,10 +3868,9 @@ add_labels_population <- function(
     }
 
     # HORAS HABITUALMENTE TRABALHADAS POR SEMANA EM TODAS AS OCUPACOES. The
-    # dictionary as first published pointed to the categories of V533
-    # (posicao), which is wrong;
-    # the questionnaire (item 36) codes the brackets 4, 5, 6, 7 and 0, matching
-    # the observed distribution. Stored as a number in this release.
+    # questionnaire (item 36) and the dictionary (VAR 536, CATEG=6) both code the
+    # brackets 4, 5, 6, 7 and 0 - the 0 is not a typo - matching the observed
+    # distribution. Stored as a number in this release.
     if ('V536' %in% cols) {
       arrw <- dplyr::mutate(
         arrw,
@@ -3881,7 +3901,9 @@ add_labels_population <- function(
       )
     }
 
-    # NA ULTIMA SEMANA (25 A 31/08/1980) ESTAVA (wording from questionnaire item 41)
+    # NA ULTIMA SEMANA (25 A 31/08/1980) ESTAVA. Wording from questionnaire item
+    # 41; codes 1 and 2 render the form's 'a ocupacao do Quesito 30' as 'a
+    # ocupacao habitual', which is how item 30 defines itself.
     if ('V541' %in% cols) {
       arrw <- dplyr::mutate(
         arrw,
@@ -3890,7 +3912,7 @@ add_labels_population <- function(
           V541 == '2' ~ 'Exercendo a ocupa\u00e7\u00e3o habitual e outra(s)',
           V541 == '3' ~ 'S\u00f3 exercendo ocupa\u00e7\u00e3o diferente da habitual',
           V541 == '4' ~ 'Desempregado procurando trabalho',
-          V541 == '5' ~ 'Tinha-se aposentado e n\u00e3o trabalhava',
+          V541 == '5' ~ 'Tinha-se aposentado e n\u00e3o trabalhou',
           V541 == '6' ~ 'N\u00e3o tinha trabalho nem estava procurando'
         )
       )
@@ -4189,10 +4211,11 @@ add_labels_population <- function(
     # labelled variable is stored as a string without leading zeros ('1', ...,
     # '15', '20'). Variables whose categories live in auxiliary files (V0346
     # ocupacao, V0347 atividade, V3191/V3211 municipio) are left as codes, as
-    # are the numeric variables (ages, counts of children, incomes, V0313 anos
-    # de moradia, V3005 ordem da mae, V0211-V0213, V0335-V0342, ids, weights),
-    # V0099/V0098 record fields, and the geography codes V1101, V1102,
-    # V7001, V7002 and V7004, which censobr already provides as names.
+    # are the numeric variables (ages, counts of children, incomes, V0313/V0317/
+    # V0318 anos de moradia, V3152 ano de fixacao de residencia no pais, V3005
+    # ordem da mae, V0211-V0213, V0335-V0342, ids, weights), V0099/V0098 record
+    # fields, and the geography codes V1101, V1102, V7001, V7002 and V7004,
+    # which censobr already provides as names.
 
     # SITUACAO DO DOMICILIO
     if ('V1061' %in% cols) {
@@ -4424,7 +4447,7 @@ add_labels_population <- function(
           V0214 == '3' ~ 'Queimado',
           V0214 == '4' ~ 'Enterrado',
           V0214 == '5' ~ 'Jogado em terreno baldio',
-          V0214 == '6' ~ 'Jogado em rio, lago, lagoa ou mar',
+          V0214 == '6' ~ 'Jogado em rio, lago ou mar',
           V0214 == '7' ~ 'Outro'
         )
       )
@@ -4586,7 +4609,9 @@ add_labels_population <- function(
       )
     }
 
-    # CONDICAO NA FAMILIA (code 16 does not occur; see the dictionary)
+    # CONDICAO NA FAMILIA. Code 16 ('parente do empregado domestico') belongs to
+    # V0302, not to this variable: the dictionary lists 1-15 and 20 for V0303, and
+    # the v0.7.0 file confirms it - V0303 takes no value 16 (V0302 does, 5451 times).
     if ('V0303' %in% cols) {
       arrw <- dplyr::mutate(
         arrw,
@@ -4606,7 +4631,6 @@ add_labels_population <- function(
           V0303 == '13' ~ 'Agregado(a)',
           V0303 == '14' ~ 'Pensionista',
           V0303 == '15' ~ 'Empregado(a) dom\u00e9stico(a)',
-          V0303 == '16' ~ 'Parente do(a) empregado(a) dom\u00e9stico(a)',
           V0303 == '20' ~ 'Individual'
         )
       )
@@ -5419,7 +5443,9 @@ add_labels_population <- function(
       )
     }
 
-    # SETOR DE ATIVIDADE
+    # SETOR DE ATIVIDADE (codes 4, 7, 8, 9 and 10 carry the dictionary's
+    # parentheticals, which is what distinguishes 4 from 11; code 11's own
+    # parenthetical is a 250-character list and is left out, as for V0329)
     if ('V3471' %in% cols) {
       arrw <- dplyr::mutate(
         arrw,
@@ -5427,13 +5453,13 @@ add_labels_population <- function(
           V3471 == '1' ~ 'Atividades agropecu\u00e1rias, de extra\u00e7\u00e3o vegetal e pesca',
           V3471 == '2' ~ 'Ind\u00fastria de transforma\u00e7\u00e3o',
           V3471 == '3' ~ 'Ind\u00fastria da constru\u00e7\u00e3o civil',
-          V3471 == '4' ~ 'Outras atividades industriais',
+          V3471 == '4' ~ 'Outras atividades industriais (extra\u00e7\u00e3o mineral e servi\u00e7os industriais de utilidade p\u00fablica)',
           V3471 == '5' ~ 'Com\u00e9rcio de mercadorias',
           V3471 == '6' ~ 'Transporte e comunica\u00e7\u00e3o',
-          V3471 == '7' ~ 'Servi\u00e7os auxiliares da atividade econ\u00f4mica',
-          V3471 == '8' ~ 'Presta\u00e7\u00e3o de servi\u00e7os',
-          V3471 == '9' ~ 'Social',
-          V3471 == '10' ~ 'Administra\u00e7\u00e3o p\u00fablica',
+          V3471 == '7' ~ 'Servi\u00e7os auxiliares da atividade econ\u00f4mica (t\u00e9cnico-profissionais e auxiliares das atividades econ\u00f4micas)',
+          V3471 == '8' ~ 'Presta\u00e7\u00e3o de servi\u00e7os (alojamento e alimenta\u00e7\u00e3o, repara\u00e7\u00e3o e conserva\u00e7\u00e3o, pessoais, domiciliares e divers\u00f5es)',
+          V3471 == '9' ~ 'Social (comunit\u00e1rias, m\u00e9dicas, odontol\u00f3gicas e ensino)',
+          V3471 == '10' ~ 'Administra\u00e7\u00e3o p\u00fablica (administra\u00e7\u00e3o p\u00fablica, defesa nacional e seguran\u00e7a p\u00fablica)',
           V3471 == '11' ~ 'Outras atividades'
         )
       )

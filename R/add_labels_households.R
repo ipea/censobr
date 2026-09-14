@@ -884,8 +884,10 @@ add_labels_households <- function(
     # the other blocks and identical to the household variables of the 1960
     # block in add_labels_population(). Unlike 2000/2010, the 1960 codes are
     # stored as integers, so comparisons below are numeric. Numeric variables
-    # (V100, V112, V113, weights, ids and counts) and the geography codes
-    # code_muni_1960, V116 and V117 are left as they are.
+    # (V100, V112, V113, weights, ids and counts), the record-identification
+    # and sample-design variables (V001-V004, censobr_estrato, censobr_upa,
+    # censobr_usa), the censobr_diag_households_vars text column and the
+    # geography codes code_muni_1960, V116 and V117 are left as they are.
 
     # FONTE DA INFORMACAO SOBRE O REGISTRO (variavel adicionada pelo censobr)
     if ('censobr_source' %in% cols) {
@@ -1121,7 +1123,7 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         censobr_diag_households = dplyr::case_when(
-          censobr_diag_households == 2 ~ 'Problema n\u00e3o corrigido, mas ignor\u00e1vel (valores inv\u00e1lidos marcados como missing)',
+          censobr_diag_households == 2 ~ 'Problema n\u00e3o corrigido, mas ignor\u00e1vel (valores inv\u00e1lidos, n\u00e3o listados no dicion\u00e1rio, marcados como missing)',
           censobr_diag_households == 3 ~ 'Registro n\u00e3o problem\u00e1tico'
         )
       )
@@ -1139,13 +1141,15 @@ add_labels_households <- function(
     # person-level codes and takes ~260 distinct values. V004 also carries a
     # few dozen fractional averages, which become NA.
 
-    # SITUACAO DO DOMICILIO
+    # SITUACAO DO DOMICILIO. The dictionary writes these in the masculine
+    # ('URBANO', 'SUBURBANO'); the questionnaire prints 'Urbana', 'Suburbana',
+    # 'Rural', which is used here and in every other census year.
     if ('V004' %in% cols) {
       arrw <- dplyr::mutate(
         arrw,
         V004 = dplyr::case_when(
-          V004 == 0 ~ 'Urbano',
-          V004 == 1 ~ 'Suburbano',
+          V004 == 0 ~ 'Urbana',
+          V004 == 1 ~ 'Suburbana',
           V004 == 2 ~ 'Rural'
         )
       )
@@ -1195,14 +1199,14 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V010 = dplyr::case_when(
-          V010 == 1 ~ 'At\u00e9 15',
-          V010 == 2 ~ 'De 16 a 30',
-          V010 == 3 ~ 'De 31 a 60',
-          V010 == 4 ~ 'De 61 a 120',
-          V010 == 5 ~ 'De 121 a 240',
-          V010 == 6 ~ 'De 241 a 480',
-          V010 == 7 ~ 'De 481 a 960',
-          V010 == 8 ~ 'De 961 e mais',
+          V010 == 1 ~ 'At\u00e9 15 NCr$',
+          V010 == 2 ~ 'De 16 a 30 NCr$',
+          V010 == 3 ~ 'De 31 a 60 NCr$',
+          V010 == 4 ~ 'De 61 a 120 NCr$',
+          V010 == 5 ~ 'De 121 a 240 NCr$',
+          V010 == 6 ~ 'De 241 a 480 NCr$',
+          V010 == 7 ~ 'De 481 a 960 NCr$',
+          V010 == 8 ~ 'De 961 NCr$ e mais',
           V010 == 9 ~ 'N\u00e3o paga aluguel',
           V010 == 0 ~ 'Sem declara\u00e7\u00e3o'
         )
@@ -1548,8 +1552,9 @@ add_labels_households <- function(
     # agrees with it. Identical to the household variables of the 1991 block
     # in add_labels_population(). Every labelled variable is stored as a
     # string. Numeric variables (V0209 aluguel, V0211-V0213 comodos e
-    # banheiros, V2012, V2111, V2121, V0111, V0112, weights, ids) and the
-    # geography codes V1101, V1102, V7001, V7002 and V7004 are left as they are.
+    # banheiros, V2012, V2111, V2121, V0111, V0112, weights, ids), the record
+    # fields V0098/V0099 and the geography codes V1101, V1102, V7001, V7002 and
+    # V7004 are left as they are.
 
     # SITUACAO DO DOMICILIO
     if ('V1061' %in% cols) {
@@ -1781,7 +1786,7 @@ add_labels_households <- function(
           V0214 == '3' ~ 'Queimado',
           V0214 == '4' ~ 'Enterrado',
           V0214 == '5' ~ 'Jogado em terreno baldio',
-          V0214 == '6' ~ 'Jogado em rio, lago, lagoa ou mar',
+          V0214 == '6' ~ 'Jogado em rio, lago ou mar',
           V0214 == '7' ~ 'Outro'
         )
       )

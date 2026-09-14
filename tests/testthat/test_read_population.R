@@ -107,21 +107,27 @@ test_that("read_population read", {
   testthat::expect_true('Sim' %in% test1970$V035)
   testthat::expect_true('Casamento civil e religioso' %in% test1970$V040)
 
-  # 1980 labels: codes are strings, except V536 which is a number
+  # 1980 labels: codes are strings, except V536 which is a number. V681 is a
+  # 2-wide field: 'Sem renda' is code '0', so it only resolves if the file stores
+  # the code unpadded - that is the assertion guarding against leading zeros.
   test1980 <- tester(year = 1980, add_labels = 'pt',
-                     columns = c('abbrev_state', 'V509', 'V536'),
+                     columns = c('abbrev_state', 'V509', 'V536', 'V681'),
                      showProgress = FALSE) |>
-    dplyr::distinct(V509, V536) |>
+    dplyr::distinct(V509, V536, V681) |>
     dplyr::collect()
   testthat::expect_true('Parda' %in% test1980$V509)
   testthat::expect_true('De 49 horas e mais' %in% test1980$V536)
+  testthat::expect_true('Sem renda' %in% test1980$V681)
 
-  # 1991 labels: codes are strings without leading zeros
+  # 1991 labels: codes are strings without leading zeros. 'Chefe' is code '1' of
+  # a 2-wide field, so it only resolves when the code is stored unpadded - the
+  # 2-character codes below pass either way and cannot detect that regression.
   test1991 <- tester(year = 1991, add_labels = 'pt',
                      columns = c('abbrev_state', 'V0302', 'V0349'),
                      showProgress = FALSE) |>
     dplyr::distinct(V0302, V0349) |>
     dplyr::collect()
+  testthat::expect_true('Chefe' %in% test1991$V0302)
   testthat::expect_true('Cunhado(a)' %in% test1991$V0302)
   testthat::expect_true('Empregador' %in% test1991$V0349)
 
