@@ -25,6 +25,7 @@ test_that("censobr_years() returns registered keys and aborts on unknown ones", 
     c(1960, 1970, 1980, 1991, 2000, 2010, 2022)
   )
   testthat::expect_identical(censobr_years("emigration"), 2010)
+  testthat::expect_identical(censobr_years("merge_households"), c(1970, 1980, 1991, 2000, 2010, 2022))
 
   testthat::expect_error(censobr_years("nope"), "no year list registered")
   testthat::expect_error(censobr_years("populatio"), "no year list registered")
@@ -34,14 +35,15 @@ test_that("censobr_years() returns registered keys and aborts on unknown ones", 
 
 test_that("every key used in R/ resolves", {
 
-  # the eight literal keys passed by the read_* and documentation functions
+  # the nine literal keys passed by the read_* and documentation functions and
+  # by merge_household_var()
   literal_keys <- c("population", "households", "families", "mortality",
-                    "emigration", "tracts", "questionnaire", "interview_manual")
+                    "emigration", "tracts", "questionnaire", "interview_manual",
+                    "merge_households")
 
   # data_dictionary() builds its key at run time from `dataset`, which is one of
-  # these four by the time the lookup happens
-  dictionary_keys <- paste0("dictionary_",
-                            c("microdata", "tracts", "population", "households"))
+  # these two by the time the lookup happens
+  dictionary_keys <- paste0("dictionary_", c("microdata", "tracts"))
 
   for (key in c(literal_keys, dictionary_keys)) {
     testthat::expect_no_error(censobr_years(key))

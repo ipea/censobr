@@ -22,11 +22,22 @@ test_that("add_labels_emigration", {
   test1a <- dplyr::collect(test1a)
   test1b <- dplyr::collect(test1b)
   # add labels
-  testthat::expect_true('1' %in% test1a$V1006)
+  testthat::expect_true(1 %in% test1a$V1006)
   testthat::expect_true('Urbana' %in% test1b$V1006)
 
-
-
+  # destination country: code 8000826 (United Kingdom) is listed under five
+  # names in IBGE's country table; only 'Reino Unido' must be applied
+  test2a <- read_emigration(year = 2010,
+                            add_labels = NULL,
+                            columns = c('V3061'),
+                            showProgress = FALSE)
+  test2b <- censobr:::add_labels_emigration(arrw = test2a, year=2010, lang = 'pt')
+  test2a <- dplyr::collect(test2a)
+  test2b <- dplyr::collect(test2b)
+  testthat::expect_equal(sum(test2b$V3061 == 'Reino Unido', na.rm = TRUE),
+                         sum(test2a$V3061 == 8000826, na.rm = TRUE))
+  testthat::expect_false('Escócia' %in% test2b$V3061)
+  testthat::expect_equal(sum(is.na(test2b$V3061)), sum(is.na(test2a$V3061)))
  })
 
 

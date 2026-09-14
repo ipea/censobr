@@ -6,14 +6,17 @@ testthat::skip_on_cran()
 testthat::skip_if_not_installed("arrow")
 
 
-fake_zip <- system.file("extdata", "microdata_2022_controlado_fake.zip",
-                        package = "censobr")
+fake_zip <- system.file(
+  "extdata",
+  "microdata_2022_controlado_fake.zip",
+  package = "censobr"
+)
 
 tables <- data.frame(
-  ibge   = c("Domicilios", "Familia", "Mortalidade", "Pessoas"),
-  censo  = c("households", "families", "mortality", "population"),
+  ibge = c("Domicilios", "Familia", "Mortalidade", "Pessoas"),
+  censo = c("households", "families", "mortality", "population"),
   prefix = c("D", "F", "M", "P"),
-  ncol   = c(64L, 31L, 25L, 210L),
+  ncol = c(64L, 31L, 25L, 210L),
   stringsAsFactors = FALSE
 )
 
@@ -22,8 +25,8 @@ tables <- data.frame(
 # configuration back, whether it passes or not
 cache_config_restorer <- function() {
   config_file <- get_config_cache_file()
-  had_config  <- file.exists(config_file)
-  old_config  <- if (had_config) readLines(config_file) else NULL
+  had_config <- file.exists(config_file)
+  old_config <- if (had_config) readLines(config_file) else NULL
   function() {
     if (had_config) writeLines(old_config, config_file) else unlink(config_file)
   }
@@ -31,7 +34,6 @@ cache_config_restorer <- function() {
 
 # Import once, into a temporary cache directory.
 release_dir <- (function() {
-
   restore <- cache_config_restorer()
   on.exit(restore(), add = TRUE)
 
@@ -39,15 +41,23 @@ release_dir <- (function() {
   dir.create(cache, recursive = TRUE)
   set_censobr_cache_dir(path = cache, verbose = FALSE)
 
-  import_microdata22_controlado(zip_path = fake_zip)
+  import_microdata22(zip_path = fake_zip)
 
   file.path(cache, paste0("data_release_", censobr_env$data_release))
 })()
 
 imported <- function(censo_name) {
   arrow::open_dataset(
-    file.path(release_dir,
-              paste0("2022_", censo_name, "_", censobr_env$data_release, ".parquet"))
+    file.path(
+      release_dir,
+      paste0(
+        "2022_",
+        censo_name,
+        ".controlado_",
+        censobr_env$data_release,
+        ".parquet"
+      )
+    )
   )
 }
 
@@ -58,15 +68,20 @@ col_type <- function(dataset, column) {
 
 # Writing the files -----------------------
 
-test_that("import_microdata22_controlado writes the four tables to the cache", {
-
+test_that("import_microdata22 writes the four tables to the cache", {
   # the files have to land in the versioned subdirectory, because that is where
   # download_file() looks for a file that is already cached
   testthat::expect_true(dir.exists(release_dir))
 
   testthat::expect_setequal(
     list.files(release_dir),
-    paste0("2022_", tables$censo, "_", censobr_env$data_release, ".parquet")
+    paste0(
+      "2022_",
+      tables$censo,
+      ".controlado_",
+      censobr_env$data_release,
+      ".parquet"
+    )
   )
 
   for (censo_name in tables$censo) {
@@ -75,15 +90,16 @@ test_that("import_microdata22_controlado writes the four tables to the cache", {
 })
 
 
-test_that("import_microdata22_controlado keeps every column of every table", {
-
-  schemas <- list(households = schema_households(),
-                  families   = schema_families(),
-                  mortality  = schema_mortality(),
-                  population = schema_population())
+test_that("import_microdata22 keeps every column of every table", {
+  schemas <- list(
+    households = schema_households(),
+    families = schema_families(),
+    mortality = schema_mortality(),
+    population = schema_population()
+  )
 
   for (i in seq_len(nrow(tables))) {
-    df  <- imported(tables$censo[i])
+    df <- imported(tables$censo[i])
     sch <- schemas[[tables$censo[i]]]
 
     # every census variable of the layout file survives the import
@@ -96,8 +112,7 @@ test_that("import_microdata22_controlado keeps every column of every table", {
 
 # Column types -----------------------
 
-test_that("import_microdata22_controlado types the columns from the layout file", {
-
+test_that("import_microdata22 types the columns from the layout file", {
   for (i in seq_len(nrow(tables))) {
     df <- imported(tables$censo[i])
     prefix <- tables$prefix[i]
@@ -115,7 +130,7 @@ test_that("import_microdata22_controlado types the columns from the layout file"
     testthat::expect_equal(col_type(df, paste0(prefix, "0111")), "double")
 
     # 2 digit codes fit the smallest integer
-    testthat::expect_equal(col_type(df, paste0(prefix, "0120")), "int8")
+    testthat::expect_equal(col_type(df, paste0(prefix, "0120")), "int32")
   }
 
   # F0101 and M0101 carry a letter prefix, "F001" and "M001"
@@ -131,11 +146,12 @@ test_that("import_microdata22_controlado types the columns from the layout file"
 
 
 test_that("the schemas cover every column of their table", {
-
-  schemas <- list(households = schema_households(),
-                  families   = schema_families(),
-                  mortality  = schema_mortality(),
-                  population = schema_population())
+  schemas <- list(
+    households = schema_households(),
+    families = schema_families(),
+    mortality = schema_mortality(),
+    population = schema_population()
+  )
 
   for (i in seq_len(nrow(tables))) {
     sch <- schemas[[tables$censo[i]]]
@@ -149,12 +165,21 @@ test_that("the schemas cover every column of their table", {
 
 # Geography columns -----------------------
 
-test_that("import_microdata22_controlado adds the censobr geography columns", {
-
-  geo <- c("code_region", "name_region", "code_state", "abbrev_state",
-           "name_state", "code_meso", "code_micro", "code_intermediate",
-           "code_immediate", "code_urban_concentration", "code_muni",
-           "code_weighting")
+test_that("import_microdata22 adds the censobr geography columns", {
+  geo <- c(
+    "code_region",
+    "name_region",
+    "code_state",
+    "abbrev_state",
+    "name_state",
+    "code_meso",
+    "code_micro",
+    "code_intermediate",
+    "code_immediate",
+    "code_urban_concentration",
+    "code_muni",
+    "code_weighting"
+  )
 
   for (censo_name in tables$censo) {
     df <- imported(censo_name)
@@ -164,8 +189,13 @@ test_that("import_microdata22_controlado adds the censobr geography columns", {
     testthat::expect_equal(names(df)[seq_along(geo)], geo)
 
     states <- df |>
-      dplyr::select(dplyr::all_of(c("code_state", "abbrev_state", "name_state",
-                                    "code_region", "name_region"))) |>
+      dplyr::select(dplyr::all_of(c(
+        "code_state",
+        "abbrev_state",
+        "name_state",
+        "code_region",
+        "name_region"
+      ))) |>
       dplyr::distinct() |>
       dplyr::collect() |>
       as.data.frame()
@@ -173,8 +203,10 @@ test_that("import_microdata22_controlado adds the censobr geography columns", {
     # the fixture holds Rondonia, Acre and Sao Paulo
     testthat::expect_setequal(states$code_state, c(11, 12, 35))
     testthat::expect_setequal(states$abbrev_state, c("RO", "AC", "SP"))
-    testthat::expect_setequal(states$name_state,
-                              c("Rondônia", "Acre", "São Paulo"))
+    testthat::expect_setequal(
+      states$name_state,
+      c("Rondônia", "Acre", "São Paulo")
+    )
     testthat::expect_setequal(states$name_region, c("Norte", "Sudeste"))
     # a code with no match would come back as NA
     testthat::expect_false(anyNA(states))
@@ -183,10 +215,12 @@ test_that("import_microdata22_controlado adds the censobr geography columns", {
 
 
 test_that("add_geography_cols does not read the data into memory", {
-
   arrw <- arrow::open_delim_dataset(
-    utils::unzip(fake_zip, files = "11/Familia_11_controlado.csv",
-                 exdir = tempfile("fixture")),
+    utils::unzip(
+      fake_zip,
+      files = "11/Familia_11_controlado.csv",
+      exdir = tempfile("fixture")
+    ),
     delim = ";",
     col_types = schema_families(),
     na = ""
@@ -204,7 +238,6 @@ test_that("add_geography_cols does not read the data into memory", {
 # The schema is what makes the files readable -----------------------
 
 test_that("the tables cannot be read without declaring the schema", {
-
   files <- utils::unzip(fake_zip, exdir = tempfile("fixture"))
   familia <- grep("Familia", files, value = TRUE)
 
@@ -220,8 +253,12 @@ test_that("the tables cannot be read without declaring the schema", {
   # declaring the schema is what avoids it
   testthat::expect_no_error(
     arrow::write_parquet(
-      arrow::open_delim_dataset(familia, delim = ";",
-                                col_types = schema_families(), na = ""),
+      arrow::open_delim_dataset(
+        familia,
+        delim = ";",
+        col_types = schema_families(),
+        na = ""
+      ),
       tempfile(fileext = ".parquet")
     )
   )
@@ -230,56 +267,158 @@ test_that("the tables cannot be read without declaring the schema", {
 
 # ERRORS and messages  -----------------------
 
-test_that("import_microdata22_controlado errors", {
-
+test_that("import_microdata22 errors", {
   testthat::expect_error(
-    import_microdata22_controlado(zip_path = "banana.zip"), "does not exist"
+    import_microdata22(zip_path = "banana.zip"),
+    "does not exist"
   )
-  testthat::expect_error(import_microdata22_controlado())
+  testthat::expect_error(import_microdata22())
 })
 
 
 # The read_ functions point users to the import -----------------------
 
-test_that("read_ functions ask for the 2022 microdata to be imported", {
-
+test_that("read_ functions fall back to the public 2022 microdata, with a warning", {
   restore <- cache_config_restorer()
   on.exit(restore(), add = TRUE)
 
-  empty_cache <- tempfile("censobr_empty_")
-  dir.create(empty_cache, recursive = TRUE)
-  set_censobr_cache_dir(path = empty_cache, verbose = FALSE)
+  fallback_cache <- tempfile("censobr_fallback_")
+  release <- file.path(
+    fallback_cache,
+    paste0("data_release_", censobr_env$data_release)
+  )
+  dir.create(release, recursive = TRUE)
+  set_censobr_cache_dir(path = fallback_cache, verbose = FALSE)
 
-  # IBGE does not let censobr redistribute these files, so an empty cache is not
-  # something a download can fix. The error has to say so, and say what to do.
-  for (f in list(read_population, read_households, read_families, read_mortality)) {
-    testthat::expect_error(f(year = 2022), "not distributed")
-    testthat::expect_error(f(year = 2022), "import")
-    testthat::expect_error(f(year = 2022), "microdados.ibge.gov.br")
+  # IBGE publishes a reduced, public version of the 2022 microdata, which the
+  # read_ functions download when the controlled data have not been imported.
+  # Standing those files in from the fixture keeps the test off the network --
+  # the fallback only has to find them in the cache.
+  for (nm in tables$censo) {
+    file.copy(
+      file.path(
+        release_dir,
+        paste0(
+          "2022_",
+          nm,
+          ".controlado_",
+          censobr_env$data_release,
+          ".parquet"
+        )
+      ),
+      file.path(
+        release,
+        paste0("2022_", nm, ".publico_", censobr_env$data_release, ".parquet")
+      )
+    )
   }
 
-  # the error belongs to the function the user called, not to the internal
+  # the user has to be told they are on the reduced data, and how to get the
+  # complete set
+  for (f in list(
+    read_population,
+    read_households,
+    read_families,
+    read_mortality
+  )) {
+    testthat::expect_warning(f(year = 2022, verbose = FALSE), "public version")
+    testthat::expect_warning(f(year = 2022, verbose = FALSE), "import")
+    testthat::expect_warning(
+      f(year = 2022, verbose = FALSE),
+      "microdados.ibge.gov.br"
+    )
+  }
+
+  # the warning belongs to the function the user called, not to the internal
   # helper that raises it
-  err <- rlang::catch_cnd(read_population(year = 2022))
-  testthat::expect_match(deparse(conditionCall(err))[1], "read_population")
+  w <- rlang::catch_cnd(read_population(year = 2022, verbose = FALSE))
+  testthat::expect_s3_class(w, "warning")
+  testthat::expect_match(deparse(conditionCall(w))[1], "read_population")
+
+  # and the fallback has to actually return the public data
+  df <- suppressWarnings(read_population(year = 2022, verbose = FALSE))
+  testthat::expect_s3_class(df, "Dataset")
+  testthat::expect_gt(nrow(df), 0)
 
   # a year that censobr does distribute must not take this path
   testthat::expect_error(read_population(year = 1999), "currently available")
 })
 
 
-test_that("read_ functions find the 2022 microdata once imported", {
+test_that("cache = FALSE downloads the public 2022 microdata again", {
+  restore <- cache_config_restorer()
+  on.exit(restore(), add = TRUE)
 
+  fallback_cache <- tempfile("censobr_fallback_")
+  release <- file.path(
+    fallback_cache,
+    paste0("data_release_", censobr_env$data_release)
+  )
+  dir.create(release, recursive = TRUE)
+  set_censobr_cache_dir(path = fallback_cache, verbose = FALSE)
+
+  # a public file already in the cache must not short-circuit the download
+  file.copy(
+    file.path(
+      release_dir,
+      paste0(
+        "2022_population.controlado_",
+        censobr_env$data_release,
+        ".parquet"
+      )
+    ),
+    file.path(
+      release,
+      paste0("2022_population.publico_", censobr_env$data_release, ".parquet")
+    )
+  )
+
+  # the public data go through download_file() like every other year, so the
+  # downloader is what has to be asked. Stubbed to stay off the network
+  requested <- character()
+  testthat::local_mocked_bindings(
+    download_file = function(file_url, cache, ...) {
+      requested <<- c(requested, paste(file_url, cache))
+      invisible(NULL)
+    }
+  )
+
+  suppressWarnings(read_population(year = 2022, cache = FALSE, verbose = FALSE))
+  suppressWarnings(read_population(year = 2022, cache = TRUE, verbose = FALSE))
+
+  public_url <- paste0(
+    "https://github.com/ipea/censobr_prep_data/releases/download/",
+    censobr_env$data_release,
+    "/2022_population.publico_",
+    censobr_env$data_release,
+    ".parquet"
+  )
+  testthat::expect_equal(
+    requested,
+    c(paste(public_url, "FALSE"), paste(public_url, "TRUE"))
+  )
+})
+
+
+test_that("read_ functions find the 2022 microdata once imported", {
   restore <- cache_config_restorer()
   on.exit(restore(), add = TRUE)
 
   set_censobr_cache_dir(path = dirname(release_dir), verbose = FALSE)
 
-  readers <- list(population = read_population, households = read_households,
-                  families   = read_families,   mortality  = read_mortality)
+  readers <- list(
+    population = read_population,
+    households = read_households,
+    families = read_families,
+    mortality = read_mortality
+  )
 
   for (nm in names(readers)) {
-    df <- readers[[nm]](year = 2022, verbose = FALSE)
+    # imported data takes precedence over the public files, and the fallback
+    # warning must not fire when the complete data are there
+    testthat::expect_no_warning(
+      df <- readers[[nm]](year = 2022, verbose = FALSE)
+    )
     testthat::expect_s3_class(df, "Dataset")
     testthat::expect_gt(nrow(df), 0)
     testthat::expect_true("name_state" %in% names(df))
@@ -287,6 +426,7 @@ test_that("read_ functions find the 2022 microdata once imported", {
 
   # nothing is downloaded for 2022, so cache = FALSE must not try to
   testthat::expect_s3_class(
-    read_population(year = 2022, cache = FALSE, verbose = FALSE), "Dataset"
+    read_population(year = 2022, cache = FALSE, verbose = FALSE),
+    "Dataset"
   )
 })

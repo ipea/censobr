@@ -85,6 +85,52 @@ test_that("read_population read", {
 
   testthat::expect_true(paste('\u00c1rea urbanizada') %in% test4$V1005)
 
+  # 1960 labels: codes are stored as integers in this release, and the
+  # labelled query must stay lazy
+  testthat::expect_warning(
+    test1960 <- tester(year = 1960, add_labels = 'pt',
+                       columns = c('uf', 'V206', 'V215'),
+                       showProgress = FALSE),
+    'two different releases'
+    )
+  testthat::expect_s3_class(test1960, 'arrow_dplyr_query')
+  test1960 <- test1960 |> dplyr::distinct(V206, V215) |> dplyr::collect()
+  testthat::expect_true('Parda' %in% test1960$V206)
+  testthat::expect_true('Somente casamento religioso' %in% test1960$V215)
+
+  # 1970 labels
+  test1970 <- tester(year = 1970, add_labels = 'pt',
+                     columns = c('abbrev_state', 'V035', 'V040'),
+                     showProgress = FALSE) |>
+    dplyr::distinct(V035, V040) |>
+    dplyr::collect()
+  testthat::expect_true('Sim' %in% test1970$V035)
+  testthat::expect_true('Casamento civil e religioso' %in% test1970$V040)
+
+  # 1980 labels: codes are strings, except V536 which is a number. V681 is a
+  # 2-wide field: 'Sem renda' is code '0', so it only resolves if the file stores
+  # the code unpadded - that is the assertion guarding against leading zeros.
+  test1980 <- tester(year = 1980, add_labels = 'pt',
+                     columns = c('abbrev_state', 'V509', 'V536', 'V681'),
+                     showProgress = FALSE) |>
+    dplyr::distinct(V509, V536, V681) |>
+    dplyr::collect()
+  testthat::expect_true('Parda' %in% test1980$V509)
+  testthat::expect_true('De 49 horas e mais' %in% test1980$V536)
+  testthat::expect_true('Sem renda' %in% test1980$V681)
+
+  # 1991 labels: codes are strings without leading zeros. 'Chefe' is code '1' of
+  # a 2-wide field, so it only resolves when the code is stored unpadded - the
+  # 2-character codes below pass either way and cannot detect that regression.
+  test1991 <- tester(year = 1991, add_labels = 'pt',
+                     columns = c('abbrev_state', 'V0302', 'V0349'),
+                     showProgress = FALSE) |>
+    dplyr::distinct(V0302, V0349) |>
+    dplyr::collect()
+  testthat::expect_true('Chefe' %in% test1991$V0302)
+  testthat::expect_true('Cunhado(a)' %in% test1991$V0302)
+  testthat::expect_true('Empregador' %in% test1991$V0349)
+
   # no message
   testthat::expect_no_message(tester(verbose = FALSE))
 
@@ -136,19 +182,25 @@ test_that("read_population check totals", {
 
 test_that("read_population merge_households_vars", {
 
-  # merge_households requires columns -- for years that support it
-  for (y in c(1970, 2000, 2010)) { # y = 2010
+  # merge_households requires columns -- for years that support it. 2022 is
+  # read from the public release here, which warns once per call that the
+  # controlled microdata are not imported; that warning is the subject of
+  # test_import_microdata22_controlado.R, not of this test
+  for (y in c(1970, 2000, 2010, 2022)) { # y = 2010
 
-    hou_cols <- names(censobr::read_households(year = y, showProgress = FALSE, verbose = FALSE))
-    pop_cols <- names(tester(year = y))
+    quiet <- if (y == 2022) suppressWarnings else identity
+
+    hou_cols <- names(quiet(censobr::read_households(year = y, showProgress = FALSE, verbose = FALSE)))
+    pop_cols <- names(quiet(tester(year = y)))
     # a column that only exists in the household table for this year
     probe <- setdiff(hou_cols, pop_cols)[1]
     testthat::expect_false(is.na(probe))
 
     # `probe` only exists in the household table, so nrow() of the unmerged
     # population is checked via a column guaranteed to exist on both sides
-    df_pop <- tester(year = y, columns = 'code_muni')
-    df_merged <- tester(year = y, columns = probe, merge_households = TRUE)
+    # (code_muni is absent from the 2022 public release)
+    df_pop <- quiet(tester(year = y, columns = 'code_state'))
+    df_merged <- quiet(tester(year = y, columns = probe, merge_households = TRUE))
 
     # row count is preserved by the LEFT JOIN
     testthat::expect_equal(nrow(df_merged), nrow(df_pop))
@@ -169,6 +221,41 @@ test_that("read_population merge_households_vars", {
   # the requested order
   df_both <- tester(year = 2010, columns = c('V0601', 'V4001'), merge_households = TRUE)
   testthat::expect_equal(names(df_both), c('V0601', 'V4001'))
+
+  # 2022: the household identifier is named differently on each side (P0100 in
+  # the person records, D0100 in the household records), so the join runs on
+  # an ON clause rather than USING. Check the key actually links the rows:
+  # every person's P0100 must equal the D0100 brought in from the household
+  # side, and a household-only variable must be filled for every person
+  df_2022 <- suppressWarnings(
+    tester(year = 2022, columns = c('P0100', 'D0100', 'D0120'), merge_households = TRUE)
+    )
+  testthat::expect_equal(names(df_2022), c('P0100', 'D0100', 'D0120'))
+  chk_2022 <- df_2022 |>
+    dplyr::summarise(
+      n = dplyr::n(),
+      n_key_equal = sum(P0100 == D0100, na.rm = TRUE),
+      n_hou_na = sum(is.na(D0120))
+      ) |>
+    dplyr::collect()
+  testthat::expect_equal(chk_2022$n_key_equal, chk_2022$n)
+  testthat::expect_equal(chk_2022$n_hou_na, 0)
+
+  # 1980 and 1991: the population microdata already carry every household
+  # variable, so merge_households = TRUE is answered with a message and the
+  # data are returned as usual, the household variable served from the
+  # population file
+  for (y in c(1980, 1991)) {
+    hou_var <- if (y == 1980) 'V201' else 'V0201'
+    testthat::expect_message(
+      df_y <- tester(year = y, columns = hou_var, merge_households = TRUE),
+      'already includes'
+      )
+    testthat::expect_equal(names(df_y), hou_var)
+    # a columns= selection on an arrow Dataset is a lazy arrow_dplyr_query,
+    # not an ArrowObject -- the point is that it was not collected
+    testthat::expect_s3_class(df_y, "arrow_dplyr_query")
+  }
 
   # numeric column indices are not supported under merge_households = TRUE --
   # only character names are, matching the documented `columns` contract
@@ -207,21 +294,14 @@ test_that("read_population ERRORs", {
   testthat::expect_error(tester(verbose='banana'))
 
 
-  # missing labels
-  testthat::expect_error(tester(year=2000, add_labels = 'pt'))
+  # labels exist for every census year; the 'only available' guard can only
+  # trigger for a year that is not in the data registry, which errors earlier
 
-  # merge_households requires columns, and only supports years 1970/2000/2010
+  # merge_households requires columns, and only supports years 1970/2000/2010/2022
+  # (1980 and 1991 are accepted and answered with a message -- see the merge test)
   testthat::expect_error(tester(merge_households = TRUE), 'columns.*required')
   testthat::expect_error(
-    tester(year = 1980, columns = 'V201', merge_households = TRUE),
-    '1970'
-    )
-  testthat::expect_error(
     tester(year = 1960, columns = 'V2', merge_households = TRUE),
-    '1970'
-    )
-  testthat::expect_error(
-    tester(year = 1991, columns = 'V0109', merge_households = TRUE),
     '1970'
     )
 

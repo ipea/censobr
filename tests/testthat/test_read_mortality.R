@@ -71,12 +71,32 @@ test_that("read_mortality reading", {
 
 test_that("read_mortality merge_households_vars", {
 
-  for(y in c(2010)){ # y = 2010
+  # 2022 is read from the public release here, which warns once per call that
+  # the controlled microdata are not imported -- see test_import_microdata22_controlado.R
+  for(y in c(2010, 2022)){ # y = 2010
     message(y)
-    df_hou <- read_households(year = y)
-    df_test <- tester(year = y, merge_households = TRUE)
+    quiet <- if (y == 2022) suppressWarnings else identity
+    df_hou <- quiet(read_households(year = y))
+    df_main <- quiet(tester(year = y))
+    df_test <- quiet(tester(year = y, merge_households = TRUE))
     testthat::expect_true( all(names(df_hou) %in% names(df_test)) )
+    # a LEFT JOIN on a key that is unique on the household side keeps every
+    # death record exactly once
+    testthat::expect_equal(nrow(df_test), nrow(df_main))
   }
+
+  # 2022 joins M0100 (death records) to D0100 (household records): the two
+  # identifiers must agree on every row, and household variables must be filled
+  df_2022 <- suppressWarnings(tester(year = 2022, merge_households = TRUE))
+  chk_2022 <- df_2022 |>
+    dplyr::summarise(
+      n = dplyr::n(),
+      n_key_equal = sum(M0100 == D0100, na.rm = TRUE),
+      n_hou_na = sum(is.na(D0120))
+      ) |>
+    dplyr::collect()
+  testthat::expect_equal(chk_2022$n_key_equal, chk_2022$n)
+  testthat::expect_equal(chk_2022$n_hou_na, 0)
 
 })
 

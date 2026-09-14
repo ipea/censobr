@@ -19,3 +19,4 @@
 ^templates$
 ^CLAUDE\.md$
 ^MEMORY\.md$
+^\.quarto$

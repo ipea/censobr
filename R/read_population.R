@@ -22,8 +22,10 @@
 #' @template 1960_census_section
 #'
 #' @details
-#' `merge_households = TRUE` is only available for years 1970, 2000 and 2010, and
-#' requires `columns` to be set. Merging household variables into the full
+#' `merge_households = TRUE` is only available for years 1970, 2000, 2010 and
+#' 2022, and requires `columns` to be set. For 1980 and 1991 the population
+#' microdata already include all variables of the household data set, so
+#' `merge_households = TRUE` has no effect and a message says so. Merging household variables into the full
 #' population microdata produces about 300 columns and can require more than
 #' 20GB of memory; naming the columns you need keeps the operation fast and
 #' light, typically a few seconds. The merge writes a temporary parquet file
@@ -38,17 +40,20 @@
 #'   showProgress = FALSE
 #'   )
 #'
-read_population <- function(year,
-                            columns = NULL,
-                            add_labels = NULL,
-                            as_data_frame = FALSE,
-                            showProgress = TRUE,
-                            cache = TRUE,
-                            verbose = TRUE,
-                            merge_households = FALSE){
-
+read_population <- function(
+  year,
+  columns = NULL,
+  add_labels = NULL,
+  as_data_frame = FALSE,
+  showProgress = TRUE,
+  cache = TRUE,
+  verbose = TRUE,
+  merge_households = FALSE
+) {
   ### check inputs
-  if (missing(year) || is.null(year)) { error_year_not_declared() }
+  if (missing(year) || is.null(year)) {
+    error_year_not_declared()
+  }
   checkmate::assert_number(year)
   checkmate::assert_character(columns, null.ok = TRUE)
   checkmate::assert_logical(as_data_frame, null.ok = FALSE)
@@ -60,73 +65,93 @@ read_population <- function(year,
   years <- censobr_years("population")
   if (isFALSE(year %in% years)) {
     error_missing_years(years)
-    }
+  }
 
   # add_labels() aborts on unsupported years -- check before downloading
-  if (!is.null(add_labels) && isFALSE(year %in% c(2010))) {
-    cli::cli_abort("Labels for this data are only available for the year c(2010)",
-                   call = rlang::caller_env())
+  if (!is.null(add_labels) && isFALSE(year %in% c(1960, 1970, 1980, 1991, 2000, 2010, 2022))) {
+    cli::cli_abort(
+      "Labels for this data are only available for the years c(1960, 1970, 1980, 1991, 2000, 2010, 2022)",
+      call = rlang::caller_env()
+    )
   }
 
   # merge_households requires columns, and is only available for some years --
   # check both before downloading anything
   if (isTRUE(merge_households)) {
-    if (is.null(columns)) { error_merge_households_needs_columns() }
-    if (isFALSE(year %in% c(1970, 2000, 2010))) {
-      error_merge_households_years(c(1970, 2000, 2010))
-      }
+    if (is.null(columns)) {
+      error_merge_households_needs_columns()
+    }
+    merge_years <- censobr_years("merge_households")
+    if (isFALSE(year %in% merge_years)) {
+      error_merge_households_years(merge_years)
+    }
   }
 
   ### download and open
-  df <- open_censobr_data(dataset = 'population',
-                          year = year,
-                          showProgress = showProgress,
-                          cache = cache,
-                          verbose = verbose)
+  df <- open_censobr_data(
+    dataset = 'population',
+    year = year,
+    showProgress = showProgress,
+    cache = cache,
+    verbose = verbose
+  )
 
   # NULL if the download failed or the cached file is corrupted
-  if (is.null(df)) { return(invisible(NULL)) }
+  if (is.null(df)) {
+    return(invisible(NULL))
+  }
 
   ### merge household data
   if (isTRUE(merge_households)) {
-    if (isTRUE(verbose)) {
-      cli::cli_alert_info('Merging household variables. This can take a moment.')
-      }
-    df <- merge_household_var(df,
-                              year = year,
-                              columns = columns,
-                              add_labels = add_labels,
-                              showProgress = showProgress,
-                              cache = cache,
-                              verbose = verbose)
+    # 1980 and 1991 are not merged (merge_household_var() explains why)
+    if (isTRUE(verbose) && isFALSE(year %in% c(1980, 1991))) {
+      cli::cli_alert_info(
+        'Merging household variables. This can take a moment.'
+      )
     }
+    df <- merge_household_var(
+      df,
+      year = year,
+      columns = columns,
+      add_labels = add_labels,
+      showProgress = showProgress,
+      cache = cache,
+      verbose = verbose
+    )
+  }
 
   # merge_household_var() returns NULL if the household data could not be downloaded
-  if (isTRUE(merge_households) && is.null(df)) { return(invisible(NULL)) }
+  if (isTRUE(merge_households) && is.null(df)) {
+    return(invisible(NULL))
+  }
 
   ### Select
-  if (!is.null(columns)) { # columns <- c('V0002','V0011')
+  if (!is.null(columns)) {
+    # columns <- c('V0002','V0011')
     absent <- setdiff(columns, names(df))
-    if (length(absent) > 0) { error_columns_absent(absent) }
+    if (length(absent) > 0) {
+      error_columns_absent(absent)
+    }
     df <- dplyr::select(df, dplyr::all_of(columns))
   }
 
   ### Add labels
-  if (!is.null(add_labels)) { # add_labels = 'pt'
-    df <- add_labels_population(arrw = df,
-                                year = year,
-                                lang = add_labels)
+  if (!is.null(add_labels)) {
+    # add_labels = 'pt'
+    df <- add_labels_population(arrw = df, year = year, lang = add_labels)
   }
 
   # 1960 warning
-  if(year==1960){
-    warning("This version of the 1960 microdata was compiled by {censobr} from two different releases elaborated by IBGE. The data was processed to ensure consistency and new variables added. See the documentation.")
+  if (year == 1960) {
+    warning(
+      "This version of the 1960 microdata was compiled by {censobr} from two different releases elaborated by IBGE. The data was processed to ensure consistency and new variables added. See the documentation."
+    )
   }
 
   ### output format
-  if (isTRUE(as_data_frame)) { return( dplyr::collect(df) )
+  if (isTRUE(as_data_frame)) {
+    return(dplyr::collect(df))
   } else {
     return(df)
   }
-
 }
