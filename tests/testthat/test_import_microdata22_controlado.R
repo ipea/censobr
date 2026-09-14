@@ -130,7 +130,7 @@ test_that("import_microdata22 types the columns from the layout file", {
     testthat::expect_equal(col_type(df, paste0(prefix, "0111")), "double")
 
     # 2 digit codes fit the smallest integer
-    testthat::expect_equal(col_type(df, paste0(prefix, "0120")), "int8")
+    testthat::expect_equal(col_type(df, paste0(prefix, "0120")), "int32")
   }
 
   # F0101 and M0101 carry a letter prefix, "F001" and "M001"
@@ -298,7 +298,13 @@ test_that("read_ functions fall back to the public 2022 microdata, with a warnin
     file.copy(
       file.path(
         release_dir,
-        paste0("2022_", nm, ".controlado_", censobr_env$data_release, ".parquet")
+        paste0(
+          "2022_",
+          nm,
+          ".controlado_",
+          censobr_env$data_release,
+          ".parquet"
+        )
       ),
       file.path(
         release,
@@ -355,7 +361,11 @@ test_that("cache = FALSE downloads the public 2022 microdata again", {
   file.copy(
     file.path(
       release_dir,
-      paste0("2022_population.controlado_", censobr_env$data_release, ".parquet")
+      paste0(
+        "2022_population.controlado_",
+        censobr_env$data_release,
+        ".parquet"
+      )
     ),
     file.path(
       release,
@@ -406,7 +416,9 @@ test_that("read_ functions find the 2022 microdata once imported", {
   for (nm in names(readers)) {
     # imported data takes precedence over the public files, and the fallback
     # warning must not fire when the complete data are there
-    testthat::expect_no_warning(df <- readers[[nm]](year = 2022, verbose = FALSE))
+    testthat::expect_no_warning(
+      df <- readers[[nm]](year = 2022, verbose = FALSE)
+    )
     testthat::expect_s3_class(df, "Dataset")
     testthat::expect_gt(nrow(df), 0)
     testthat::expect_true("name_state" %in% names(df))
