@@ -153,8 +153,10 @@ test_that("read_households totals", {
 
   # 1970
   dfh <- tester(year = 1970)
+  # since the v0.7.0 data release weight_household is stored as an integer,
+  # which moves this total down from the 17682112 of earlier releases
   total_1970_p <- dplyr::summarise(dfh, total = sum(weight_household, na.rm=T)) |> dplyr::collect()
-  expect_equal(total_1970_p$total, 17682112)
+  expect_equal(total_1970_p$total, 17643387)
 
 })
 

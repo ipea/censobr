@@ -42,9 +42,8 @@ test_that("every key used in R/ resolves", {
                     "merge_households")
 
   # data_dictionary() builds its key at run time from `dataset`, which is one of
-  # these four by the time the lookup happens
-  dictionary_keys <- paste0("dictionary_",
-                            c("microdata", "tracts", "population", "households"))
+  # these two by the time the lookup happens
+  dictionary_keys <- paste0("dictionary_", c("microdata", "tracts"))
 
   for (key in c(literal_keys, dictionary_keys)) {
     testthat::expect_no_error(censobr_years(key))

@@ -26,7 +26,7 @@ test_that("add_labels_mortality", {
   test1b <- dplyr::collect(test1b)
 
   # add labels
-  testthat::expect_true('1' %in% test1a$V0704)
+  testthat::expect_true(1 %in% test1a$V0704)
   testthat::expect_true('Feminino' %in% test1b$V0704)
 
 

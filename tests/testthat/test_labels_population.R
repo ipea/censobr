@@ -29,7 +29,7 @@ test_that("2010 add_labels_population", {
   test1b <- dplyr::collect(test1b)
 
   # add labels
-  testthat::expect_true('1' %in% test1a$V1006)
+  testthat::expect_true(1 %in% test1a$V1006)
   testthat::expect_true('Urbana' %in% test1b$V1006)
 })
 
@@ -62,14 +62,14 @@ test_that("2010 add_labels_population keeps every observed code", {
   }
 
   # code 9 is 'Ignorado', not 'Nao'
-  testthat::expect_true('9' %in% test4a$V0617)
+  testthat::expect_true(9 %in% test4a$V0617)
   testthat::expect_true('Ignorado' %in% test4b$V0617)
   testthat::expect_equal(sum(test4b$V0617 == 'Ignorado', na.rm = TRUE),
-                         sum(test4a$V0617 == '9', na.rm = TRUE))
-  testthat::expect_true('9' %in% test4a$V0656)
+                         sum(test4a$V0617 == 9, na.rm = TRUE))
+  testthat::expect_true(9 %in% test4a$V0656)
   testthat::expect_true('Ignorado' %in% test4b$V0656)
   testthat::expect_equal(sum(test4b$V0656 == 'Não', na.rm = TRUE),
-                         sum(test4a$V0656 == '0', na.rm = TRUE))
+                         sum(test4a$V0656 == 0, na.rm = TRUE))
 
   # V6920 code 2 is 'Nao ocupadas'
   testthat::expect_true('Não ocupadas' %in% test4b$V6920)
@@ -126,7 +126,7 @@ test_that("2000 add_labels_population", {
   test3b <- dplyr::collect(test3b)
 
   # add labels
-  testthat::expect_true('1' %in% test3a$V0408)
+  testthat::expect_true(1 %in% test3a$V0408)
   testthat::expect_true('Branca' %in% test3b$V0408)
 
   # variables labelled through dplyr::across()

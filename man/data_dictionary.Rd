@@ -15,12 +15,12 @@ data_dictionary(
 \arguments{
 \item{year}{Numeric. Year of reference in the format \code{yyyy}.}
 
-\item{dataset}{Character. The type of data dictionary to be opened. Options
-include \code{c("microdata", "tracts", "population", "households")}. In the
-case of \code{"microdata"}, the function opens a single Excel file with the
-data dictionary of all variables of the microdata, available for the
-years 2000, 2010 and 2022. For earlier censuses, use \code{"population"} or
-\code{"households"}, which open a separate file per data set.}
+\item{dataset}{Character (case insensitive). The type of data dictionary to
+be opened, either \code{"microdata"} or \code{"tracts"}. With \code{"microdata"}, the
+function opens a single Excel file with the data dictionary of all
+variables of the microdata, available for every census since 1960.
+With \code{"tracts"}, it opens the data dictionary of the census
+tract-level aggregate data, available since 1970.}
 
 \item{showProgress}{Logical. Defaults to \code{TRUE} display download progress
 bar. The progress bar only reflects only the downloading
@@ -47,7 +47,7 @@ Open on a browser the data dictionary of Brazil's census data.
 \dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) withAutoprint(\{ # examplesIf}
 # Open data dictionary
 data_dictionary(
-  year = 2010,
+  year = 2022,
   dataset = 'microdata'
   )
 
@@ -55,12 +55,6 @@ data_dictionary(
   year = 2022,
   dataset = 'tracts'
   )
-
-data_dictionary(
-  year = 1980,
-  dataset = 'households'
-  )
-
 
 \dontshow{\}) # examplesIf}
 }

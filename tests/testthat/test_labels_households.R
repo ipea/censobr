@@ -24,10 +24,10 @@ test_that("add_labels_households", {
   test1b <- dplyr::collect(test1b)
 
   # add labels
-  testthat::expect_true('1' %in% test1a$V1006)
+  testthat::expect_true(1 %in% test1a$V1006)
   testthat::expect_true('Urbana' %in% test1b$V1006)
 
-  # V4001 carries zero-padded codes ('01', '05', '06'); V4002 has code 65
+  # V4001 codes 1, 5 and 6 (zero-padded in the pre-v0.7.0 data); V4002 has code 65
   test1c <- read_households(year = 2010,
                             add_labels = NULL,
                             columns = c('abbrev_state', 'V4001', 'V4002'),
@@ -36,7 +36,7 @@ test_that("add_labels_households", {
   test1d <- censobr:::add_labels_households(arrw = test1c, year=2010, lang = 'pt')
   test1c <- dplyr::collect(test1c)
   test1d <- dplyr::collect(test1d)
-  testthat::expect_true('01' %in% test1c$V4001)
+  testthat::expect_true(1 %in% test1c$V4001)
   testthat::expect_true('Domicílio particular permanente ocupado' %in% test1d$V4001)
   for (v in c('V4001', 'V4002')) {
     testthat::expect_equal(sum(is.na(test1d[[v]])), sum(is.na(test1c[[v]])))
@@ -63,7 +63,7 @@ test_that("add_labels_households", {
   test2b <- dplyr::collect(test2b)
 
   # add labels
-  testthat::expect_true('1' %in% test2a$V1006)
+  testthat::expect_true(1 %in% test2a$V1006)
   testthat::expect_true('Urbana' %in% test2b$V1006)
 
   # number of cars / air conditioners
@@ -78,13 +78,11 @@ test_that("add_labels_households", {
   testthat::expect_true('Parcial' %in% test2b$v1113)
   testthat::expect_true('Ignorado' %in% test2b$v1113)
 
-  # every observed code must be mapped to a label. v1111/v1112/v1113 carry a
-  # '.' for the households the question does not apply to, which stays NA
-  for (v in c('V1006', 'V0222', 'V0223')) {
+  # every observed code must be mapped to a label. The households a question
+  # does not apply to are NA in v1111/v1112/v1113 -- they carried a '.' before
+  # the v0.7.0 release stored these codes as integers -- and stay NA
+  for (v in c('V1006', 'V0222', 'V0223', 'v1111', 'v1112', 'v1113')) {
     testthat::expect_equal(sum(is.na(test2b[[v]])), sum(is.na(test2a[[v]])))
-  }
-  for (v in c('v1111', 'v1112', 'v1113')) {
-    testthat::expect_equal(sum(is.na(test2b[[v]])), sum(test2a[[v]] == '.', na.rm = TRUE))
   }
 
  })

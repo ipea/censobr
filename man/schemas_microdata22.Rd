@@ -31,8 +31,8 @@ The width and the decimal places give the type:
 \item \code{DEC > 0} becomes \code{float64()}. There are only seven such variables. The
 sample weights carry 13 decimal places and the income variables carry 9
 digits plus 2 decimals, so neither fits in a 32 bit float.
-\item \code{DEC == 0} becomes an integer sized by \code{INT}: \code{int8()} up to 2 digits,
-\code{int16()} up to 4, \code{int32()} up to 9 and \code{int64()} for the 10 digit codes.
+\item \code{DEC == 0} becomes an integer sized by \code{INT}: up to 4, \code{int32()} up to 9
+and \code{int64()} for the 10 digit codes.
 The "area de ponderacao" is one of the latter: from state 22 onwards it is
 above 2147483647 and overflows a 32 bit integer.
 \item \code{F0101} and \code{M0101} are the exception and become \code{string()}: they carry a

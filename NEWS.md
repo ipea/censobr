@@ -1,6 +1,6 @@
 # censobr dev
 
-* New data release [v0.7.0](https://github.com/ipea/censobr_prep_data/releases/tag/v0.7.0), 
+* New data release [v1.0.0](https://github.com/ipea/censobr_prep_data/releases/tag/v1.0.0), 
 which includes the following news files or edits:
   * Census 2022 
     * Data dictionary of microdata
@@ -8,46 +8,57 @@ which includes the following news files or edits:
     * New function `import_microdata22()`, which brings the controlled-access
     microdata of the **2022** Population Census into censobr. See the new 
     vignette [Working with 2022 microdata](https://ipea.github.io/censobr/articles/microdata_2022.html).
-    Closes [#79](https://github.com/ipea/censobr/issues/79).
+
+* New features
+
+  * New function `import_microdata22_controlado()` to import to censobr the
+  controlled-access microdata of 2022. Once the `.zip` file with the original data
+  is imported `read_(year = 2022)` functions always read the controlled-access 
+  microdata. If the controlled-access microdata have not  been imported yet, 
+  these functions return an informative warning  and download the public 
+  microdata set, which has fewer variables. See the new vignette [Working with 2022 microdata](https://ipea.github.io/censobr/articles/microdata_2022.html). Closes [#79](https://github.com/ipea/censobr/issues/79).
+  * `add_labels = "pt"` now works for all years and tables since 1960.
+  * `merge_households` parameter now works for all years since 1970. Because 
+  merging all ~300 population + househols columns can require more than 20GB 
+  of memory, `read_population(merge_households = TRUE)` **requires `columns` to 
+  be set** -- naming the columns you need keeps the operation to a few seconds 
+  and a few dozen MB.
+
+* Major changes
+
+* `data_dictionary()` now takes only two values in `dataset`: `"microdata"`,
+  which opens a single Excel file covering every variable of the microdata and
+  is now available for **all** censuses since 1960, and `"tracts"`, available
+  since 1970.
+* The argument `dataset` in `data_dictionary()` is also case insensitive now,
+as in `read_tracts()`.
+
+
+* Breaking changes
+
+  * All functions that take a `year` now require the user to declare it. 
+  Previously `questionnaire()` silently assumed `year = 2010`.
+  * The arguments `questionnaire(type)`, `read_tracts(dataset)` and
+  `data_dictionary(dataset)` are now explicitly required, and the error message
+  lists the values accepted.
+  * `data_dictionary()` now takes only two values in `dataset`: `"microdata"`,
+  which opens a single Excel file covering every variable of the microdata. The 
+  per-data-set dictionaries opened with `dataset = "population"` and 
+  `dataset = "households"` were retired, since the microdata dictionary now covers 
+  the pre-2000 censuses too. 
   * Data fixes 
     * 2022: census tract, table "preliminares" 
     * 2010: census tract of table "pessoas", state of Sao Paulo
     * 1980: code_muni values of Tocantins e Fernando de Noronha
+    * 1970: variables `weight_household` and `hh_income` are stored as integers. 
+    Totals weighted by `weight_household` therefore differ slightly from earlier 
+    releases -- `sum(weight_household)` goes from 17,682,112 to 17,643,387 (-0.22%).
+    * All year: the codes of categorical variables of the microdata are stored 
+    as integers rather than text, in every census year. Code that filtered on 
+    the text form needs to drop the quotes, e.g. `filter(V0601 == "1")` becomes 
+    `filter(V0601 == 1)`. Zero-padded codes lose the padding as well: `V0402 == "01"` 
+    becomes `V0402 == 1`. Values that used to be recorded as `"."` are now `NA`.
 
-* New features
-
-  * `read_population()`, `read_households()`, `read_families()` and
-  `read_mortality()` now accept `year = 2022`, reading the data imported 
-  with `import_microdata22_controlado()`. If the controlled-access data 
-  have not been imported yet, these functions return an informative warning 
-  and download the public microdata set, which has fewer variables. After
-  the controlled-access data is imported, these functions always return
-  the controlled-access data.  
-  * `add_labels = "pt"` now works for all years and tables in years 2000, 
-  2010 and 2022.
-  * `add_labels = "pt"` now also labels the 1960, 1970, 1980 and 1991 population
-  and households microdata, so labels are available for every census, e.g.
-  `read_population(1991, add_labels = "pt")` and `read_households(1991, add_labels = "pt")`.
-  * `merge_households` parameter now works for all years since 1970.
-  * `read_population()` now accepts a `merge_households` parameter -- previously only 
-  `read_mortality()` and `read_emigration()` supported this. Because merging all ~300 population + household
-  columns can require more than 20GB of memory, `read_population(merge_households = TRUE)`
-  **requires `columns` to be set** -- naming the columns you need keeps the operation to a few
-  seconds and a few dozen MB.
-
-* Major changes
-
-  * All functions that take a `year` now require the user to declare it, and say
-  so with an informative message when it is missing or `NULL`. Previously
-  `questionnaire()` silently assumed `year = 2010` and `interview_manual()`
-  defaulted to `NULL`.
-  * The arguments `questionnaire(type)`, `read_tracts(dataset)` and
-  `data_dictionary(dataset)` are now explicitly required, and the error message
-  lists the values accepted. For `read_tracts()`, the options listed are the ones
-  available for the requested year.
-  * The `"population"` and `"households"` dictionaries remain available for 
-  the 1960, 1970, 1980 and 1991 censuses; for 2000 onward they were superseded 
-  by the single Excel file opened with `dataset = "microdata"`.
 
 * Minor changes
 
@@ -64,6 +75,8 @@ which includes the following news files or edits:
 
   * Several bug fixes and a few label corrections when `add_labels = "pt"` in
   multiple read_ functions.
+  * `add_labels = "pt"` now compares the codes of every census year as numbers,
+  matching how the microdata are stored since the v0.7.0 data release.
   * Requesting a column that does not exist now returns an informative error
   naming the column, instead of an internal {dplyr} message.
   * Passing more than one `year` now returns an informative error. Previously a
@@ -79,8 +92,9 @@ which includes the following news files or edits:
   * Download error messages now match their cause. A failed transfer no longer
   reports the local file as corrupted, and an incomplete download no longer
   reports the internet connection as faulty.
-  * The temporary DuckDB database file created by `merge_households = TRUE` is now removed
-  when the merge finishes. Previously it was left behind in the session's temp directory.
+  * The temporary DuckDB database file created by `merge_households = TRUE` is 
+  now removed when the merge finishes. Previously it was left behind in the 
+  session's temp directory.
 
 
 

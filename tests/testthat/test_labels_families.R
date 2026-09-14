@@ -25,7 +25,7 @@ test_that("add_labels_families", {
   test1b <- dplyr::collect(test1b)
 
   # add labels
-  testthat::expect_true('01' %in% test1a$CODV0404_2)
+  testthat::expect_true(1 %in% test1a$CODV0404_2)
   testthat::expect_true('Casal sem filhos' %in% test1b$CODV0404_2)
 
   testthat::expect_true('3 pessoas' %in% test1b$CODV7400)

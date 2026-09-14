@@ -23,8 +23,8 @@ add_labels_households <- function(
     arrw <- mutate(
       arrw,
       V1006 = case_when(
-        V1006 == '1' ~ 'Urbana',
-        V1006 == '2' ~ 'Rural'
+        V1006 == 1 ~ 'Urbana',
+        V1006 == 2 ~ 'Rural'
       )
     )
   }
@@ -342,11 +342,10 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V4001 = case_when(
-          V4001 == '01' ~ 'Domic\u00edlio particular permanente ocupado',
-          V4001 ==
-            '02' ~ 'Domic\u00edlio particular permanente ocupado sem entrevista realizada',
-          V4001 == '05' ~ 'Domic\u00edlio particular improvisado ocupado',
-          V4001 == '06' ~ 'Domic\u00edlio coletivo com morador'
+          V4001 == 1 ~ 'Domic\u00edlio particular permanente ocupado',
+          V4001 == 2 ~ 'Domic\u00edlio particular permanente ocupado sem entrevista realizada',
+          V4001 == 5 ~ 'Domic\u00edlio particular improvisado ocupado',
+          V4001 == 6 ~ 'Domic\u00edlio coletivo com morador'
         )
       )
     }
@@ -356,21 +355,19 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V4002 = case_when(
-          V4002 == '11' ~ 'Casa',
-          V4002 == '12' ~ 'Casa de vila ou em condom\u00ednio',
-          V4002 == '13' ~ 'Apartamento',
-          V4002 ==
-            '14' ~ 'Habita\u00e7\u00e3o em: casa de c\u00f4modos, corti\u00e7o ou cabe\u00e7a de porco',
-          V4002 == '15' ~ 'Oca ou maloca ',
-          V4002 == '51' ~ 'Tenda ou barraca',
-          V4002 == '52' ~ 'Dentro de estabelecimento',
-          V4002 == '53' ~ 'Outro (vag\u00e3o, trailer, gruta, etc)',
-          V4002 == '61' ~ 'Asilo, orfanato e similares  com morador',
-          V4002 == '62' ~ 'Hotel, pens\u00e3o e similares com morador',
-          V4002 == '63' ~ 'Alojamento de trabalhadores com morador',
-          V4002 ==
-            '64' ~ 'Penitenci\u00e1ria, pres\u00eddio ou casa de deten\u00e7\u00e3o com morador',
-          V4002 == '65' ~ 'Outro com morador'
+          V4002 == 11 ~ 'Casa',
+          V4002 == 12 ~ 'Casa de vila ou em condom\u00ednio',
+          V4002 == 13 ~ 'Apartamento',
+          V4002 == 14 ~ 'Habita\u00e7\u00e3o em: casa de c\u00f4modos, corti\u00e7o ou cabe\u00e7a de porco',
+          V4002 == 15 ~ 'Oca ou maloca ',
+          V4002 == 51 ~ 'Tenda ou barraca',
+          V4002 == 52 ~ 'Dentro de estabelecimento',
+          V4002 == 53 ~ 'Outro (vag\u00e3o, trailer, gruta, etc)',
+          V4002 == 61 ~ 'Asilo, orfanato e similares  com morador',
+          V4002 == 62 ~ 'Hotel, pens\u00e3o e similares com morador',
+          V4002 == 63 ~ 'Alojamento de trabalhadores com morador',
+          V4002 == 64 ~ 'Penitenci\u00e1ria, pres\u00eddio ou casa de deten\u00e7\u00e3o com morador',
+          V4002 == 65 ~ 'Outro com morador'
         )
       )
     }
@@ -380,12 +377,12 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0201 = case_when(
-          V0201 == '1' ~ 'Pr\u00f3prio de algum morador - j\u00e1 pago',
-          V0201 == '2' ~ 'Pr\u00f3prio de algum morador - ainda pagando',
-          V0201 == '3' ~ 'Alugado',
-          V0201 == '4' ~ 'Cedido por empregador',
-          V0201 == '5' ~ 'Cedido de outra forma',
-          V0201 == '6' ~ 'Outra condi\u00e7\u00e3o'
+          V0201 == 1 ~ 'Pr\u00f3prio de algum morador - j\u00e1 pago',
+          V0201 == 2 ~ 'Pr\u00f3prio de algum morador - ainda pagando',
+          V0201 == 3 ~ 'Alugado',
+          V0201 == 4 ~ 'Cedido por empregador',
+          V0201 == 5 ~ 'Cedido de outra forma',
+          V0201 == 6 ~ 'Outra condi\u00e7\u00e3o'
         )
       )
     }
@@ -395,16 +392,15 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0202 = case_when(
-          V0202 == '1' ~ 'Alvenaria com revestimento',
-          V0202 == '2' ~ 'Alvenaria sem revestimento',
-          V0202 ==
-            '3' ~ 'Madeira apropriada para constru\u00e7\u00e3o (aparelhada)',
-          V0202 == '4' ~ 'Taipa revestida',
-          V0202 == '5' ~ 'Taipa n\u00e3o revestida',
-          V0202 == '6' ~ 'Madeira aproveitada',
-          V0202 == '7' ~ 'Palha',
-          V0202 == '8' ~ 'Outro material',
-          V0202 == '9' ~ 'Sem parede'
+          V0202 == 1 ~ 'Alvenaria com revestimento',
+          V0202 == 2 ~ 'Alvenaria sem revestimento',
+          V0202 == 3 ~ 'Madeira apropriada para constru\u00e7\u00e3o (aparelhada)',
+          V0202 == 4 ~ 'Taipa revestida',
+          V0202 == 5 ~ 'Taipa n\u00e3o revestida',
+          V0202 == 6 ~ 'Madeira aproveitada',
+          V0202 == 7 ~ 'Palha',
+          V0202 == 8 ~ 'Outro material',
+          V0202 == 9 ~ 'Sem parede'
         )
       )
     }
@@ -414,12 +410,12 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0207 = case_when(
-          V0207 == '1' ~ 'Rede geral de esgoto ou pluvial',
-          V0207 == '2' ~ 'Fossa s\u00e9ptica',
-          V0207 == '3' ~ 'Fossa rudimentar',
-          V0207 == '4' ~ 'Vala',
-          V0207 == '5' ~ 'Rio, lago ou mar',
-          V0207 == '6' ~ 'Outro'
+          V0207 == 1 ~ 'Rede geral de esgoto ou pluvial',
+          V0207 == 2 ~ 'Fossa s\u00e9ptica',
+          V0207 == 3 ~ 'Fossa rudimentar',
+          V0207 == 4 ~ 'Vala',
+          V0207 == 5 ~ 'Rio, lago ou mar',
+          V0207 == 6 ~ 'Outro'
         )
       )
     }
@@ -429,16 +425,16 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0208 = case_when(
-          V0208 == '01' ~ 'Rede geral de distribui\u00e7\u00e3o',
-          V0208 == '02' ~ 'Po\u00e7o ou nascente na propriedade',
-          V0208 == '03' ~ 'Po\u00e7o ou nascente fora da propriedade',
-          V0208 == '04' ~ 'Carro-pipa',
-          V0208 == '05' ~ '\u00c1gua da chuva armazenada em cisterna',
-          V0208 == '06' ~ '\u00c1gua da chuva armazenada de outra forma',
-          V0208 == '07' ~ 'Rios, a\u00e7udes, lagos e igarap\u00e9s',
-          V0208 == '08' ~ 'Outra',
-          V0208 == '09' ~ 'Po\u00e7o ou nascente na aldeia',
-          V0208 == '10' ~ 'Po\u00e7o ou nascente fora da aldeia'
+          V0208 == 1 ~ 'Rede geral de distribui\u00e7\u00e3o',
+          V0208 == 2 ~ 'Po\u00e7o ou nascente na propriedade',
+          V0208 == 3 ~ 'Po\u00e7o ou nascente fora da propriedade',
+          V0208 == 4 ~ 'Carro-pipa',
+          V0208 == 5 ~ '\u00c1gua da chuva armazenada em cisterna',
+          V0208 == 6 ~ '\u00c1gua da chuva armazenada de outra forma',
+          V0208 == 7 ~ 'Rios, a\u00e7udes, lagos e igarap\u00e9s',
+          V0208 == 8 ~ 'Outra',
+          V0208 == 9 ~ 'Po\u00e7o ou nascente na aldeia',
+          V0208 == 10 ~ 'Po\u00e7o ou nascente fora da aldeia'
         )
       )
     }
@@ -448,9 +444,9 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0209 = case_when(
-          V0209 == '1' ~ 'Sim, em pelo menos um c\u00f4modo',
-          V0209 == '2' ~ 'Sim, s\u00f3 na propriedade ou terreno',
-          V0209 == '3' ~ 'N\u00e3o'
+          V0209 == 1 ~ 'Sim, em pelo menos um c\u00f4modo',
+          V0209 == 2 ~ 'Sim, s\u00f3 na propriedade ou terreno',
+          V0209 == 3 ~ 'N\u00e3o'
         )
       )
     }
@@ -460,13 +456,13 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0210 = case_when(
-          V0210 == '1' ~ 'Coletado diretamente por servi\u00e7o de limpeza',
-          V0210 == '2' ~ 'Colocado em ca\u00e7amba de servi\u00e7o de limpeza',
-          V0210 == '3' ~ 'Queimado (na propriedade)',
-          V0210 == '4' ~ 'Enterrado (na propriedade)',
-          V0210 == '5' ~ 'Jogado em terreno baldio ou logradouro',
-          V0210 == '6' ~ 'Jogado em rio, lago ou mar',
-          V0210 == '7' ~ 'Tem outro destino'
+          V0210 == 1 ~ 'Coletado diretamente por servi\u00e7o de limpeza',
+          V0210 == 2 ~ 'Colocado em ca\u00e7amba de servi\u00e7o de limpeza',
+          V0210 == 3 ~ 'Queimado (na propriedade)',
+          V0210 == 4 ~ 'Enterrado (na propriedade)',
+          V0210 == 5 ~ 'Jogado em terreno baldio ou logradouro',
+          V0210 == 6 ~ 'Jogado em rio, lago ou mar',
+          V0210 == 7 ~ 'Tem outro destino'
         )
       )
     }
@@ -476,9 +472,9 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0211 = case_when(
-          V0211 == '1' ~ 'Sim, de companhia distribuidora',
-          V0211 == '2' ~ 'Sim, de outras fontes',
-          V0211 == '3' ~ 'N\u00e3o existe energia el\u00e9trica'
+          V0211 == 1 ~ 'Sim, de companhia distribuidora',
+          V0211 == 2 ~ 'Sim, de outras fontes',
+          V0211 == 3 ~ 'N\u00e3o existe energia el\u00e9trica'
         )
       )
     }
@@ -488,9 +484,9 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0212 = case_when(
-          V0212 == '1' ~ 'Sim, de uso exclusivo',
-          V0212 == '2' ~ 'Sim, de uso comum ',
-          V0212 == '3' ~ 'N\u00e3o tem medidor ou rel\u00f3gio'
+          V0212 == 1 ~ 'Sim, de uso exclusivo',
+          V0212 == 2 ~ 'Sim, de uso comum ',
+          V0212 == 3 ~ 'N\u00e3o tem medidor ou rel\u00f3gio'
         )
       )
     }
@@ -500,9 +496,9 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0402 = case_when(
-          V0402 == '1' ~ 'Apenas um morador',
-          V0402 == '2' ~ 'Mais de um morador',
-          V0402 == '9' ~ 'Ignorado'
+          V0402 == 1 ~ 'Apenas um morador',
+          V0402 == 2 ~ 'Mais de um morador',
+          V0402 == 9 ~ 'Ignorado'
         )
       )
     }
@@ -512,10 +508,10 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V6600 = case_when(
-          V6600 == '1' ~ 'Unipessoal',
-          V6600 == '2' ~ 'Nuclear',
-          V6600 == '3' ~ 'Estendida',
-          V6600 == '4' ~ 'Composta'
+          V6600 == 1 ~ 'Unipessoal',
+          V6600 == 2 ~ 'Nuclear',
+          V6600 == 3 ~ 'Estendida',
+          V6600 == 4 ~ 'Composta'
         )
       )
     }
@@ -525,9 +521,9 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V6210 = case_when(
-          V6210 == '1' ~ 'Adequada',
-          V6210 == '2' ~ 'Semi-adequada',
-          V6210 == '3' ~ 'Inadequada'
+          V6210 == 1 ~ 'Adequada',
+          V6210 == 2 ~ 'Semi-adequada',
+          V6210 == 3 ~ 'Inadequada'
         )
       )
     }
@@ -537,14 +533,14 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V1005 = case_when(
-          V1005 == '1' ~ '\u00c1rea urbanizada',
-          V1005 == '2' ~ '\u00c1rea n\u00e3o urbanizada',
-          V1005 == '3' ~ '\u00c1rea urbanizada isolada',
-          V1005 == '4' ~ '\u00c1rea rural de extens\u00e3o urbana',
-          V1005 == '5' ~ 'Aglomerado rural (povoado)',
-          V1005 == '6' ~ 'Aglomerado rural (n\u00facleo)',
-          V1005 == '7' ~ 'Aglomerado rural (outros)',
-          V1005 == '8' ~ '\u00c1rea rural exclusive aglomerado rural'
+          V1005 == 1 ~ '\u00c1rea urbanizada',
+          V1005 == 2 ~ '\u00c1rea n\u00e3o urbanizada',
+          V1005 == 3 ~ '\u00c1rea urbanizada isolada',
+          V1005 == 4 ~ '\u00c1rea rural de extens\u00e3o urbana',
+          V1005 == 5 ~ 'Aglomerado rural (povoado)',
+          V1005 == 6 ~ 'Aglomerado rural (n\u00facleo)',
+          V1005 == 7 ~ 'Aglomerado rural (outros)',
+          V1005 == 8 ~ '\u00c1rea rural exclusive aglomerado rural'
         )
       )
     }
@@ -572,7 +568,7 @@ add_labels_households <- function(
       arrw,
       dplyr::across(
         all_of(vars_sim_nao_present),
-        ~ if_else(.x == '1', 'Sim', 'N\u00e3o')
+        ~ if_else(.x == 1, 'Sim', 'N\u00e3o')
       )
     )
     # arrw <- mutate_at(arrw,
@@ -590,38 +586,34 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V1004 = case_when(
-          V1004 == '01' ~ 'Bel\u00e9m',
-          V1004 == '02' ~ 'Grande S\u00e3o Lu\u00eds',
-          V1004 == '03' ~ 'Fortaleza',
-          V1004 == '04' ~ 'Natal',
-          V1004 == '05' ~ 'Recife',
-          V1004 == '06' ~ 'Macei\u00f3',
-          V1004 == '07' ~ 'Salvador',
-          V1004 == '08' ~ 'Belo Horizonte',
-          V1004 == '09' ~ 'Colar Metropolitano da RM de Belo Horizonte',
-          V1004 == '10' ~ 'Vale do A\u00e7o',
-          V1004 == '11' ~ 'Colar Metropolitano da RM do Vale do A\u00e7o',
-          V1004 == '12' ~ 'Grande Vit\u00f3ria',
-          V1004 == '13' ~ 'Rio de Janeiro',
-          V1004 == '14' ~ 'S\u00e3o Paulo',
-          V1004 == '15' ~ 'Baixada Santista',
-          V1004 == '16' ~ 'Campinas',
-          V1004 == '17' ~ 'Curitiba',
-          V1004 == '18' ~ 'Londrina',
-          V1004 == '19' ~ 'Maring\u00e1',
-          V1004 == '20' ~ 'Florian\u00f3polis',
-          V1004 ==
-            '21' ~ '\u00c1rea de Expans\u00e3o Metropolitana da RM de Florian\u00f3polis',
-          V1004 == '22' ~ 'N\u00facleo Metropolitano da RM Vale do Itaja\u00ed',
-          V1004 ==
-            '23' ~ '\u00c1rea de Expans\u00e3o Metropolitana da RM Vale do Itaja\u00ed',
-          V1004 == '24' ~ 'Norte/Nordeste Catarinense',
-          V1004 ==
-            '25' ~ '\u00c1rea de Expans\u00e3o Metropolitana da RM Norte/Nordeste Catarinense',
-          V1004 == '26' ~ 'Porto Alegre',
-          V1004 == '27' ~ 'Goi\u00e2nia',
-          V1004 ==
-            '28' ~ 'RIDE (Regi\u00e3o Integrada de Desenvolvimento do Distrito Federal e Entorno)'
+          V1004 == 1 ~ 'Bel\u00e9m',
+          V1004 == 2 ~ 'Grande S\u00e3o Lu\u00eds',
+          V1004 == 3 ~ 'Fortaleza',
+          V1004 == 4 ~ 'Natal',
+          V1004 == 5 ~ 'Recife',
+          V1004 == 6 ~ 'Macei\u00f3',
+          V1004 == 7 ~ 'Salvador',
+          V1004 == 8 ~ 'Belo Horizonte',
+          V1004 == 9 ~ 'Colar Metropolitano da RM de Belo Horizonte',
+          V1004 == 10 ~ 'Vale do A\u00e7o',
+          V1004 == 11 ~ 'Colar Metropolitano da RM do Vale do A\u00e7o',
+          V1004 == 12 ~ 'Grande Vit\u00f3ria',
+          V1004 == 13 ~ 'Rio de Janeiro',
+          V1004 == 14 ~ 'S\u00e3o Paulo',
+          V1004 == 15 ~ 'Baixada Santista',
+          V1004 == 16 ~ 'Campinas',
+          V1004 == 17 ~ 'Curitiba',
+          V1004 == 18 ~ 'Londrina',
+          V1004 == 19 ~ 'Maring\u00e1',
+          V1004 == 20 ~ 'Florian\u00f3polis',
+          V1004 == 21 ~ '\u00c1rea de Expans\u00e3o Metropolitana da RM de Florian\u00f3polis',
+          V1004 == 22 ~ 'N\u00facleo Metropolitano da RM Vale do Itaja\u00ed',
+          V1004 == 23 ~ '\u00c1rea de Expans\u00e3o Metropolitana da RM Vale do Itaja\u00ed',
+          V1004 == 24 ~ 'Norte/Nordeste Catarinense',
+          V1004 == 25 ~ '\u00c1rea de Expans\u00e3o Metropolitana da RM Norte/Nordeste Catarinense',
+          V1004 == 26 ~ 'Porto Alegre',
+          V1004 == 27 ~ 'Goi\u00e2nia',
+          V1004 == 28 ~ 'RIDE (Regi\u00e3o Integrada de Desenvolvimento do Distrito Federal e Entorno)'
         )
       )
     }
@@ -631,14 +623,14 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V1005 = case_when(
-          V1005 == '1' ~ '\u00c1rea urbanizada de vila ou cidade',
-          V1005 == '2' ~ '\u00c1rea n\u00e3o urbanizada de vila ou cidade',
-          V1005 == '3' ~ '\u00c1rea urbanizada isolada',
-          V1005 == '4' ~ 'Rural - extens\u00e3o urbana',
-          V1005 == '5' ~ 'Rural - povoado',
-          V1005 == '6' ~ 'Rural - n\u00facleo',
-          V1005 == '7' ~ 'Rural - outros aglomerados',
-          V1005 == '8' ~ 'Rural - exclusive os aglomerados rurais'
+          V1005 == 1 ~ '\u00c1rea urbanizada de vila ou cidade',
+          V1005 == 2 ~ '\u00c1rea n\u00e3o urbanizada de vila ou cidade',
+          V1005 == 3 ~ '\u00c1rea urbanizada isolada',
+          V1005 == 4 ~ 'Rural - extens\u00e3o urbana',
+          V1005 == 5 ~ 'Rural - povoado',
+          V1005 == 6 ~ 'Rural - n\u00facleo',
+          V1005 == 7 ~ 'Rural - outros aglomerados',
+          V1005 == 8 ~ 'Rural - exclusive os aglomerados rurais'
         )
       )
     }
@@ -648,18 +640,14 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V1007 = case_when(
-          V1007 == '0' ~ 'Setor comum ou n\u00e3o especial',
-          V1007 == '1' ~ 'Setor especial de aglomerado subnormal',
-          V1007 ==
-            '2' ~ 'Setor especial de quart\u00e9is, bases militares, etc.',
-          V1007 == '3' ~ 'Setor especial de alojamento, acampamentos, etc.',
-          V1007 ==
-            '4' ~ 'Setor especial de embarca\u00e7\u00f5es, barcos, navios, etc.',
-          V1007 == '5' ~ 'Setor especial de aldeia ind\u00edgena',
-          V1007 ==
-            '6' ~ 'Setor especial de penitenci\u00e1rias, col\u00f4nias penais, pres\u00eddios, cadeias, etc.',
-          V1007 ==
-            '7' ~ 'Setor especial de asilos, orfanatos, conventos, hospitais, etc.'
+          V1007 == 0 ~ 'Setor comum ou n\u00e3o especial',
+          V1007 == 1 ~ 'Setor especial de aglomerado subnormal',
+          V1007 == 2 ~ 'Setor especial de quart\u00e9is, bases militares, etc.',
+          V1007 == 3 ~ 'Setor especial de alojamento, acampamentos, etc.',
+          V1007 == 4 ~ 'Setor especial de embarca\u00e7\u00f5es, barcos, navios, etc.',
+          V1007 == 5 ~ 'Setor especial de aldeia ind\u00edgena',
+          V1007 == 6 ~ 'Setor especial de penitenci\u00e1rias, col\u00f4nias penais, pres\u00eddios, cadeias, etc.',
+          V1007 == 7 ~ 'Setor especial de asilos, orfanatos, conventos, hospitais, etc.'
         )
       )
     }
@@ -669,9 +657,9 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0201 = case_when(
-          V0201 == '1' ~ 'Particular permanente',
-          V0201 == '2' ~ 'Particular improvisado',
-          V0201 == '3' ~ 'Coletivo'
+          V0201 == 1 ~ 'Particular permanente',
+          V0201 == 2 ~ 'Particular improvisado',
+          V0201 == 3 ~ 'Coletivo'
         )
       )
     }
@@ -681,9 +669,9 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0202 = case_when(
-          V0202 == '1' ~ 'Casa',
-          V0202 == '2' ~ 'Apartamento',
-          V0202 == '3' ~ 'C\u00f4modo'
+          V0202 == 1 ~ 'Casa',
+          V0202 == 2 ~ 'Apartamento',
+          V0202 == 3 ~ 'C\u00f4modo'
         )
       )
     }
@@ -693,12 +681,12 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0205 = case_when(
-          V0205 == '1' ~ 'Pr\u00f3prio, j\u00e1 pago',
-          V0205 == '2' ~ 'Pr\u00f3prio, ainda pagando',
-          V0205 == '3' ~ 'Alugado',
-          V0205 == '4' ~ 'Cedido por empregador',
-          V0205 == '5' ~ 'Cedido de outra forma',
-          V0205 == '6' ~ 'Outra Condi\u00e7\u00e3o'
+          V0205 == 1 ~ 'Pr\u00f3prio, j\u00e1 pago',
+          V0205 == 2 ~ 'Pr\u00f3prio, ainda pagando',
+          V0205 == 3 ~ 'Alugado',
+          V0205 == 4 ~ 'Cedido por empregador',
+          V0205 == 5 ~ 'Cedido de outra forma',
+          V0205 == 6 ~ 'Outra Condi\u00e7\u00e3o'
         )
       )
     }
@@ -708,9 +696,9 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0206 = case_when(
-          V0206 == '1' ~ 'Pr\u00f3prio',
-          V0206 == '2' ~ 'Cedido',
-          V0206 == '3' ~ 'Outra condi\u00e7\u00e3o'
+          V0206 == 1 ~ 'Pr\u00f3prio',
+          V0206 == 2 ~ 'Cedido',
+          V0206 == 3 ~ 'Outra condi\u00e7\u00e3o'
         )
       )
     }
@@ -720,9 +708,9 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0207 = case_when(
-          V0207 == '1' ~ 'Rede geral',
-          V0207 == '2' ~ 'Po\u00e7o ou nascente (na propriedade)',
-          V0207 == '3' ~ 'Outra'
+          V0207 == 1 ~ 'Rede geral',
+          V0207 == 2 ~ 'Po\u00e7o ou nascente (na propriedade)',
+          V0207 == 3 ~ 'Outra'
         )
       )
     }
@@ -732,9 +720,9 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0208 = case_when(
-          V0208 == '1' ~ 'Canalizada em pelo menos um c\u00f4modo',
-          V0208 == '2' ~ 'Canalizada s\u00f3 na propriedade ou terreno',
-          V0208 == '3' ~ 'N\u00e3o canalizada'
+          V0208 == 1 ~ 'Canalizada em pelo menos um c\u00f4modo',
+          V0208 == 2 ~ 'Canalizada s\u00f3 na propriedade ou terreno',
+          V0208 == 3 ~ 'N\u00e3o canalizada'
         )
       )
     }
@@ -744,12 +732,12 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0211 = case_when(
-          V0211 == '1' ~ 'Rede geral de esgoto ou pluvial',
-          V0211 == '2' ~ 'Fossa s\u00e9ptica',
-          V0211 == '3' ~ 'Fossa rudimentar',
-          V0211 == '4' ~ 'Vala',
-          V0211 == '5' ~ 'Rio, lago ou mar',
-          V0211 == '6' ~ 'Outro escoadouro'
+          V0211 == 1 ~ 'Rede geral de esgoto ou pluvial',
+          V0211 == 2 ~ 'Fossa s\u00e9ptica',
+          V0211 == 3 ~ 'Fossa rudimentar',
+          V0211 == 4 ~ 'Vala',
+          V0211 == 5 ~ 'Rio, lago ou mar',
+          V0211 == 6 ~ 'Outro escoadouro'
         )
       )
     }
@@ -759,13 +747,13 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0212 = case_when(
-          V0212 == '1' ~ 'Coletado por servi\u00e7o de limpeza',
-          V0212 == '2' ~ 'Colocado em ca\u00e7amba de servi\u00e7o de limpeza',
-          V0212 == '3' ~ 'Queimado (na propriedade)',
-          V0212 == '4' ~ 'Enterrado (na propriedade)',
-          V0212 == '5' ~ 'Jogado em terreno baldio ou logradouro',
-          V0212 == '6' ~ 'Jogado em rio, lago ou mar',
-          V0212 == '7' ~ 'Tem outro destino'
+          V0212 == 1 ~ 'Coletado por servi\u00e7o de limpeza',
+          V0212 == 2 ~ 'Colocado em ca\u00e7amba de servi\u00e7o de limpeza',
+          V0212 == 3 ~ 'Queimado (na propriedade)',
+          V0212 == 4 ~ 'Enterrado (na propriedade)',
+          V0212 == 5 ~ 'Jogado em terreno baldio ou logradouro',
+          V0212 == 6 ~ 'Jogado em rio, lago ou mar',
+          V0212 == 7 ~ 'Tem outro destino'
         )
       )
     }
@@ -796,16 +784,16 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         V0223 = case_when(
-          V0223 == '0' ~ 'N\u00e3o tem',
-          V0223 == '1' ~ '1 aparelho',
-          V0223 == '2' ~ '2 aparelhos',
-          V0223 == '3' ~ '3 aparelhos',
-          V0223 == '4' ~ '4 aparelhos',
-          V0223 == '5' ~ '5 aparelhos',
-          V0223 == '6' ~ '6 aparelhos',
-          V0223 == '7' ~ '7 aparelhos',
-          V0223 == '8' ~ '8 aparelhos',
-          V0223 == '9' ~ '9 ou mais aparelhos'
+          V0223 == 0 ~ 'N\u00e3o tem',
+          V0223 == 1 ~ '1 aparelho',
+          V0223 == 2 ~ '2 aparelhos',
+          V0223 == 3 ~ '3 aparelhos',
+          V0223 == 4 ~ '4 aparelhos',
+          V0223 == 5 ~ '5 aparelhos',
+          V0223 == 6 ~ '6 aparelhos',
+          V0223 == 7 ~ '7 aparelhos',
+          V0223 == 8 ~ '8 aparelhos',
+          V0223 == 9 ~ '9 ou mais aparelhos'
         )
       )
     }
@@ -821,9 +809,9 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         v1111 = case_when(
-          v1111 == '1' ~ 'Sim',
-          v1111 == '2' ~ 'N\u00e3o',
-          v1111 == '9' ~ 'Ignorado'
+          v1111 == 1 ~ 'Sim',
+          v1111 == 2 ~ 'N\u00e3o',
+          v1111 == 9 ~ 'Ignorado'
         )
       )
     }
@@ -833,9 +821,9 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         v1112 = case_when(
-          v1112 == '1' ~ 'Sim',
-          v1112 == '2' ~ 'N\u00e3o',
-          v1112 == '9' ~ 'Ignorado'
+          v1112 == 1 ~ 'Sim',
+          v1112 == 2 ~ 'N\u00e3o',
+          v1112 == 9 ~ 'Ignorado'
         )
       )
     }
@@ -845,10 +833,10 @@ add_labels_households <- function(
       arrw <- mutate(
         arrw,
         v1113 = case_when(
-          v1113 == '1' ~ 'Total',
-          v1113 == '2' ~ 'Parcial',
-          v1113 == '3' ~ 'N\u00e3o Existe',
-          v1113 == '9' ~ 'Ignorado'
+          v1113 == 1 ~ 'Total',
+          v1113 == 2 ~ 'Parcial',
+          v1113 == 3 ~ 'N\u00e3o Existe',
+          v1113 == 9 ~ 'Ignorado'
         )
       )
     }
@@ -872,7 +860,7 @@ add_labels_households <- function(
       arrw,
       dplyr::across(
         all_of(vars_sim_nao_present),
-        ~ if_else(.x == '1', 'Sim', 'N\u00e3o')
+        ~ if_else(.x == 1, 'Sim', 'N\u00e3o')
       )
     )
   } # nocov end
@@ -1055,9 +1043,12 @@ add_labels_households <- function(
       )
     }
 
-    # UNIDADE DA FEDERACAO (1960 territorial division). The 1960 microdata carry
-    # no abbrev_state/name_state columns, so the state code is labelled here;
-    # accents added to the dictionary spellings.
+    # UNIDADE DA FEDERACAO (1960 territorial division). Since the v0.7.0 data
+    # release the 1960 files also carry code_state/abbrev_state/name_state built
+    # from this same division (Guanabara, Fernando de Noronha, Serra dos
+    # Aimores), so these labels duplicate name_state; they are kept because `uf`
+    # is the raw census variable and can be selected on its own. Accents added
+    # to the dictionary spellings.
     if ('uf' %in% cols) {
       arrw <- dplyr::mutate(
         arrw,
@@ -1310,10 +1301,10 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V198 = dplyr::case_when(
-          V198 == '1' ~ 'Cidade ou vila',
-          V198 == '3' ~ '\u00c1rea urbana isolada',
-          V198 == '5' ~ 'Aglomerado rural',
-          V198 == '7' ~ 'Zona rural'
+          V198 == 1 ~ 'Cidade ou vila',
+          V198 == 3 ~ '\u00c1rea urbana isolada',
+          V198 == 5 ~ 'Aglomerado rural',
+          V198 == 7 ~ 'Zona rural'
         )
       )
     }
@@ -1323,10 +1314,10 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V201 = dplyr::case_when(
-          V201 == '1' ~ 'Particular permanente',
-          V201 == '3' ~ 'Particular improvisado',
-          V201 == '5' ~ 'Coletivo permanente',
-          V201 == '7' ~ 'Coletivo improvisado'
+          V201 == 1 ~ 'Particular permanente',
+          V201 == 3 ~ 'Particular improvisado',
+          V201 == 5 ~ 'Coletivo permanente',
+          V201 == 7 ~ 'Coletivo improvisado'
         )
       )
     }
@@ -1336,8 +1327,8 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V202 = dplyr::case_when(
-          V202 == '1' ~ 'Casa',
-          V202 == '3' ~ 'Apartamento'
+          V202 == 1 ~ 'Casa',
+          V202 == 3 ~ 'Apartamento'
         )
       )
     }
@@ -1347,13 +1338,13 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V203 = dplyr::case_when(
-          V203 == '2' ~ 'Alvenaria',
-          V203 == '4' ~ 'Madeira',
-          V203 == '6' ~ 'Taipa n\u00e3o revestida',
-          V203 == '7' ~ 'Material aproveitado',
-          V203 == '8' ~ 'Palha',
-          V203 == '0' ~ 'Outro',
-          V203 == '9' ~ 'Ignorado'
+          V203 == 2 ~ 'Alvenaria',
+          V203 == 4 ~ 'Madeira',
+          V203 == 6 ~ 'Taipa n\u00e3o revestida',
+          V203 == 7 ~ 'Material aproveitado',
+          V203 == 8 ~ 'Palha',
+          V203 == 0 ~ 'Outro',
+          V203 == 9 ~ 'Ignorado'
         )
       )
     }
@@ -1363,14 +1354,14 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V204 = dplyr::case_when(
-          V204 == '1' ~ 'Madeira',
-          V204 == '3' ~ 'Cer\u00e2mica',
-          V204 == '4' ~ 'Cimento',
-          V204 == '6' ~ 'Material aproveitado',
-          V204 == '7' ~ 'Tijolo',
-          V204 == '8' ~ 'Terra',
-          V204 == '0' ~ 'Outro',
-          V204 == '9' ~ 'Ignorado'
+          V204 == 1 ~ 'Madeira',
+          V204 == 3 ~ 'Cer\u00e2mica',
+          V204 == 4 ~ 'Cimento',
+          V204 == 6 ~ 'Material aproveitado',
+          V204 == 7 ~ 'Tijolo',
+          V204 == 8 ~ 'Terra',
+          V204 == 0 ~ 'Outro',
+          V204 == 9 ~ 'Ignorado'
         )
       )
     }
@@ -1380,15 +1371,15 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V205 = dplyr::case_when(
-          V205 == '1' ~ 'Laje de concreto',
-          V205 == '2' ~ 'Telha de barro',
-          V205 == '3' ~ 'Telha de cimento-amianto',
-          V205 == '4' ~ 'Zinco',
-          V205 == '5' ~ 'Madeira',
-          V205 == '6' ~ 'Palha',
-          V205 == '7' ~ 'Material aproveitado',
-          V205 == '0' ~ 'Outro',
-          V205 == '9' ~ 'Ignorado'
+          V205 == 1 ~ 'Laje de concreto',
+          V205 == 2 ~ 'Telha de barro',
+          V205 == 3 ~ 'Telha de cimento-amianto',
+          V205 == 4 ~ 'Zinco',
+          V205 == 5 ~ 'Madeira',
+          V205 == 6 ~ 'Palha',
+          V205 == 7 ~ 'Material aproveitado',
+          V205 == 0 ~ 'Outro',
+          V205 == 9 ~ 'Ignorado'
         )
       )
     }
@@ -1398,13 +1389,13 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V206 = dplyr::case_when(
-          V206 == '1' ~ 'Com canaliza\u00e7\u00e3o interna - rede geral',
-          V206 == '3' ~ 'Com canaliza\u00e7\u00e3o interna - po\u00e7o ou nascente',
-          V206 == '5' ~ 'Com canaliza\u00e7\u00e3o interna - outra forma',
-          V206 == '6' ~ 'Sem canaliza\u00e7\u00e3o interna - rede geral',
-          V206 == '7' ~ 'Sem canaliza\u00e7\u00e3o interna - po\u00e7o ou nascente',
-          V206 == '0' ~ 'Sem canaliza\u00e7\u00e3o interna - outra forma',
-          V206 == '9' ~ 'Ignorado'
+          V206 == 1 ~ 'Com canaliza\u00e7\u00e3o interna - rede geral',
+          V206 == 3 ~ 'Com canaliza\u00e7\u00e3o interna - po\u00e7o ou nascente',
+          V206 == 5 ~ 'Com canaliza\u00e7\u00e3o interna - outra forma',
+          V206 == 6 ~ 'Sem canaliza\u00e7\u00e3o interna - rede geral',
+          V206 == 7 ~ 'Sem canaliza\u00e7\u00e3o interna - po\u00e7o ou nascente',
+          V206 == 0 ~ 'Sem canaliza\u00e7\u00e3o interna - outra forma',
+          V206 == 9 ~ 'Ignorado'
         )
       )
     }
@@ -1414,12 +1405,12 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V207 = dplyr::case_when(
-          V207 == '2' ~ 'Rede geral',
-          V207 == '4' ~ 'Fossa s\u00e9ptica',
-          V207 == '6' ~ 'Fossa rudimentar',
-          V207 == '0' ~ 'Outro',
-          V207 == '8' ~ 'N\u00e3o tem',
-          V207 == '9' ~ 'Ignorado'
+          V207 == 2 ~ 'Rede geral',
+          V207 == 4 ~ 'Fossa s\u00e9ptica',
+          V207 == 6 ~ 'Fossa rudimentar',
+          V207 == 0 ~ 'Outro',
+          V207 == 8 ~ 'N\u00e3o tem',
+          V207 == 9 ~ 'Ignorado'
         )
       )
     }
@@ -1429,10 +1420,10 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V208 = dplyr::case_when(
-          V208 == '1' ~ 'S\u00f3 do domic\u00edlio',
-          V208 == '3' ~ 'Comum a mais de um domic\u00edlio',
-          V208 == '8' ~ 'N\u00e3o tem',
-          V208 == '9' ~ 'Ignorado'
+          V208 == 1 ~ 'S\u00f3 do domic\u00edlio',
+          V208 == 3 ~ 'Comum a mais de um domic\u00edlio',
+          V208 == 8 ~ 'N\u00e3o tem',
+          V208 == 9 ~ 'Ignorado'
         )
       )
     }
@@ -1442,13 +1433,13 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V209 = dplyr::case_when(
-          V209 == '1' ~ 'Pr\u00f3prio - j\u00e1 acabou de pagar',
-          V209 == '3' ~ 'Pr\u00f3prio - n\u00e3o acabou de pagar',
-          V209 == '5' ~ 'Alugado',
-          V209 == '6' ~ 'Cedido por empregador',
-          V209 == '7' ~ 'Cedido por particular',
-          V209 == '0' ~ 'Outra',
-          V209 == '9' ~ 'Ignorado'
+          V209 == 1 ~ 'Pr\u00f3prio - j\u00e1 acabou de pagar',
+          V209 == 3 ~ 'Pr\u00f3prio - n\u00e3o acabou de pagar',
+          V209 == 5 ~ 'Alugado',
+          V209 == 6 ~ 'Cedido por empregador',
+          V209 == 7 ~ 'Cedido por particular',
+          V209 == 0 ~ 'Outra',
+          V209 == 9 ~ 'Ignorado'
         )
       )
     }
@@ -1458,11 +1449,11 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V214 = dplyr::case_when(
-          V214 == '1' ~ 'Fog\u00e3o',
-          V214 == '3' ~ 'Fog\u00e3o improvisado',
-          V214 == '5' ~ 'Fogareiro',
-          V214 == '8' ~ 'N\u00e3o tem',
-          V214 == '9' ~ 'Ignorado'
+          V214 == 1 ~ 'Fog\u00e3o',
+          V214 == 3 ~ 'Fog\u00e3o improvisado',
+          V214 == 5 ~ 'Fogareiro',
+          V214 == 8 ~ 'N\u00e3o tem',
+          V214 == 9 ~ 'Ignorado'
         )
       )
     }
@@ -1472,15 +1463,15 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V215 = dplyr::case_when(
-          V215 == '1' ~ 'G\u00e1s de botij\u00e3o',
-          V215 == '2' ~ 'G\u00e1s canalizado',
-          V215 == '3' ~ 'Lenha',
-          V215 == '4' ~ 'Carv\u00e3o',
-          V215 == '5' ~ '\u00d3leo ou querosene',
-          V215 == '6' ~ '\u00c1lcool',
-          V215 == '7' ~ 'Eletricidade',
-          V215 == '8' ~ 'N\u00e3o tem',
-          V215 == '9' ~ 'Ignorado'
+          V215 == 1 ~ 'G\u00e1s de botij\u00e3o',
+          V215 == 2 ~ 'G\u00e1s canalizado',
+          V215 == 3 ~ 'Lenha',
+          V215 == 4 ~ 'Carv\u00e3o',
+          V215 == 5 ~ '\u00d3leo ou querosene',
+          V215 == 6 ~ '\u00c1lcool',
+          V215 == 7 ~ 'Eletricidade',
+          V215 == 8 ~ 'N\u00e3o tem',
+          V215 == 9 ~ 'Ignorado'
         )
       )
     }
@@ -1490,10 +1481,10 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V217 = dplyr::case_when(
-          V217 == '2' ~ 'Tem - com medidor',
-          V217 == '4' ~ 'Tem - sem medidor',
-          V217 == '8' ~ 'N\u00e3o tem',
-          V217 == '9' ~ 'Ignorado'
+          V217 == 2 ~ 'Tem - com medidor',
+          V217 == 4 ~ 'Tem - sem medidor',
+          V217 == 8 ~ 'N\u00e3o tem',
+          V217 == 9 ~ 'Ignorado'
         )
       )
     }
@@ -1503,11 +1494,11 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V220 = dplyr::case_when(
-          V220 == '1' ~ 'A cores',
-          V220 == '3' ~ 'A cores e preto e branco',
-          V220 == '5' ~ 'Preto e branco',
-          V220 == '8' ~ 'N\u00e3o tem',
-          V220 == '9' ~ 'Ignorado'
+          V220 == 1 ~ 'A cores',
+          V220 == 3 ~ 'A cores e preto e branco',
+          V220 == 5 ~ 'Preto e branco',
+          V220 == 8 ~ 'N\u00e3o tem',
+          V220 == 9 ~ 'Ignorado'
         )
       )
     }
@@ -1517,10 +1508,10 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V221 = dplyr::case_when(
-          V221 == '1' ~ 'Tem - para uso particular',
-          V221 == '3' ~ 'Tem - para trabalho',
-          V221 == '8' ~ 'N\u00e3o tem',
-          V221 == '9' ~ 'Ignorado'
+          V221 == 1 ~ 'Tem - para uso particular',
+          V221 == 3 ~ 'Tem - para trabalho',
+          V221 == 8 ~ 'N\u00e3o tem',
+          V221 == 9 ~ 'Ignorado'
         )
       )
     }
@@ -1534,9 +1525,9 @@ add_labels_households <- function(
         dplyr::across(
           all_of(tem_vars_1980),
           ~ case_when(
-            .x == '1' ~ 'Tem',
-            .x == '8' ~ 'N\u00e3o tem',
-            .x == '9' ~ 'Ignorado'
+            .x == 1 ~ 'Tem',
+            .x == 8 ~ 'N\u00e3o tem',
+            .x == 9 ~ 'Ignorado'
           )
         )
       )
@@ -1561,14 +1552,14 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V1061 = dplyr::case_when(
-          V1061 == '1' ~ '\u00c1rea urbanizada',
-          V1061 == '2' ~ '\u00c1rea n\u00e3o urbanizada',
-          V1061 == '3' ~ '\u00c1rea urbana isolada',
-          V1061 == '4' ~ 'Aglomerado rural de extens\u00e3o urbana',
-          V1061 == '5' ~ 'Aglomerado rural isolado ou povoado',
-          V1061 == '6' ~ 'Aglomerado rural isolado ou n\u00facleo',
-          V1061 == '7' ~ 'Outros aglomerados',
-          V1061 == '8' ~ '\u00c1rea rural (exclusive aglomerado rural)'
+          V1061 == 1 ~ '\u00c1rea urbanizada',
+          V1061 == 2 ~ '\u00c1rea n\u00e3o urbanizada',
+          V1061 == 3 ~ '\u00c1rea urbana isolada',
+          V1061 == 4 ~ 'Aglomerado rural de extens\u00e3o urbana',
+          V1061 == 5 ~ 'Aglomerado rural isolado ou povoado',
+          V1061 == 6 ~ 'Aglomerado rural isolado ou n\u00facleo',
+          V1061 == 7 ~ 'Outros aglomerados',
+          V1061 == 8 ~ '\u00c1rea rural (exclusive aglomerado rural)'
         )
       )
     }
@@ -1578,16 +1569,16 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V7003 = dplyr::case_when(
-          V7003 == '0' ~ 'N\u00e3o metropolitana',
-          V7003 == '1' ~ 'Bel\u00e9m',
-          V7003 == '2' ~ 'Fortaleza',
-          V7003 == '3' ~ 'Recife',
-          V7003 == '4' ~ 'Salvador',
-          V7003 == '5' ~ 'Belo Horizonte',
-          V7003 == '6' ~ 'Rio de Janeiro',
-          V7003 == '7' ~ 'S\u00e3o Paulo',
-          V7003 == '8' ~ 'Curitiba',
-          V7003 == '9' ~ 'Porto Alegre'
+          V7003 == 0 ~ 'N\u00e3o metropolitana',
+          V7003 == 1 ~ 'Bel\u00e9m',
+          V7003 == 2 ~ 'Fortaleza',
+          V7003 == 3 ~ 'Recife',
+          V7003 == 4 ~ 'Salvador',
+          V7003 == 5 ~ 'Belo Horizonte',
+          V7003 == 6 ~ 'Rio de Janeiro',
+          V7003 == 7 ~ 'S\u00e3o Paulo',
+          V7003 == 8 ~ 'Curitiba',
+          V7003 == 9 ~ 'Porto Alegre'
         )
       )
     }
@@ -1597,9 +1588,9 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V0201 = dplyr::case_when(
-          V0201 == '1' ~ 'Particular permanente',
-          V0201 == '2' ~ 'Particular improvisado',
-          V0201 == '3' ~ 'Coletivo'
+          V0201 == 1 ~ 'Particular permanente',
+          V0201 == 2 ~ 'Particular improvisado',
+          V0201 == 3 ~ 'Coletivo'
         )
       )
     }
@@ -1609,13 +1600,13 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V0202 = dplyr::case_when(
-          V0202 == '1' ~ 'Casa isolada ou de condom\u00ednio',
-          V0202 == '2' ~ 'Casa em conjunto residencial popular',
-          V0202 == '3' ~ 'Casa em aglomerado subnormal',
-          V0202 == '4' ~ 'Apartamento isolado ou de condom\u00ednio',
-          V0202 == '5' ~ 'Apartamento em conjunto residencial popular',
-          V0202 == '6' ~ 'Apartamento em aglomerado subnormal',
-          V0202 == '7' ~ 'C\u00f4modos'
+          V0202 == 1 ~ 'Casa isolada ou de condom\u00ednio',
+          V0202 == 2 ~ 'Casa em conjunto residencial popular',
+          V0202 == 3 ~ 'Casa em aglomerado subnormal',
+          V0202 == 4 ~ 'Apartamento isolado ou de condom\u00ednio',
+          V0202 == 5 ~ 'Apartamento em conjunto residencial popular',
+          V0202 == 6 ~ 'Apartamento em aglomerado subnormal',
+          V0202 == 7 ~ 'C\u00f4modos'
         )
       )
     }
@@ -1625,12 +1616,12 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V0203 = dplyr::case_when(
-          V0203 == '1' ~ 'Alvenaria',
-          V0203 == '2' ~ 'Madeira aparelhada',
-          V0203 == '3' ~ 'Taipa n\u00e3o revestida',
-          V0203 == '4' ~ 'Material aproveitado',
-          V0203 == '5' ~ 'Palha',
-          V0203 == '6' ~ 'Outro'
+          V0203 == 1 ~ 'Alvenaria',
+          V0203 == 2 ~ 'Madeira aparelhada',
+          V0203 == 3 ~ 'Taipa n\u00e3o revestida',
+          V0203 == 4 ~ 'Material aproveitado',
+          V0203 == 5 ~ 'Palha',
+          V0203 == 6 ~ 'Outro'
         )
       )
     }
@@ -1640,14 +1631,14 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V0204 = dplyr::case_when(
-          V0204 == '1' ~ 'Laje de concreto',
-          V0204 == '2' ~ 'Telha de barro',
-          V0204 == '3' ~ 'Telha de cimento-amianto',
-          V0204 == '4' ~ 'Zinco',
-          V0204 == '5' ~ 'Madeira aparelhada',
-          V0204 == '6' ~ 'Palha',
-          V0204 == '7' ~ 'Material aproveitado',
-          V0204 == '8' ~ 'Outro'
+          V0204 == 1 ~ 'Laje de concreto',
+          V0204 == 2 ~ 'Telha de barro',
+          V0204 == 3 ~ 'Telha de cimento-amianto',
+          V0204 == 4 ~ 'Zinco',
+          V0204 == 5 ~ 'Madeira aparelhada',
+          V0204 == 6 ~ 'Palha',
+          V0204 == 7 ~ 'Material aproveitado',
+          V0204 == 8 ~ 'Outro'
         )
       )
     }
@@ -1657,12 +1648,12 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V0205 = dplyr::case_when(
-          V0205 == '1' ~ 'Rede geral com canaliza\u00e7\u00e3o interna',
-          V0205 == '2' ~ 'Po\u00e7o ou nascente com canaliza\u00e7\u00e3o interna',
-          V0205 == '3' ~ 'Outra forma com canaliza\u00e7\u00e3o interna',
-          V0205 == '4' ~ 'Rede geral sem canaliza\u00e7\u00e3o interna',
-          V0205 == '5' ~ 'Po\u00e7o ou nascente sem canaliza\u00e7\u00e3o interna',
-          V0205 == '6' ~ 'Outra forma sem canaliza\u00e7\u00e3o interna'
+          V0205 == 1 ~ 'Rede geral com canaliza\u00e7\u00e3o interna',
+          V0205 == 2 ~ 'Po\u00e7o ou nascente com canaliza\u00e7\u00e3o interna',
+          V0205 == 3 ~ 'Outra forma com canaliza\u00e7\u00e3o interna',
+          V0205 == 4 ~ 'Rede geral sem canaliza\u00e7\u00e3o interna',
+          V0205 == 5 ~ 'Po\u00e7o ou nascente sem canaliza\u00e7\u00e3o interna',
+          V0205 == 6 ~ 'Outra forma sem canaliza\u00e7\u00e3o interna'
         )
       )
     }
@@ -1672,14 +1663,14 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V0206 = dplyr::case_when(
-          V0206 == '0' ~ 'N\u00e3o tem',
-          V0206 == '1' ~ 'Rede geral',
-          V0206 == '2' ~ 'Fossa s\u00e9ptica ligada \u00e0 rede pluvial',
-          V0206 == '3' ~ 'Fossa s\u00e9ptica sem escoadouro',
-          V0206 == '4' ~ 'Fossa rudimentar',
-          V0206 == '5' ~ 'Vala negra',
-          V0206 == '6' ~ 'Outro',
-          V0206 == '7' ~ 'N\u00e3o sabe'
+          V0206 == 0 ~ 'N\u00e3o tem',
+          V0206 == 1 ~ 'Rede geral',
+          V0206 == 2 ~ 'Fossa s\u00e9ptica ligada \u00e0 rede pluvial',
+          V0206 == 3 ~ 'Fossa s\u00e9ptica sem escoadouro',
+          V0206 == 4 ~ 'Fossa rudimentar',
+          V0206 == 5 ~ 'Vala negra',
+          V0206 == 6 ~ 'Outro',
+          V0206 == 7 ~ 'N\u00e3o sabe'
         )
       )
     }
@@ -1689,9 +1680,9 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V0207 = dplyr::case_when(
-          V0207 == '0' ~ 'N\u00e3o tem',
-          V0207 == '1' ~ 'S\u00f3 do domic\u00edlio',
-          V0207 == '2' ~ 'Comum a mais de um domic\u00edlio'
+          V0207 == 0 ~ 'N\u00e3o tem',
+          V0207 == 1 ~ 'S\u00f3 do domic\u00edlio',
+          V0207 == 2 ~ 'Comum a mais de um domic\u00edlio'
         )
       )
     }
@@ -1701,12 +1692,12 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V0208 = dplyr::case_when(
-          V0208 == '1' ~ 'Pr\u00f3prio - a constru\u00e7\u00e3o e o terreno',
-          V0208 == '2' ~ 'Pr\u00f3prio - s\u00f3 a constru\u00e7\u00e3o',
-          V0208 == '3' ~ 'Alugado',
-          V0208 == '4' ~ 'Cedido por empregador',
-          V0208 == '5' ~ 'Cedido por particular',
-          V0208 == '6' ~ 'Outra'
+          V0208 == 1 ~ 'Pr\u00f3prio - a constru\u00e7\u00e3o e o terreno',
+          V0208 == 2 ~ 'Pr\u00f3prio - s\u00f3 a constru\u00e7\u00e3o',
+          V0208 == 3 ~ 'Alugado',
+          V0208 == 4 ~ 'Cedido por empregador',
+          V0208 == 5 ~ 'Cedido por particular',
+          V0208 == 6 ~ 'Outra'
         )
       )
     }
@@ -1716,16 +1707,16 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V2094 = dplyr::case_when(
-          V2094 == '0' ~ 'N\u00e3o paga',
-          V2094 == '1' ~ 'At\u00e9 1/4 de sal\u00e1rio m\u00ednimo',
-          V2094 == '2' ~ 'Mais de 1/4 a 1/2 sal\u00e1rio m\u00ednimo',
-          V2094 == '3' ~ 'Mais de 1/2 a 1 sal\u00e1rio m\u00ednimo',
-          V2094 == '4' ~ 'Mais de 1 a 2 sal\u00e1rios m\u00ednimos',
-          V2094 == '5' ~ 'Mais de 2 a 3 sal\u00e1rios m\u00ednimos',
-          V2094 == '6' ~ 'Mais de 3 a 4 sal\u00e1rios m\u00ednimos',
-          V2094 == '7' ~ 'Mais de 4 a 5 sal\u00e1rios m\u00ednimos',
-          V2094 == '8' ~ 'Mais de 5 sal\u00e1rios m\u00ednimos',
-          V2094 == '9' ~ 'Sem declara\u00e7\u00e3o'
+          V2094 == 0 ~ 'N\u00e3o paga',
+          V2094 == 1 ~ 'At\u00e9 1/4 de sal\u00e1rio m\u00ednimo',
+          V2094 == 2 ~ 'Mais de 1/4 a 1/2 sal\u00e1rio m\u00ednimo',
+          V2094 == 3 ~ 'Mais de 1/2 a 1 sal\u00e1rio m\u00ednimo',
+          V2094 == 4 ~ 'Mais de 1 a 2 sal\u00e1rios m\u00ednimos',
+          V2094 == 5 ~ 'Mais de 2 a 3 sal\u00e1rios m\u00ednimos',
+          V2094 == 6 ~ 'Mais de 3 a 4 sal\u00e1rios m\u00ednimos',
+          V2094 == 7 ~ 'Mais de 4 a 5 sal\u00e1rios m\u00ednimos',
+          V2094 == 8 ~ 'Mais de 5 sal\u00e1rios m\u00ednimos',
+          V2094 == 9 ~ 'Sem declara\u00e7\u00e3o'
         )
       )
     }
@@ -1735,13 +1726,13 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V0210 = dplyr::case_when(
-          V0210 == '0' ~ 'N\u00e3o tem fog\u00e3o ou fogareiro',
-          V0210 == '1' ~ 'G\u00e1s canalizado',
-          V0210 == '2' ~ 'S\u00f3 g\u00e1s de botij\u00e3o',
-          V0210 == '3' ~ 'S\u00f3 lenha',
-          V0210 == '4' ~ 'G\u00e1s de botij\u00e3o e lenha',
-          V0210 == '5' ~ 'Carv\u00e3o',
-          V0210 == '6' ~ 'Outro'
+          V0210 == 0 ~ 'N\u00e3o tem fog\u00e3o ou fogareiro',
+          V0210 == 1 ~ 'G\u00e1s canalizado',
+          V0210 == 2 ~ 'S\u00f3 g\u00e1s de botij\u00e3o',
+          V0210 == 3 ~ 'S\u00f3 lenha',
+          V0210 == 4 ~ 'G\u00e1s de botij\u00e3o e lenha',
+          V0210 == 5 ~ 'Carv\u00e3o',
+          V0210 == 6 ~ 'Outro'
         )
       )
     }
@@ -1751,11 +1742,11 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V2112 = dplyr::case_when(
-          V2112 == '1' ~ 'At\u00e9 0,5',
-          V2112 == '2' ~ 'Mais de 0,5 a 1',
-          V2112 == '3' ~ 'Mais de 1 a 1,5',
-          V2112 == '4' ~ 'Mais de 1,5 a 2',
-          V2112 == '5' ~ 'Mais de 2'
+          V2112 == 1 ~ 'At\u00e9 0,5',
+          V2112 == 2 ~ 'Mais de 0,5 a 1',
+          V2112 == 3 ~ 'Mais de 1 a 1,5',
+          V2112 == 4 ~ 'Mais de 1,5 a 2',
+          V2112 == 5 ~ 'Mais de 2'
         )
       )
     }
@@ -1765,13 +1756,13 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V2122 = dplyr::case_when(
-          V2122 == '1' ~ 'At\u00e9 1 morador',
-          V2122 == '2' ~ 'Mais de 1 a 1,5 morador',
-          V2122 == '3' ~ 'Mais de 1,5 a 2 moradores',
-          V2122 == '4' ~ 'Mais de 2 a 2,5 moradores',
-          V2122 == '5' ~ 'Mais de 2,5 a 3 moradores',
-          V2122 == '6' ~ 'Mais de 3 a 4 moradores',
-          V2122 == '7' ~ 'Mais de 4 moradores'
+          V2122 == 1 ~ 'At\u00e9 1 morador',
+          V2122 == 2 ~ 'Mais de 1 a 1,5 morador',
+          V2122 == 3 ~ 'Mais de 1,5 a 2 moradores',
+          V2122 == 4 ~ 'Mais de 2 a 2,5 moradores',
+          V2122 == 5 ~ 'Mais de 2,5 a 3 moradores',
+          V2122 == 6 ~ 'Mais de 3 a 4 moradores',
+          V2122 == 7 ~ 'Mais de 4 moradores'
         )
       )
     }
@@ -1781,13 +1772,13 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V0214 = dplyr::case_when(
-          V0214 == '1' ~ 'Coletado diretamente',
-          V0214 == '2' ~ 'Coletado indiretamente',
-          V0214 == '3' ~ 'Queimado',
-          V0214 == '4' ~ 'Enterrado',
-          V0214 == '5' ~ 'Jogado em terreno baldio',
-          V0214 == '6' ~ 'Jogado em rio, lago ou mar',
-          V0214 == '7' ~ 'Outro'
+          V0214 == 1 ~ 'Coletado diretamente',
+          V0214 == 2 ~ 'Coletado indiretamente',
+          V0214 == 3 ~ 'Queimado',
+          V0214 == 4 ~ 'Enterrado',
+          V0214 == 5 ~ 'Jogado em terreno baldio',
+          V0214 == 6 ~ 'Jogado em rio, lago ou mar',
+          V0214 == 7 ~ 'Outro'
         )
       )
     }
@@ -1797,9 +1788,9 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V0217 = dplyr::case_when(
-          V0217 == '0' ~ 'N\u00e3o tem',
-          V0217 == '1' ~ 'Uma linha',
-          V0217 == '2' ~ 'Duas ou mais linhas'
+          V0217 == 0 ~ 'N\u00e3o tem',
+          V0217 == 1 ~ 'Uma linha',
+          V0217 == 2 ~ 'Duas ou mais linhas'
         )
       )
     }
@@ -1809,10 +1800,10 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V0218 = dplyr::case_when(
-          V0218 == '0' ~ 'N\u00e3o tem',
-          V0218 == '1' ~ 'Um carro',
-          V0218 == '2' ~ 'Dois carros',
-          V0218 == '3' ~ 'Tr\u00eas ou mais carros'
+          V0218 == 0 ~ 'N\u00e3o tem',
+          V0218 == 1 ~ 'Um carro',
+          V0218 == 2 ~ 'Dois carros',
+          V0218 == 3 ~ 'Tr\u00eas ou mais carros'
         )
       )
     }
@@ -1822,9 +1813,9 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V0219 = dplyr::case_when(
-          V0219 == '0' ~ 'N\u00e3o tem',
-          V0219 == '1' ~ 'Pr\u00f3prio',
-          V0219 == '2' ~ 'Cedido'
+          V0219 == 0 ~ 'N\u00e3o tem',
+          V0219 == 1 ~ 'Pr\u00f3prio',
+          V0219 == 2 ~ 'Cedido'
         )
       )
     }
@@ -1834,10 +1825,10 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V0221 = dplyr::case_when(
-          V0221 == '1' ~ 'El\u00e9trica com medidor',
-          V0221 == '2' ~ 'El\u00e9trica sem medidor',
-          V0221 == '3' ~ '\u00d3leo ou querosene',
-          V0221 == '4' ~ 'Outra'
+          V0221 == 1 ~ 'El\u00e9trica com medidor',
+          V0221 == 2 ~ 'El\u00e9trica sem medidor',
+          V0221 == 3 ~ '\u00d3leo ou querosene',
+          V0221 == 4 ~ 'Outra'
         )
       )
     }
@@ -1847,9 +1838,9 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V0222 = dplyr::case_when(
-          V0222 == '0' ~ 'N\u00e3o tem',
-          V0222 == '1' ~ 'Uma porta',
-          V0222 == '2' ~ 'Mais de uma porta'
+          V0222 == 0 ~ 'N\u00e3o tem',
+          V0222 == 1 ~ 'Uma porta',
+          V0222 == 2 ~ 'Mais de uma porta'
         )
       )
     }
@@ -1859,10 +1850,10 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V0224 = dplyr::case_when(
-          V0224 == '0' ~ 'N\u00e3o tem',
-          V0224 == '1' ~ 'Um aparelho',
-          V0224 == '2' ~ 'Dois aparelhos',
-          V0224 == '3' ~ 'Tr\u00eas ou mais aparelhos'
+          V0224 == 0 ~ 'N\u00e3o tem',
+          V0224 == 1 ~ 'Um aparelho',
+          V0224 == 2 ~ 'Dois aparelhos',
+          V0224 == 3 ~ 'Tr\u00eas ou mais aparelhos'
         )
       )
     }
@@ -1872,19 +1863,19 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V2013 = dplyr::case_when(
-          V2013 == '1' ~ 'At\u00e9 1/4 de sal\u00e1rio m\u00ednimo',
-          V2013 == '2' ~ 'Mais de 1/4 a 1/2 sal\u00e1rio m\u00ednimo',
-          V2013 == '3' ~ 'Mais de 1/2 a 1 sal\u00e1rio m\u00ednimo',
-          V2013 == '4' ~ 'Mais de 1 a 2 sal\u00e1rios m\u00ednimos',
-          V2013 == '5' ~ 'Mais de 2 a 3 sal\u00e1rios m\u00ednimos',
-          V2013 == '6' ~ 'Mais de 3 a 5 sal\u00e1rios m\u00ednimos',
-          V2013 == '7' ~ 'Mais de 5 a 10 sal\u00e1rios m\u00ednimos',
-          V2013 == '8' ~ 'Mais de 10 a 15 sal\u00e1rios m\u00ednimos',
-          V2013 == '9' ~ 'Mais de 15 a 20 sal\u00e1rios m\u00ednimos',
-          V2013 == '10' ~ 'Mais de 20 a 30 sal\u00e1rios m\u00ednimos',
-          V2013 == '11' ~ 'Mais de 30 sal\u00e1rios m\u00ednimos',
-          V2013 == '12' ~ 'Sem rendimentos',
-          V2013 == '13' ~ 'Sem declara\u00e7\u00e3o'
+          V2013 == 1 ~ 'At\u00e9 1/4 de sal\u00e1rio m\u00ednimo',
+          V2013 == 2 ~ 'Mais de 1/4 a 1/2 sal\u00e1rio m\u00ednimo',
+          V2013 == 3 ~ 'Mais de 1/2 a 1 sal\u00e1rio m\u00ednimo',
+          V2013 == 4 ~ 'Mais de 1 a 2 sal\u00e1rios m\u00ednimos',
+          V2013 == 5 ~ 'Mais de 2 a 3 sal\u00e1rios m\u00ednimos',
+          V2013 == 6 ~ 'Mais de 3 a 5 sal\u00e1rios m\u00ednimos',
+          V2013 == 7 ~ 'Mais de 5 a 10 sal\u00e1rios m\u00ednimos',
+          V2013 == 8 ~ 'Mais de 10 a 15 sal\u00e1rios m\u00ednimos',
+          V2013 == 9 ~ 'Mais de 15 a 20 sal\u00e1rios m\u00ednimos',
+          V2013 == 10 ~ 'Mais de 20 a 30 sal\u00e1rios m\u00ednimos',
+          V2013 == 11 ~ 'Mais de 30 sal\u00e1rios m\u00ednimos',
+          V2013 == 12 ~ 'Sem rendimentos',
+          V2013 == 13 ~ 'Sem declara\u00e7\u00e3o'
         )
       )
     }
@@ -1894,19 +1885,19 @@ add_labels_households <- function(
       arrw <- dplyr::mutate(
         arrw,
         V2014 = dplyr::case_when(
-          V2014 == '1' ~ 'At\u00e9 1/4 de sal\u00e1rio m\u00ednimo',
-          V2014 == '2' ~ 'Mais de 1/4 a 1/2 sal\u00e1rio m\u00ednimo',
-          V2014 == '3' ~ 'Mais de 1/2 a 1 sal\u00e1rio m\u00ednimo',
-          V2014 == '4' ~ 'Mais de 1 a 2 sal\u00e1rios m\u00ednimos',
-          V2014 == '5' ~ 'Mais de 2 a 3 sal\u00e1rios m\u00ednimos',
-          V2014 == '6' ~ 'Mais de 3 a 5 sal\u00e1rios m\u00ednimos',
-          V2014 == '7' ~ 'Mais de 5 a 10 sal\u00e1rios m\u00ednimos',
-          V2014 == '8' ~ 'Mais de 10 a 15 sal\u00e1rios m\u00ednimos',
-          V2014 == '9' ~ 'Mais de 15 a 20 sal\u00e1rios m\u00ednimos',
-          V2014 == '10' ~ 'Mais de 20 a 30 sal\u00e1rios m\u00ednimos',
-          V2014 == '11' ~ 'Mais de 30 sal\u00e1rios m\u00ednimos',
-          V2014 == '12' ~ 'Sem rendimentos',
-          V2014 == '13' ~ 'Sem declara\u00e7\u00e3o'
+          V2014 == 1 ~ 'At\u00e9 1/4 de sal\u00e1rio m\u00ednimo',
+          V2014 == 2 ~ 'Mais de 1/4 a 1/2 sal\u00e1rio m\u00ednimo',
+          V2014 == 3 ~ 'Mais de 1/2 a 1 sal\u00e1rio m\u00ednimo',
+          V2014 == 4 ~ 'Mais de 1 a 2 sal\u00e1rios m\u00ednimos',
+          V2014 == 5 ~ 'Mais de 2 a 3 sal\u00e1rios m\u00ednimos',
+          V2014 == 6 ~ 'Mais de 3 a 5 sal\u00e1rios m\u00ednimos',
+          V2014 == 7 ~ 'Mais de 5 a 10 sal\u00e1rios m\u00ednimos',
+          V2014 == 8 ~ 'Mais de 10 a 15 sal\u00e1rios m\u00ednimos',
+          V2014 == 9 ~ 'Mais de 15 a 20 sal\u00e1rios m\u00ednimos',
+          V2014 == 10 ~ 'Mais de 20 a 30 sal\u00e1rios m\u00ednimos',
+          V2014 == 11 ~ 'Mais de 30 sal\u00e1rios m\u00ednimos',
+          V2014 == 12 ~ 'Sem rendimentos',
+          V2014 == 13 ~ 'Sem declara\u00e7\u00e3o'
         )
       )
     }
@@ -1921,8 +1912,8 @@ add_labels_households <- function(
         dplyr::across(
           all_of(tem_vars_1991),
           ~ case_when(
-            .x == '0' ~ 'N\u00e3o tem',
-            .x == '1' ~ 'Tem'
+            .x == 0 ~ 'N\u00e3o tem',
+            .x == 1 ~ 'Tem'
           )
         )
       )
