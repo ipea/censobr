@@ -270,7 +270,7 @@ Now we're going to (a) group observations by municipality, (b) get the number of
 esg <- hs |> 
         compute() |>
         group_by(code_muni) |>                                             # (a)
-        summarize(rede = sum(V0010[which(V0207=='1')]),                    # (b)
+        summarize(rede = sum(V0010[which(V0207==1)]),                      # (b)
                   total = sum(V0010)) |>                                   # (b)
         mutate(cobertura = rede / total) |>                                # (c)
         collect()                                                          # (d)

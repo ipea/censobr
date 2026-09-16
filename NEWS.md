@@ -1,63 +1,82 @@
 # censobr dev
 
+* New data release [v1.0.0](https://github.com/ipea/censobr_prep_data/releases/tag/v1.0.0), 
+which includes the following news files or edits:
+  * Census 2022 
+    * Data dictionary of microdata
+    * Public microdata. Closes [#65](https://github.com/ipea/censobr/issues/65)
+    * New function `import_microdata22()`, which brings the controlled-access
+    microdata of the **2022** Population Census into censobr. See the new 
+    vignette [Working with 2022 microdata](https://ipea.github.io/censobr/articles/microdata_2022.html).
 
 * New features
 
-  * New function `import_microdata22_controlado()`, which brings the microdata of
-  the **2022** Population Census into censobr. IBGE releases the sample microdata
-  of 2022 under controlled access, so censobr is not allowed to redistribute them
-  and has nothing to download on the user's behalf. Users request the data in
-  `.csv` format at https://microdados.ibge.gov.br/ and pass the zip file to this
-  function once. It converts the four tables (`Domicilios`, `Familia`,
-  `Mortalidade` and `Pessoas`) to Parquet, adds the same geography columns
-  provided for the other censuses, and stores them in the censobr cache, where
-  they are read like any other census year. The zip file should be kept, because
-  the cache is versioned by data release and a censobr version that points to a
-  newer release will not find files imported under the previous one. See the new
-  vignette [Working with 2022 microdata](https://ipea.github.io/censobr/articles/microdata_2022.html).
-  Closes [#79](https://github.com/ipea/censobr/issues/79).
-  * `read_population()`, `read_households()`, `read_families()` and
-  `read_mortality()` now accept `year = 2022`, reading the data imported with
-  `import_microdata22_controlado()`. When the data have not been imported yet,
-  these functions return an informative error explaining how to obtain them
-  instead of attempting a download that cannot succeed.
-  * `data_dictionary()` now accepts `year = 2022` for `dataset = "microdata"`
-  * `read_population()` now accepts a `merge_households` parameter, bringing in
-  household-level variables from `read_households()` -- previously only `read_mortality()`
-  and `read_emigration()` supported this. Because merging all ~300 population + household
-  columns can require more than 20GB of memory, `read_population(merge_households = TRUE)`
-  **requires `columns` to be set** -- naming the columns you need keeps the operation to a few
-  seconds and a few dozen MB. It is only available for census years 1970, 2000 and 2010 -- 1960
-  has no documented household join key, 1980's household variables are already present in the
-  population microdata, and 1991's household key is not unique in the source data and would
-  multiply rows.
+  * New function `import_microdata22_controlado()` to import to censobr the
+  controlled-access microdata of 2022. Once the `.zip` file with the original data
+  is imported `read_(year = 2022)` functions always read the controlled-access 
+  microdata. If the controlled-access microdata have not  been imported yet, 
+  these functions return an informative warning  and download the public 
+  microdata set, which has fewer variables. See the new vignette [Working with 2022 microdata](https://ipea.github.io/censobr/articles/microdata_2022.html). Closes [#79](https://github.com/ipea/censobr/issues/79).
+  * `add_labels = "pt"` now works for all years and tables since 1960.
+  * `merge_households` parameter now works for all years since 1970. Because 
+  merging all ~300 population + househols columns can require more than 20GB 
+  of memory, `read_population(merge_households = TRUE)` **requires `columns` to 
+  be set** -- naming the columns you need keeps the operation to a few seconds 
+  and a few dozen MB.
 
 * Major changes
 
-  * All functions that take a `year` now require the user to declare it, and say
-  so with an informative message when it is missing or `NULL`. Previously
-  `questionnaire()` silently assumed `year = 2010` and `interview_manual()`
-  defaulted to `NULL`.
+* `data_dictionary()` now takes only two values in `dataset`: `"microdata"`,
+  which opens a single Excel file covering every variable of the microdata and
+  is now available for **all** censuses since 1960, and `"tracts"`, available
+  since 1970.
+* The argument `dataset` in `data_dictionary()` is also case insensitive now,
+as in `read_tracts()`.
+
+
+* Breaking changes
+
+  * All functions that take a `year` now require the user to declare it. 
+  Previously `questionnaire()` silently assumed `year = 2010`.
   * The arguments `questionnaire(type)`, `read_tracts(dataset)` and
   `data_dictionary(dataset)` are now explicitly required, and the error message
-  lists the values accepted. For `read_tracts()`, the options listed are the ones
-  available for the requested year.
-  * censobr now uses {httr2} to download files, replacing {curl}.
+  lists the values accepted.
+  * `data_dictionary()` now takes only two values in `dataset`: `"microdata"`,
+  which opens a single Excel file covering every variable of the microdata. The 
+  per-data-set dictionaries opened with `dataset = "population"` and 
+  `dataset = "households"` were retired, since the microdata dictionary now covers 
+  the pre-2000 censuses too. 
+  * Data fixes 
+    * 2022: census tract, table "preliminares" 
+    * 2010: census tract of table "pessoas", state of Sao Paulo
+    * 1980: code_muni values of Tocantins e Fernando de Noronha
+    * 1970: variables `weight_household` and `hh_income` are stored as integers. 
+    Totals weighted by `weight_household` therefore differ slightly from earlier 
+    releases -- `sum(weight_household)` goes from 17,682,112 to 17,643,387 (-0.22%).
+    * All year: the codes of categorical variables of the microdata are stored 
+    as integers rather than text, in every census year. Code that filtered on 
+    the text form needs to drop the quotes, e.g. `filter(V0601 == "1")` becomes 
+    `filter(V0601 == 1)`. Zero-padded codes lose the padding as well: `V0402 == "01"` 
+    becomes `V0402 == 1`. Values that used to be recorded as `"."` are now `NA`.
+
 
 * Minor changes
 
-  * `data_dictionary()` now returns an informative error for
-  `dataset = "families"`, `"mortality"` and `"emigration"`, explaining that no
-  dictionary was published for those data sets and pointing to the microdata
-  dictionary instead. The `"population"` and `"households"`
-  dictionaries remain available for the 1960, 1970, 1980 and 1991 censuses; for
-  2000 onward they were superseded by the single Excel file opened with
-  `dataset = "microdata"`.
+  * censobr now uses {httr2} to download files, replacing {curl}.
   * `data_dictionary()`, `questionnaire()` and `interview_manual()` now return the
   path to the downloaded file. The file is only opened when `verbose = TRUE` and
   the session is interactive, so scripted runs no longer launch a viewer.
+  * `columns` now only accepts a character vector of column names, in all five microdata
+  readers (`read_population()`, `read_households()`, `read_families()`, `read_mortality()`,
+  `read_emigration()`), matching its documented type. It previously also silently accepted
+  numeric column indices.
 
 * bug fixes
+
+  * Several bug fixes and a few label corrections when `add_labels = "pt"` in
+  multiple read_ functions.
+  * `add_labels = "pt"` now compares the codes of every census year as numbers,
+  matching how the microdata are stored since the v0.7.0 data release.
   * Requesting a column that does not exist now returns an informative error
   naming the column, instead of an internal {dplyr} message.
   * Passing more than one `year` now returns an informative error. Previously a
@@ -65,47 +84,18 @@
   length > 1" message from base R.
   * An incomplete download is now detected by comparing the size of the file
   with the size reported by the server, and is removed instead of being cached.
-  Previously a partial download of a large file passed the size check and was
-  stored, only to fail later as a corrupted file.
   * A corrupted file in the local cache no longer throws an error. The file is
   removed and the function returns `NULL`, so that running it again downloads a
   fresh copy instead of failing on every call.
-  * `read_mortality()` and `read_emigration()` with `merge_households = TRUE` no
-  longer throw an error when the household data cannot be downloaded. Following
-  CRAN policy, they now fail gracefully and return `NULL`.
-  * A failed or incomplete download is now removed instead of being left in the
-  cache, where it would be picked up as a valid file on the next call. This is
-  what made a partial download surface later as a corrupted file, and what left
-  the 404 responses of the retired data dictionaries silently cached.
   * Passing `cache = FALSE` no longer fails when the cache directory does not
   exist yet, for example on a fresh installation.
-  * The `add_labels` parameter now only accepts `"pt"`. Values such as `"ptbr"`
-  previously passed the input check and returned data with labels partially
-  applied or missing, with no error.
-  * `read_tracts()` now lists the data sets available in 2000 when an invalid
-  `dataset` is passed for that year. It previously listed the 2010 data sets.
-  * `censobr_cache(delete_file = "all", print_tree = TRUE)` no longer throws an
-  error after deleting the cache directory.
-  * `censobr_cache()` no longer throws an error when the cache directory is
-  empty or absent and `verbose = FALSE`.
   * Download error messages now match their cause. A failed transfer no longer
   reports the local file as corrupted, and an incomplete download no longer
   reports the internet connection as faulty.
-  * `read_mortality()` and `read_emigration()` with `merge_households = TRUE` now honor
-  `cache = FALSE` for the household data too. Previously the household file was always
-  cached regardless of the `cache` argument.
-  * The temporary DuckDB database file created by `merge_households = TRUE` is now removed
-  when the merge finishes. Previously it was left behind in the session's temp directory.
-  * `columns` now only accepts a character vector of column names, in all five microdata
-  readers (`read_population()`, `read_households()`, `read_families()`, `read_mortality()`,
-  `read_emigration()`), matching its documented type. It previously also silently accepted
-  numeric column indices.
+  * The temporary DuckDB database file created by `merge_households = TRUE` is 
+  now removed when the merge finishes. Previously it was left behind in the 
+  session's temp directory.
 
-* Notes
-
-  * The output of `read_mortality()` and `read_emigration()` with `merge_households = TRUE`
-  no longer preserves DuckDB's row insertion order (it never guaranteed one). If your code
-  relies on row order from this specific combination of arguments, sort explicitly.
 
 
 # censobr v0.6.0
