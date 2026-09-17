@@ -96,6 +96,12 @@ merge_household_var <- function(
   # set vars to merge. `key_main` / `key_hou` name the household identifier on
   # each side of the join; `key_geo` are the extra (identically named) columns
   # the join is qualified on, where the identifier is only unique within them
+  if (year == 1960) {
+    key_geo <- c('code_state', 'code_muni')
+    key_main <- key_hou <- 'censobr_idhousehold'
+  }
+
+
   if (year == 1970) {
     key_geo <- c('code_state', 'code_muni')
     key_main <- key_hou <- 'id_household'
