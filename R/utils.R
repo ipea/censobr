@@ -147,7 +147,7 @@ open_censobr_data <- function(dataset, year, showProgress, cache, verbose) {
 
   # IBGE releases the 2022 microdata under controlled access, so there is no
   # file for censobr to download. It has to be in the cache already, put there
-  # by import_microdata22_controlado()
+  # by import_microdata22()
 
   if (year == 2022) {
     # check first if controlled-access data is available in cache

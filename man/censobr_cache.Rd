@@ -43,7 +43,7 @@ previous releases are deleted automatically the first time data is downloaded
 in a session, and can be deleted at any time with \code{delete_file = "old"}. Set
 \code{options(censobr.keep_old_cache = TRUE)} to keep them, for example to go on
 working with an older data release. Microdata imported with
-\code{import_microdata22_controlado()} are never deleted automatically, because
+\code{import_microdata22()} are never deleted automatically, because
 censobr cannot download them again.
 }
 \examples{

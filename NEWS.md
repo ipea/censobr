@@ -6,12 +6,11 @@ which includes the following news files or edits:
     * Data dictionary of microdata
     * Public microdata. Closes [#65](https://github.com/ipea/censobr/issues/65)
     * New function `import_microdata22()`, which brings the controlled-access
-    microdata of the **2022** Population Census into censobr. See the new 
-    vignette [Working with 2022 microdata](https://ipea.github.io/censobr/articles/microdata_2022.html).
+    microdata of the **2022** Population Census into censobr. See *new features* below.
 
 * New features
 
-  * New function `import_microdata22_controlado()` to import to censobr the
+  * New function `import_microdata22()` to import to censobr the
   controlled-access microdata of 2022. Once the `.zip` file with the original data
   is imported `read_(year = 2022)` functions always read the controlled-access 
   microdata. If the controlled-access microdata have not  been imported yet, 
@@ -103,7 +102,7 @@ as in `read_tracts()`.
   time data is downloaded, and can also be run on demand with
   `censobr_cache(delete_file = 'old')`. Set `options(censobr.keep_old_cache = TRUE)`
   to keep those files, for example to go on working with an older data release.
-  Microdata imported with `import_microdata22_controlado()` are never deleted,
+  Microdata imported with `import_microdata22()` are never deleted,
   because censobr cannot download them again.
 
 

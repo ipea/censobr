@@ -49,7 +49,7 @@ drive-by edit. The package version (`DESCRIPTION`) and the data release are *sep
 
 **The stale-cache prune** — `delete_old_cache_dirs()` (`R/cache.R:290`), called once per session
 through `prune_old_cache_once()` (`:382`) from `download_file()` (`R/utils.R:53`) and
-`import_microdata22_controlado()` (`:105`). It deletes files in `data_release_*` directories whose
+`import_microdata22()` (`R/import_microdata22_controlado.R:105`). It deletes files in `data_release_*` directories whose
 basename is not the current pin. Three constraints, all deliberate:
 
 - It runs **at download time, not in `.onLoad()`** (where it lived until v0.6.0), because the cache

@@ -141,7 +141,7 @@ using_default_censobr_cache_dir <- function(){ # nocov start
 #' in a session, and can be deleted at any time with `delete_file = "old"`. Set
 #' `options(censobr.keep_old_cache = TRUE)` to keep them, for example to go on
 #' working with an older data release. Microdata imported with
-#' `import_microdata22_controlado()` are never deleted automatically, because
+#' `import_microdata22()` are never deleted automatically, because
 #' censobr cannot download them again.
 #'
 #' @return A message indicating which file exist and/or which ones have been
@@ -274,7 +274,7 @@ censobr_cache <- function(list_files = TRUE,
 #' can be any directory the user chose with [set_censobr_cache_dir()], so
 #' anything else living there is none of the package's business.
 #'
-#' Microdata imported with `import_microdata22_controlado()` are never deleted.
+#' Microdata imported with `import_microdata22()` are never deleted.
 #' They come from a zip file IBGE distributes under controlled access, so
 #' censobr cannot download them again. A release directory that still holds
 #' those files is kept.

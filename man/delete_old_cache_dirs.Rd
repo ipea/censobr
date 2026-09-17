@@ -24,7 +24,7 @@ release is matched by equality rather than by pattern: the cache directory
 can be any directory the user chose with \code{\link[=set_censobr_cache_dir]{set_censobr_cache_dir()}}, so
 anything else living there is none of the package's business.
 
-Microdata imported with \code{import_microdata22_controlado()} are never deleted.
+Microdata imported with \code{import_microdata22()} are never deleted.
 They come from a zip file IBGE distributes under controlled access, so
 censobr cannot download them again. A release directory that still holds
 those files is kept.
