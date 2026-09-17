@@ -100,6 +100,10 @@ import_microdata22 <- function(zip_path, verbose = TRUE) {
   # tables to read
   tables <- c('Domicilios', 'Familia', 'Mortalidade', 'Pessoas')
 
+  # delete files cached from previous data releases, once per session, as
+  # download_file() does. The files imported here are never deleted
+  prune_old_cache_once(verbose = verbose)
+
   # dest directory. The cache dir is versioned by data release, so this has to
   # mirror how download_file() resolves the path of a downloaded file
   cache_dir <- get_censobr_cache_dir()

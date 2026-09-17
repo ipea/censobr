@@ -30,10 +30,10 @@ Cross-session context lives in [MEMORY.md](MEMORY.md); plans, specs, and session
 
 ## The data-release contract (censobr-specific — read before touching `read_*()`)
 
-`R/onLoad.R:7` holds a single pin:
+`R/onLoad.R:6` holds a single pin:
 
 ```r
-censobr_env$data_release <- 'v0.6.0'
+censobr_env$data_release <- 'v1.0.0'
 ```
 
 It is the **single source of truth** for where data comes from, and it does two things:
@@ -41,18 +41,34 @@ It is the **single source of truth** for where data comes from, and it does two 
 1. **Builds every download URL** in the six `read_*()` functions:
    `https://github.com/ipea/censobr_prep_data/releases/download/{tag}/{year}_{name}_{tag}.parquet`
    (`read_tracts()` inserts a lowercased `dataset`: `{year}_tracts_{dataset}_{tag}.parquet`)
-2. **Versions the cache directory** — `R/utils.R:22` writes into `{cache_dir}/data_release_{tag}`
+2. **Versions the cache directory** — `R/utils.R:57` writes into `{cache_dir}/data_release_{tag}`
 
-**Therefore bumping the pin silently invalidates every user's cache and re-downloads everything.**
-It is a deliberate, NEWS-worthy release decision — never a drive-by edit. The package version
-(`DESCRIPTION`) and the data release are *separate* decisions that happen to both read `v0.6.0` today.
+**Therefore bumping the pin invalidates every user's cache, re-downloads everything, and deletes
+the files of the previous release.** It is a deliberate, NEWS-worthy release decision — never a
+drive-by edit. The package version (`DESCRIPTION`) and the data release are *separate* decisions.
+
+**The stale-cache prune** — `delete_old_cache_dirs()` (`R/cache.R:290`), called once per session
+through `prune_old_cache_once()` (`:382`) from `download_file()` (`R/utils.R:53`) and
+`import_microdata22_controlado()` (`:105`). It deletes files in `data_release_*` directories whose
+basename is not the current pin. Three constraints, all deliberate:
+
+- It runs **at download time, not in `.onLoad()`** (where it lived until v0.6.0), because the cache
+  dir is only known once `set_censobr_cache_dir()` has had its chance to run — and unlinking GBs
+  during `library()` is the worst possible moment.
+- It matches `^data_release_` directories and compares the current release by **equality**, never by
+  `grepl()`. The cache dir can be any directory the user chose, so anything else there is off limits.
+- **`*controlado*` files are never deleted** — they come from an IBGE zip and cannot be downloaded
+  again. A release dir still holding them is kept.
+
+Escape hatch: `options(censobr.keep_old_cache = TRUE)`. Manual trigger: `censobr_cache(delete_file = "old")`.
 
 **Two deliberate asymmetries — do not "fix" them:**
 
 - The **documentation** functions (`data_dictionary()`, `questionnaire()`, `interview_manual()`)
   use a *fixed* tag `censo_docs`, **not** the pin — docs are not re-released per data version.
 - `censobr_cache()` lists recursively from the cache **root**, not the versioned subdir
-  (`R/cache.R:162` is commented out on purpose), so users can see and delete files from older releases.
+  (`R/cache.R:174` is commented out on purpose), so users can see and delete files from older
+  releases — including a release dir the prune kept because of controlled-access data.
 
 **Data lives elsewhere.** As of v0.6.0 all data and the pipeline that builds it moved to
 `ipea/censobr_prep_data`. The local `data_prep/` folder is **legacy** and `.Rbuildignore`d —
@@ -331,10 +347,11 @@ explicitly (`:115`); the other two return the value of `utils::browseURL()`.
   invisibly. Note it does **not** create the cache directory itself, only records the path.
 - **`get_censobr_cache_dir()`** — `R/cache.R:87-100`. Reads the config file if present, else falls
   back to the default. Every download resolves its destination through this.
-- **`censobr_cache(list_files, print_tree, delete_file, verbose)`** — `R/cache.R:146-233`. Lists
-  recursively from the cache **root** (`:165`), so files from *all* data releases are visible.
-  `delete_file` is a `grepl()` **pattern**, not an exact name (`:181-194`) — it deletes every match.
-  `delete_file = "all"` calls `fs::dir_delete()` on the whole cache dir (`:205`).
+- **`censobr_cache(list_files, print_tree, delete_file, verbose)`** — `R/cache.R:158-263`. Lists
+  recursively from the cache **root** (`:177`), so files from *all* data releases are visible.
+  `delete_file` is a `grepl()` **pattern**, not an exact name (`:206-213`) — it deletes every match.
+  Two values are **keywords, not patterns** (`:192`): `"all"` unlinks the whole cache dir (`:216`),
+  and `"old"` calls `delete_old_cache_dirs()` (`:195`).
 
 **Gotchas across these**
 

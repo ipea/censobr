@@ -95,6 +95,16 @@ as in `read_tracts()`.
   * The temporary DuckDB database file created by `merge_households = TRUE` is 
   now removed when the merge finishes. Previously it was left behind in the 
   session's temp directory.
+  * Data cached from previous data releases is deleted again. The cache
+  directory is versioned by data release, so a new release leaves the files of
+  the previous one behind. censobr used to delete them when the package was
+  loaded, but that stopped working in v0.6.0, when the cache directory became a
+  setting the user can change. The check now runs once per session, the first
+  time data is downloaded, and can also be run on demand with
+  `censobr_cache(delete_file = 'old')`. Set `options(censobr.keep_old_cache = TRUE)`
+  to keep those files, for example to go on working with an older data release.
+  Microdata imported with `import_microdata22_controlado()` are never deleted,
+  because censobr cannot download them again.
 
 
 

@@ -55,7 +55,8 @@ Suggests:
     kableExtra,
     knitr,
     scales,
-    testthat
+    testthat,
+    withr
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

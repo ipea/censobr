@@ -48,6 +48,10 @@ download_file <- function(
   checkmate::assert_logical(showProgress)
   checkmate::assert_logical(cache)
 
+  # the cache dir is versioned by data release, so files cached from previous
+  # releases would sit there forever. This deletes them, once per session
+  prune_old_cache_once(verbose = verbose)
+
   # create local dir / cache dir is versioned
   cache_dir <- get_censobr_cache_dir()
   cache_dir <- glue::glue("{cache_dir}/data_release_{censobr_env$data_release}")
