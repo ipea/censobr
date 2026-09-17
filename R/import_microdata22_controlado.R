@@ -23,12 +23,12 @@
 #' | `Mortalidade` | `2022_mortality.controlado_<data release>.parquet` |
 #' | `Pessoas` | `2022_population.controlado_<data release>.parquet` |
 #'
-#' The `<data release>` suffix is the release of the `censobr` data pinned
-#' by the installed version of the package. A version of `censobr` that points
-#' to a newer data release will not find files imported under the previous one,
-#' so the zip file will have to be imported again in eventual updates of the
-#' censobr data versions. We strongly recommend you store the original zip file
-#' in a save place so you can import it again in the future if necessary.
+#' After that the tables sit in the cache and are read from disk, with no 
+#' further processing. The data imported via `import_microdata22()` lives 
+#' in the cache directory even if censobr  updates to a new data release. 
+#' This means you only need to import the data **once**. Nonetheless, we 
+#' strongly recommend you **store the original `.zip` from IBGE somewhere safe** 
+#' in case you need to import that data again.
 #'
 #' @param zip_path String. Path to the local zip file with the controlled-microdata
 #'        of the 2022 census sample saved, as provided by IBGE. The original file
