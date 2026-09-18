@@ -17,7 +17,7 @@ which includes the following news files or edits:
   these functions return an informative warning  and download the public 
   microdata set, which has fewer variables. See the new vignette [Working with 2022 microdata](https://ipea.github.io/censobr/articles/microdata_2022.html). Closes [#79](https://github.com/ipea/censobr/issues/79).
   * `add_labels = "pt"` now works for all years and tables since 1960.
-  * `merge_households` parameter now works for all years since 1970. Because 
+  * `merge_households` parameter now works for all census years since 1960. Because 
   merging all ~300 population + househols columns can require more than 20GB 
   of memory, `read_population(merge_households = TRUE)` **requires `columns` to 
   be set** -- naming the columns you need keeps the operation to a few seconds 

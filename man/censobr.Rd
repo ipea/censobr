@@ -34,6 +34,7 @@ Authors:
 
 Other contributors:
 \itemize{
+  \item Pedro Herculano Souza \email{pedro.souza@ipea.gov.br} [contributor]
   \item Diego Rabatone Oliveira \email{diraol@diraol.eng.br} [contributor]
   \item Neal Richardson \email{neal.p.richardson@gmail.com} [contributor]
   \item Haydee Svab \email{haydee.svab@gmail.com} [contributor]

@@ -75,9 +75,9 @@ The package currently includes 6 main functions to download census data:
       <td>X</td>
       <td>X</td>
       <td>X</td>
-      <td></td>
       <td>X</td>
-      <td><i>em breve</i></td>
+      <td>X</td>
+      <td>X</td>
     </tr>
     <tr>
       <td>read_households()</td>
@@ -90,20 +90,20 @@ The package currently includes 6 main functions to download census data:
       <td>X</td>
       <td>X</td>
       <td>X</td>
-      <td><i>em breve</i></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>read_families()</td>
       <td>Amostra</td>
       <td>Microdado</td>
-      <td>Lê os microdados de famílias do censo de 2000.</td>
+      <td>Lê os microdados de famílias.</td>
       <td></td>
       <td></td>
       <td></td>
       <td>X</td>
       <td></td>
       <td></td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>read_emigration()</td>
@@ -116,7 +116,7 @@ The package currently includes 6 main functions to download census data:
       <td></td>
       <td>X</td>
       <td></td>
-      <td><i>em breve</i></td>
+      <td></td>
     </tr>
     <tr>
       <td>read_mortality()</td>
@@ -129,7 +129,7 @@ The package currently includes 6 main functions to download census data:
       <td></td>
       <td></td>
       <td>X</td>
-      <td><i>em breve</i></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>read_tracts()</td>
@@ -140,9 +140,9 @@ The package currently includes 6 main functions to download census data:
       <td></td>
       <td></td>
       <td></td>
-      <td><i>X</i></td>
       <td>X</td>
-      <td><i>X</i></td>
+      <td>X</td>
+      <td>X</td>
     </tr>
   </tbody>
 </table>

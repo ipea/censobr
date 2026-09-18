@@ -2283,48 +2283,6 @@ add_labels_population <- function(
       )
     }
 
-    # UNIDADE DA FEDERACAO (1960 territorial division). Since the v0.7.0 data
-    # release the 1960 files also carry code_state/abbrev_state/name_state built
-    # from this same division (Guanabara, Fernando de Noronha, Serra dos
-    # Aimores), so these labels duplicate name_state; they are kept because `uf`
-    # is the raw census variable and can be selected on its own. Accents added
-    # to the dictionary spellings.
-    if ('uf' %in% cols) {
-      arrw <- dplyr::mutate(
-        arrw,
-        uf = dplyr::case_when(
-          uf == 0 ~ 'Rond\u00f4nia',
-          uf == 1 ~ 'Acre',
-          uf == 2 ~ 'Amazonas',
-          uf == 3 ~ 'Roraima',
-          uf == 4 ~ 'Par\u00e1',
-          uf == 6 ~ 'Amap\u00e1',
-          uf == 10 ~ 'Maranh\u00e3o',
-          uf == 12 ~ 'Piau\u00ed',
-          uf == 14 ~ 'Cear\u00e1',
-          uf == 17 ~ 'Rio Grande do Norte',
-          uf == 19 ~ 'Para\u00edba',
-          uf == 21 ~ 'Pernambuco',
-          uf == 24 ~ 'Fernando de Noronha',
-          uf == 25 ~ 'Alagoas',
-          uf == 30 ~ 'Sergipe',
-          uf == 31 ~ 'Bahia',
-          uf == 40 ~ 'Minas Gerais',
-          uf == 50 ~ 'Serra dos Aimor\u00e9s',
-          uf == 51 ~ 'Esp\u00edrito Santo',
-          uf == 52 ~ 'Rio de Janeiro',
-          uf == 54 ~ 'Guanabara',
-          uf == 60 ~ 'S\u00e3o Paulo',
-          uf == 71 ~ 'Paran\u00e1',
-          uf == 74 ~ 'Santa Catarina',
-          uf == 81 ~ 'Rio Grande do Sul',
-          uf == 91 ~ 'Mato Grosso',
-          uf == 94 ~ 'Goi\u00e1s',
-          uf == 97 ~ 'Distrito Federal'
-        )
-      )
-    }
-
     # SITUACAO DE MORADIA
     if ('V118' %in% cols) {
       arrw <- dplyr::mutate(

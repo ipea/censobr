@@ -89,7 +89,7 @@ test_that("read_population read", {
   # labelled query must stay lazy
   testthat::expect_warning(
     test1960 <- tester(year = 1960, add_labels = 'pt',
-                       columns = c('uf', 'V206', 'V215'),
+                       columns = c('code_state_1960', 'V206', 'V215'),
                        showProgress = FALSE),
     'two different releases'
     )
@@ -185,10 +185,11 @@ test_that("read_population merge_households_vars", {
   # merge_households requires columns -- for years that support it. 2022 is
   # read from the public release here, which warns once per call that the
   # controlled microdata are not imported; that warning is the subject of
-  # test_import_microdata22_controlado.R, not of this test
-  for (y in c(1970, 2000, 2010, 2022)) { # y = 2010
+  # test_import_microdata22_controlado.R, not of this test. 1960 warns once per
+  # call about being compiled from two IBGE releases -- also not this test's subject
+  for (y in c(1960, 1970, 2000, 2010, 2022)) { # y = 2010
 
-    quiet <- if (y == 2022) suppressWarnings else identity
+    quiet <- if (y %in% c(1960, 2022)) suppressWarnings else identity
 
     hou_cols <- names(quiet(censobr::read_households(year = y, showProgress = FALSE, verbose = FALSE)))
     pop_cols <- names(quiet(tester(year = y)))
@@ -297,12 +298,15 @@ test_that("read_population ERRORs", {
   # labels exist for every census year; the 'only available' guard can only
   # trigger for a year that is not in the data registry, which errors earlier
 
-  # merge_households requires columns, and only supports years 1970/2000/2010/2022
-  # (1980 and 1991 are accepted and answered with a message -- see the merge test)
+  # merge_households requires columns. Every year in the data registry is now
+  # accepted by the merge guard, so no valid year can reach
+  # error_merge_households_years() -- an unregistered year errors earlier, at
+  # the availability check. (1980 and 1991 are accepted and answered with a
+  # message -- see the merge test)
   testthat::expect_error(tester(merge_households = TRUE), 'columns.*required')
   testthat::expect_error(
-    tester(year = 1960, columns = 'V2', merge_households = TRUE),
-    '1970'
+    tester(year = 1955, columns = 'V2', merge_households = TRUE),
+    'Data currently available only for the years'
     )
 
   # a bad column name under merge_households = TRUE is still attributed to
