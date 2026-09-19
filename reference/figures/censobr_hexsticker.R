@@ -65,7 +65,7 @@ sticker(plot_y,
         h_fill=ccol, h_color=NA,
 
         # url
-        url = "github.com/ipeaGIT/censobr", u_color= "white",
+        url = "github.com/ipea/censobr", u_color= "white",
          u_size = 4, u_family=ffont,
         # u_x = 1.2, u_y = .19,
 

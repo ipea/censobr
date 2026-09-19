@@ -18,7 +18,7 @@
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Download Data from Brazil's Population Census">
 <meta name="description" content="Easy access to data from Brazils population censuses. The package provides a simple and efficient way to download and read the data sets and the documentation of all the population censuses taken in and after 1960 in the country. The package is built on top of the Arrow platform &lt;https://arrow.apache.org/docs/r/&gt;, which allows users to work with larger-than-memory census data using dplyr' familiar functions. &lt;https://arrow.apache.org/docs/r/articles/arrow.html#analyzing-arrow-data-with-dplyr&gt;.">
 <meta property="og:description" content="Easy access to data from Brazils population censuses. The package provides a simple and efficient way to download and read the data sets and the documentation of all the population censuses taken in and after 1960 in the country. The package is built on top of the Arrow platform &lt;https://arrow.apache.org/docs/r/&gt;, which allows users to work with larger-than-memory census data using dplyr' familiar functions. &lt;https://arrow.apache.org/docs/r/articles/arrow.html#analyzing-arrow-data-with-dplyr&gt;.">
-<meta property="og:image" content="https://ipeagit.github.io/censobr/logo.png">
+<meta property="og:image" content="https://ipea.github.io/censobr/logo.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="index.html">censobr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,6 +45,7 @@
 <li><a class="dropdown-item" href="articles/census_tracts_data.html">Census tract-level data</a></li>
     <li><a class="dropdown-item" href="articles/documentation.html">Census documentation</a></li>
     <li><a class="dropdown-item" href="articles/larger_than_memory.html">Working with larger-than-memory data</a></li>
+    <li><a class="dropdown-item" href="articles/microdata_2022.html">Working with 2022 microdata</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -74,7 +75,7 @@
 <img src="logo.png" class="logo" alt=""><h1 id="censobr-download-data-from-brazils-population-census-">censobr: Download Data from Brazil’s Population Census <a class="anchor" aria-label="anchor" href="#censobr-download-data-from-brazils-population-census-"></a>
 </h1>
 </div>
-<p><a href="https://CRAN.R-project.org/package=censobr" class="external-link"><img src="https://www.r-pkg.org/badges/version/censobr" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=censobr" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/censobr?color=blue" alt="CRAN/METACRAN Total downloads"></a> <a href="https://app.codecov.io/gh/ipea/censobr?branch=main" class="external-link"><img src="https://codecov.io/gh/ipea/censobr/branch/main/graph/badge.svg" alt="Codecov test coverage"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-maturing-yellow.svg" alt="Lifecycle: maturing"></a> <a href="https://github.com/ipea/censobr/actions?query=branch%3Amain" class="external-link"><img src="https://github.com/ipea/censobr/actions/workflows/R-CMD-check.yaml/badge.svg?branch=main" alt="R-CMD-check"></a> <a href="https://doi.org/10.1590/dados.2026.69.1.006" class="external-link"><img src="https://img.shields.io/badge/DOI-10.1590%2Fdados--2026--69--1--006-blue" alt="Paper"></a></p>
+<p><a href="https://CRAN.R-project.org/package=censobr" class="external-link"><img src="https://www.r-pkg.org/badges/version/censobr" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=censobr" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/censobr?color=blue" alt="CRAN/METACRAN Total downloads"></a> <a href="https://app.codecov.io/gh/ipea/censobr?branch=main" class="external-link"><img src="https://codecov.io/gh/ipea/censobr/branch/main/graph/badge.svg" alt="Codecov test coverage"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-maturing-yellow.svg" alt="Lifecycle: maturing"></a> <a href="https://github.com/ipea/censobr/actions?query=branch%3Amain" class="external-link"><img src="https://github.com/ipea/censobr/actions/workflows/R-CMD-check.yaml/badge.svg?branch=main" alt="R-CMD-check"></a> <a href="https://doi.org/10.1590/dados.2026.69.1.006x" class="external-link"><img src="https://img.shields.io/badge/DOI-10.1590%2Fdados--2026--69--1--006-blue" alt="Paper"></a></p>
 <p><strong>{censobr}</strong> is an R package to download data from Brazil’s Population Census. It provides a very simple and efficient way to download and read the data sets and documentation of all the population censuses taken in and after 1960 in the country. The package is built on top of the <a href="https://arrow.apache.org/docs/r/" class="external-link">Arrow platform</a>, which allows users to work with larger-than-memory census data using <a href="https://arrow.apache.org/docs/r/articles/arrow.html#analyzing-arrow-data-with-dplyr" class="external-link">{dplyr} familiar functions</a>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -85,7 +86,7 @@
 <span></span>
 <span><span class="co"># or use the development version with latest features</span></span>
 <span><span class="fu">utils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/utils/remove.packages.html" class="external-link">remove.packages</a></span><span class="op">(</span><span class="st">'censobr'</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ipea/censobr"</span>, ref<span class="op">=</span><span class="st">"dev"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ipea/censobr"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipea/censobr" class="external-link">censobr</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -113,14 +114,15 @@
 <li><code><a href="reference/get_censobr_cache_dir.html">get_censobr_cache_dir()</a></code></li>
 </ol>
 <p>The syntax of all <strong>{censobr}</strong> functions to read data operate on the same logic so it becomes intuitive to download any data set using a single line of code. Like this:</p>
-<pre><code><span><span class="fu"><a href="reference/read_households.html">read_households</a></span><span class="op">(</span></span>
-<span>  <span class="va">year</span>,          <span class="co"># year of reference</span></span>
-<span>  <span class="va">columns</span>,       <span class="co"># select columns to read</span></span>
-<span>  <span class="va">add_labels</span>,    <span class="co"># add labels to categorical variables</span></span>
-<span>  <span class="va">as_data_frame</span>, <span class="co"># return an Arrow DataSet or a data.frame</span></span>
-<span>  <span class="va">showProgress</span>,  <span class="co"># show download progress bar</span></span>
-<span>  <span class="va">cache</span>,         <span class="co"># cache data for faster access later</span></span>
-<span>  <span class="va">verbose</span>        <span class="co"># whether to print informative messages</span></span>
+<pre><code><span><span class="fu"><a href="reference/read_population.html">read_population</a></span><span class="op">(</span></span>
+<span>  <span class="va">year</span>,             <span class="co"># year of reference</span></span>
+<span>  <span class="va">columns</span>,          <span class="co"># select columns to read</span></span>
+<span>  <span class="va">add_labels</span>,       <span class="co"># add labels to categorical variables</span></span>
+<span>  <span class="va">merge_households</span>, <span class="co"># bring in household-level variables</span></span>
+<span>  <span class="va">as_data_frame</span>,    <span class="co"># return an Arrow DataSet or a data.frame</span></span>
+<span>  <span class="va">showProgress</span>,     <span class="co"># show download progress bar</span></span>
+<span>  <span class="va">cache</span>,            <span class="co"># cache data for faster access later</span></span>
+<span>  <span class="va">verbose</span>           <span class="co"># whether to print informative messages</span></span>
 <span>  <span class="op">)</span></span></code></pre>
 <p><strong><em>Note:</em></strong> all data sets in <strong>{censobr}</strong> are enriched with geography columns following the name standards of the <a href="https://github.com/ipea/geobr/" class="external-link">{geobr} package</a> to help data manipulation and integration with spatial data from {geobr}. The added columns are: <code>c(‘code_muni’, ‘code_state’, ‘abbrev_state’, ‘name_state’, ‘code_region’, ‘name_region’, ‘code_weighting’)</code>.</p>
 <div class="section level3">
@@ -141,7 +143,7 @@
 <h2 id="larger-than-memory-data">Larger-than-memory Data<a class="anchor" aria-label="anchor" href="#larger-than-memory-data"></a>
 </h2>
 <p>Microdata of Brazilian census are often be too big to load in users’ RAM memory. To avoid this problem, <strong>{censobr}</strong> will by default return an <a href="https://arrow.apache.org/docs/r/articles/arrow.html#tabular-data-in-arrow" class="external-link">Arrow table</a>, which can be analyzed like a regular <code>data.frame</code> using the <code>dplyr</code> package without loading the full data to memory.</p>
-<p>More info in the package <a href="https://ipea.github.io/censobr/" class="external-link">vignette</a>.</p>
+<p>More info in the package <a href="https://ipea.github.io/censobr/">vignette</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="contributing-to-censobr">Contributing to censobr<a class="anchor" aria-label="anchor" href="#contributing-to-censobr"></a>

@@ -16,8 +16,8 @@ Path to cache dir
 ## See also
 
 Other Cache data:
-[`censobr_cache()`](https://ipeagit.github.io/censobr/reference/censobr_cache.md),
-[`set_censobr_cache_dir()`](https://ipeagit.github.io/censobr/reference/set_censobr_cache_dir.md)
+[`censobr_cache()`](https://ipea.github.io/censobr/reference/censobr_cache.md),
+[`set_censobr_cache_dir()`](https://ipea.github.io/censobr/reference/set_censobr_cache_dir.md)
 
 ## Examples
 

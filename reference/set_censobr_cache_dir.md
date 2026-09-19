@@ -29,8 +29,8 @@ A message pointing to the directory where censobr files are cached.
 ## See also
 
 Other Cache data:
-[`censobr_cache()`](https://ipeagit.github.io/censobr/reference/censobr_cache.md),
-[`get_censobr_cache_dir()`](https://ipeagit.github.io/censobr/reference/get_censobr_cache_dir.md)
+[`censobr_cache()`](https://ipea.github.io/censobr/reference/censobr_cache.md),
+[`get_censobr_cache_dir()`](https://ipea.github.io/censobr/reference/get_censobr_cache_dir.md)
 
 ## Examples
 
@@ -39,7 +39,7 @@ Other Cache data:
 # Set custom cache directory
 tempd <- tempdir()
 set_censobr_cache_dir(path = tempd)
-#> ℹ censobr files will be cached at /tmp/Rtmpku2Hnr.
+#> ℹ censobr files will be cached at /tmp/Rtmpjkn9SZ.
 
 # back to default path
 set_censobr_cache_dir(path = NULL)

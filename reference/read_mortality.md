@@ -27,7 +27,9 @@ read_mortality(
 - columns:
 
   String. A vector of column names to keep. The rest of the columns are
-  not read. Defaults to `NULL` and read all columns.
+  not read. Defaults to `NULL` and read all columns. If the user passes
+  `merge_households = TRUE`, then the `columns` vector can also include
+  the names of the households data set that should be kept.
 
 - add_labels:
 
@@ -72,10 +74,10 @@ An arrow `Dataset` or a `"data.frame"` object.
 ## See also
 
 Other Microdata:
-[`read_emigration()`](https://ipeagit.github.io/censobr/reference/read_emigration.md),
-[`read_families()`](https://ipeagit.github.io/censobr/reference/read_families.md),
-[`read_households()`](https://ipeagit.github.io/censobr/reference/read_households.md),
-[`read_population()`](https://ipeagit.github.io/censobr/reference/read_population.md)
+[`read_emigration()`](https://ipea.github.io/censobr/reference/read_emigration.md),
+[`read_families()`](https://ipea.github.io/censobr/reference/read_families.md),
+[`read_households()`](https://ipea.github.io/censobr/reference/read_households.md),
+[`read_population()`](https://ipea.github.io/censobr/reference/read_population.md)
 
 ## Examples
 

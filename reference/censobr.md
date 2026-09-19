@@ -32,9 +32,13 @@ Authors:
 
 Other contributors:
 
+- Pedro Herculano Souza <pedro.souza@ipea.gov.br> \[contributor\]
+
 - Diego Rabatone Oliveira <diraol@diraol.eng.br> \[contributor\]
 
 - Neal Richardson <neal.p.richardson@gmail.com> \[contributor\]
+
+- Haydee Svab <haydee.svab@gmail.com> \[contributor\]
 
 - Ipea - Institute for Applied Economic Research \[copyright holder,
   funder\]

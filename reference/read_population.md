@@ -13,7 +13,8 @@ read_population(
   as_data_frame = FALSE,
   showProgress = TRUE,
   cache = TRUE,
-  verbose = TRUE
+  verbose = TRUE,
+  merge_households = FALSE
 )
 ```
 
@@ -26,7 +27,9 @@ read_population(
 - columns:
 
   String. A vector of column names to keep. The rest of the columns are
-  not read. Defaults to `NULL` and read all columns.
+  not read. Defaults to `NULL` and read all columns. If the user passes
+  `merge_households = TRUE`, then the `columns` vector can also include
+  the names of the households data set that should be kept.
 
 - add_labels:
 
@@ -59,9 +62,29 @@ read_population(
   A logical. Whether the function should print informative messages.
   Defaults to `TRUE`.
 
+- merge_households:
+
+  Logical. Indicate whether the function should merge household
+  variables to the output data. Defaults to `FALSE`. When
+  `merge_households = TRUE`, it is mandatory to pass the `columns`
+  argument to select which columns should be kept. See the Details
+  section.
+
 ## Value
 
 An arrow `Dataset` or a `"data.frame"` object.
+
+## Details
+
+`merge_households = TRUE` is available for every census year the
+function serves, and requires `columns` to be set. For 1980 and 1991 the
+population microdata already include all variables of the household data
+set, so `merge_households = TRUE` has no effect and a message says so.
+Merging household variables into the full population microdata produces
+about 300 columns and can require more than 20GB of memory; naming the
+columns you need keeps the operation fast and light, typically a few
+seconds. The merge writes a temporary parquet file that is removed when
+the R session ends.
 
 ## 1960 Census
 
@@ -96,10 +119,10 @@ documentation of how this dataset was processed on this link
 ## See also
 
 Other Microdata:
-[`read_emigration()`](https://ipeagit.github.io/censobr/reference/read_emigration.md),
-[`read_families()`](https://ipeagit.github.io/censobr/reference/read_families.md),
-[`read_households()`](https://ipeagit.github.io/censobr/reference/read_households.md),
-[`read_mortality()`](https://ipeagit.github.io/censobr/reference/read_mortality.md)
+[`read_emigration()`](https://ipea.github.io/censobr/reference/read_emigration.md),
+[`read_families()`](https://ipea.github.io/censobr/reference/read_families.md),
+[`read_households()`](https://ipea.github.io/censobr/reference/read_households.md),
+[`read_mortality()`](https://ipea.github.io/censobr/reference/read_mortality.md)
 
 ## Examples
 

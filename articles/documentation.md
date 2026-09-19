@@ -6,8 +6,8 @@ navigate Brazilian census data, its variables and methodology.
 | Function | Documentation | Type | Years available |  |  |  |  |  |  |
 |----|----|----|----|----|----|----|----|----|----|
 |  |  |  | 1960 | 70 | 80 | 91 | 2000 | 10 | 22 |
-| data_dictionary() | Data dictionary (codebook) | Microdata | *X* | X | X | X | X | X | *soon* |
-|  |  | Census tract aggregates |  |  |  |  | X | X | *X* |
+| data_dictionary() | Data dictionary (codebook) | Microdata | X | X | X | X | X | X | X |
+|  |  | Census tract aggregates |  | X | X | X | X | X | X |
 | questionnaire() | Questionnaires | Long and short | X | X | X | X | X | X | X |
 | interview_manual() | Interviewer’s manual (Enumerator Instructions) | \- | X | X | X | X | X | X | X |
 
@@ -21,20 +21,21 @@ simply load local files, making it super quick and convenient.
 ## Data Dictionary
 
 The
-[`data_dictionary()`](https://ipeagit.github.io/censobr/reference/data_dictionary.md)
+[`data_dictionary()`](https://ipea.github.io/censobr/reference/data_dictionary.md)
 indicate the definition of each variable, and the meaning of their
-categories in the case of categorical variables. The function currently
-covers the data dictionaries for all Brazilian censuses since 1960
-(`19960`, `1970`, `1980`, `1991`, `2000` and `2010`), and it includes
-dictionaries for the variables of both microdata (sample portion of the
-census) and for the variables available in census tract-level aggregate
-data.
+categories in the case of categorical variables. The function covers two
+types of dictionary, passed in the `dataset` argument: `"microdata"`,
+which describes the variables of the microdata (sample portion of the
+census) and is available for every Brazilian census since 1960 (`1960`,
+`1970`, `1980`, `1991`, `2000`, `2010` and `2022`), and `"tracts"`,
+which describes the variables of the census tract-level aggregate data
+and is available since 1970.
 
 ``` r
 
 # Microdata variables
 data_dictionary(
-  year = 2010,
+  year = 2022,
   dataset = 'microdata'
   )
 
@@ -49,7 +50,7 @@ data_dictionary(
 
 Oftentimes, it is really important to understand the structure of the
 questionnaire used in surveys. The
-[`questionnaire()`](https://ipeagit.github.io/censobr/reference/questionnaire.md)
+[`questionnaire()`](https://ipea.github.io/censobr/reference/questionnaire.md)
 function includes the questionnaires used in the data collection of all
 Brazilian censuses since 1970.
 
@@ -76,7 +77,7 @@ questionnaire(
 ## Interview manual
 
 Finally, the
-[`interview_manual()`](https://ipeagit.github.io/censobr/reference/interview_manual.md)
+[`interview_manual()`](https://ipea.github.io/censobr/reference/interview_manual.md)
 function downloads and opens on a browser the “Manual do Recenseador”,
 i.e. the manual of instructions for IBGE’s census takers (recenseadores)
 on how to collect the census data.

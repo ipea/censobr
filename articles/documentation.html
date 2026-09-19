@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censobr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,6 +42,7 @@
 <li><a class="dropdown-item" href="../articles/census_tracts_data.html">Census tract-level data</a></li>
     <li><a class="dropdown-item" href="../articles/documentation.html">Census documentation</a></li>
     <li><a class="dropdown-item" href="../articles/larger_than_memory.html">Working with larger-than-memory data</a></li>
+    <li><a class="dropdown-item" href="../articles/microdata_2022.html">Working with 2022 microdata</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -73,7 +74,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Census documentation</h1>
             
-            <h4 data-toc-skip class="date">2026-07-29</h4>
+            <h4 data-toc-skip class="date">2026-09-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipea/censobr/blob/main/vignettes/documentation.Rmd" class="external-link"><code>vignettes/documentation.Rmd</code></a></small>
       <div class="d-none name"><code>documentation.Rmd</code></div>
@@ -144,9 +145,6 @@ Data dictionary (codebook)
 Microdata
 </td>
 <td>
-<i>X</i>
-</td>
-<td>
 X
 </td>
 <td>
@@ -162,7 +160,10 @@ X
 X
 </td>
 <td>
-<i>soon</i>
+X
+</td>
+<td>
+X
 </td>
 </tr>
 <tr>
@@ -172,10 +173,10 @@ Census tract aggregates
 <td>
 </td>
 <td>
+X
 </td>
 <td>
-</td>
-<td>
+X
 </td>
 <td>
 X
@@ -184,7 +185,10 @@ X
 X
 </td>
 <td>
-<i>X</i>
+X
+</td>
+<td>
+X
 </td>
 </tr>
 <tr>
@@ -265,16 +269,18 @@ it super quick and convenient.</p>
 </h2>
 <p>The <code><a href="../reference/data_dictionary.html">data_dictionary()</a></code> indicate the definition of each
 variable, and the meaning of their categories in the case of categorical
-variables. The function currently covers the data dictionaries for all
-Brazilian censuses since 1960 (<code>19960</code>, <code>1970</code>,
-<code>1980</code>, <code>1991</code>, <code>2000</code> and
-<code>2010</code>), and it includes dictionaries for the variables of
-both microdata (sample portion of the census) and for the variables
-available in census tract-level aggregate data.</p>
+variables. The function covers two types of dictionary, passed in the
+<code>dataset</code> argument: <code>"microdata"</code>, which describes
+the variables of the microdata (sample portion of the census) and is
+available for every Brazilian census since 1960 (<code>1960</code>,
+<code>1970</code>, <code>1980</code>, <code>1991</code>,
+<code>2000</code>, <code>2010</code> and <code>2022</code>), and
+<code>"tracts"</code>, which describes the variables of the census
+tract-level aggregate data and is available since 1970.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Microdata variables</span></span>
 <span><span class="fu"><a href="../reference/data_dictionary.html">data_dictionary</a></span><span class="op">(</span></span>
-<span>  year <span class="op">=</span> <span class="fl">2010</span>,</span>
+<span>  year <span class="op">=</span> <span class="fl">2022</span>,</span>
 <span>  dataset <span class="op">=</span> <span class="st">'microdata'</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>

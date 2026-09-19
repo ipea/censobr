@@ -6,13 +6,7 @@ Brazil's censuses
 ## Usage
 
 ``` r
-questionnaire(
-  year = 2010,
-  type = NULL,
-  showProgress = TRUE,
-  cache = TRUE,
-  verbose = TRUE
-)
+questionnaire(year, type, showProgress = TRUE, cache = TRUE, verbose = TRUE)
 ```
 
 ## Arguments
@@ -49,7 +43,9 @@ questionnaire(
 
 ## Value
 
-Opens a `.pdf` file on the browser
+Returns the path to the downloaded file. When `verbose = TRUE` and the
+session is interactive, the file is also opened and the path is returned
+invisibly.
 
 ## Examples
 
@@ -59,4 +55,5 @@ library(censobr)
 # Open questionnaire on browser
 questionnaire(year = 2010, type = 'long', showProgress = FALSE)
 #> ℹ Downloading data and storing it locally for future use.
+#> /home/runner/.cache/R/censobr/data_release_v1.0.0/2010_questionnaire_long.pdf
 ```

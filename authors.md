@@ -8,9 +8,13 @@
 - **Rogério J. Barbosa**. Author.
   [](https://orcid.org/0000-0002-6796-4547)
 
+- **Pedro Herculano Souza**. Contributor.
+
 - **Diego Rabatone Oliveira**. Contributor.
 
 - **Neal Richardson**. Contributor.
+
+- **Haydee Svab**. Contributor.
 
 - **Ipea - Institute for Applied Economic Research**. Copyright holder,
   funder.

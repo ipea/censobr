@@ -30,8 +30,10 @@ censobr_cache(
 
   String. The file name or a string pattern that matches the file path
   of a file cached locally and which should be deleted. Defaults to
-  `NULL`, so that no file is deleted. If `delete_file = "all"`, then all
-  of the cached files are deleted.
+  `NULL`, so that no file is deleted. Two values are read as keywords
+  rather than as patterns: `delete_file = "all"` deletes all of the
+  cached files, and `delete_file = "old"` deletes only the files cached
+  from previous data releases.
 
 - verbose:
 
@@ -43,11 +45,24 @@ censobr_cache(
 A message indicating which file exist and/or which ones have been
 deleted from the local cache directory.
 
+## Details
+
+censobr caches data in a directory versioned by data release, so a new
+data release does not read files downloaded from the previous one. Files
+from previous releases are deleted automatically the first time data is
+downloaded in a session, and can be deleted at any time with
+`delete_file = "old"`. Set `options(censobr.keep_old_cache = TRUE)` to
+keep them, for example to go on working with an older data release.
+Microdata imported with
+[`import_microdata22()`](https://ipea.github.io/censobr/reference/import_microdata22.md)
+are never deleted automatically, because censobr cannot download them
+again.
+
 ## See also
 
 Other Cache data:
-[`get_censobr_cache_dir()`](https://ipeagit.github.io/censobr/reference/get_censobr_cache_dir.md),
-[`set_censobr_cache_dir()`](https://ipeagit.github.io/censobr/reference/set_censobr_cache_dir.md)
+[`get_censobr_cache_dir()`](https://ipea.github.io/censobr/reference/get_censobr_cache_dir.md),
+[`set_censobr_cache_dir()`](https://ipea.github.io/censobr/reference/set_censobr_cache_dir.md)
 
 ## Examples
 

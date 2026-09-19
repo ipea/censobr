@@ -26,7 +26,9 @@ read_households(
 - columns:
 
   String. A vector of column names to keep. The rest of the columns are
-  not read. Defaults to `NULL` and read all columns.
+  not read. Defaults to `NULL` and read all columns. If the user passes
+  `merge_households = TRUE`, then the `columns` vector can also include
+  the names of the households data set that should be kept.
 
 - add_labels:
 
@@ -96,10 +98,10 @@ documentation of how this dataset was processed on this link
 ## See also
 
 Other Microdata:
-[`read_emigration()`](https://ipeagit.github.io/censobr/reference/read_emigration.md),
-[`read_families()`](https://ipeagit.github.io/censobr/reference/read_families.md),
-[`read_mortality()`](https://ipeagit.github.io/censobr/reference/read_mortality.md),
-[`read_population()`](https://ipeagit.github.io/censobr/reference/read_population.md)
+[`read_emigration()`](https://ipea.github.io/censobr/reference/read_emigration.md),
+[`read_families()`](https://ipea.github.io/censobr/reference/read_families.md),
+[`read_mortality()`](https://ipea.github.io/censobr/reference/read_mortality.md),
+[`read_population()`](https://ipea.github.io/censobr/reference/read_population.md)
 
 ## Examples
 

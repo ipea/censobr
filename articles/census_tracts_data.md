@@ -6,7 +6,7 @@ available some extremely data on population and environmental
 characteristics aggregated at the census tract level. In this vignette,
 we show how to use the **{censobr}** package to easily access census
 tract-level data using the
-[`read_tracts()`](https://ipeagit.github.io/censobr/reference/read_tracts.md)
+[`read_tracts()`](https://ipea.github.io/censobr/reference/read_tracts.md)
 function.
 
 At the moment, this function includes data from the censuses of 2000,
@@ -51,22 +51,22 @@ dom <- read_tracts(
   dataset = 'Domicilio', 
   showProgress = FALSE
   )
-#> ℹ Downloading data and storing it locally for future use.
+#> ℹ Reading data cached locally.
 
 names(dom)[c(30:33,119:121, 526:528)]
-#>  [1] "domicilio01_V00001" "domicilio01_V00002" "domicilio01_V00003"
-#>  [4] "domicilio01_V00004" "domicilio02_V00090" "domicilio02_V00091"
-#>  [7] "domicilio02_V00092" "domicilio03_V00497" "domicilio03_V00498"
-#> [10] "domicilio03_V00499"
+#>  [1] "CD_SETOR"           "CD_SIT"             "CD_TIPO"           
+#>  [4] "CD_REGIAO"          "domicilio01_V00063" "domicilio01_V00064"
+#>  [7] "domicilio01_V00065" "domicilio02_V00470" "domicilio02_V00471"
+#> [10] "domicilio02_V00472"
 ```
 
 ### Dictionary of variables
 
 To check the meaning of each variable, users can run the
-[`data_dictionary()`](https://ipeagit.github.io/censobr/reference/data_dictionary.md),
-which will open the file with the dictionary of variables in each
-dataset. The dictionary file is either an `.html`, a `.pdf` or an
-`.xlsx` file, depending on the data set and year.
+[`data_dictionary()`](https://ipea.github.io/censobr/reference/data_dictionary.md),
+which returns the path to the file with the dictionary of variables, and
+opens it in an interactive session. The dictionary file is either a
+`.pdf` or an `.xlsx` file, depending on the data set and year.
 
 ``` r
 
@@ -74,7 +74,6 @@ data_dictionary(
   year = 2022, 
   dataset = 'tracts'
   )
-#> NULL
 ```
 
 ## Reproducible examples
@@ -108,7 +107,7 @@ muni_bh <- geobr::read_municipality(
   filter(name_muni == "Belo Horizonte")
 #> ℹ Using year/date 2010
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/Rtmp2kORpv/duckdb
+#> ℹ /tmp/Rtmp6iB83z/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -164,7 +163,7 @@ head(df_trees)
 #> # A tibble: 6 × 4
 #> # Groups:   code_tract [6]
 #>   code_tract total_households trees trees_prop
-#>        <dbl>            <dbl> <dbl>      <dbl>
+#>        <dbl>            <int> <int>      <dbl>
 #> 1    3.11e14              222   222      1    
 #> 2    3.11e14              158   158      1    
 #> 3    3.11e14              294   294      1    
@@ -216,7 +215,7 @@ tract_basico <- censobr::read_tracts(
   dataset = "Basico", 
   showProgress = FALSE
   )
-#> ℹ Downloading data and storing it locally for future use.
+#> ℹ Reading data cached locally.
 
 tract_income <- censobr::read_tracts(
   year = 2010,
@@ -237,7 +236,7 @@ tracts_df <- tracts_df |> mutate(income_pc = V003 / V002)
 head(tracts_df)
 #> # A tibble: 6 × 4
 #>   code_tract  V002   V003 income_pc
-#>        <dbl> <dbl>  <dbl>     <dbl>
+#>        <dbl> <int>  <int>     <dbl>
 #> 1    2.21e14   714 145414      204.
 #> 2    2.21e14   436  47457      109.
 #> 3    2.21e14   287  45302      158.

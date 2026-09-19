@@ -9,7 +9,7 @@ coverage](https://codecov.io/gh/ipea/censobr/branch/main/graph/badge.svg)](https
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-yellow.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R-CMD-check](https://github.com/ipea/censobr/actions/workflows/R-CMD-check.yaml/badge.svg?branch=main)](https://github.com/ipea/censobr/actions?query=branch%3Amain)
-[![Paper](https://img.shields.io/badge/DOI-10.1590%2Fdados--2026--69--1--006-blue)](https://doi.org/10.1590/dados.2026.69.1.006)
+[![Paper](https://img.shields.io/badge/DOI-10.1590%2Fdados--2026--69--1--006-blue)](https://doi.org/10.1590/dados.2026.69.1.006x)
 
 **{censobr}** is an R package to download data from Brazil’s Population
 Census. It provides a very simple and efficient way to download and read
@@ -28,7 +28,7 @@ install.packages("censobr")
 
 # or use the development version with latest features
 utils::remove.packages('censobr')
-remotes::install_github("ipea/censobr", ref="dev")
+remotes::install_github("ipea/censobr")
 library(censobr)
 ```
 
@@ -37,40 +37,41 @@ library(censobr)
 The package currently includes 6 main functions to download & read
 census data:
 
-1.  [`read_population()`](https://ipeagit.github.io/censobr/reference/read_population.md)
-2.  [`read_households()`](https://ipeagit.github.io/censobr/reference/read_households.md)
-3.  [`read_mortality()`](https://ipeagit.github.io/censobr/reference/read_mortality.md)
-4.  [`read_families()`](https://ipeagit.github.io/censobr/reference/read_families.md)
-5.  [`read_emigration()`](https://ipeagit.github.io/censobr/reference/read_emigration.md)
-6.  [`read_tracts()`](https://ipeagit.github.io/censobr/reference/read_tracts.md)
+1.  [`read_population()`](https://ipea.github.io/censobr/reference/read_population.md)
+2.  [`read_households()`](https://ipea.github.io/censobr/reference/read_households.md)
+3.  [`read_mortality()`](https://ipea.github.io/censobr/reference/read_mortality.md)
+4.  [`read_families()`](https://ipea.github.io/censobr/reference/read_families.md)
+5.  [`read_emigration()`](https://ipea.github.io/censobr/reference/read_emigration.md)
+6.  [`read_tracts()`](https://ipea.github.io/censobr/reference/read_tracts.md)
 
 **{censobr}** also includes a few support functions to help users
 navigate the documentation Brazilian censuses, providing convenient
 information on data variables and methodology:
 
-7.  [`data_dictionary()`](https://ipeagit.github.io/censobr/reference/data_dictionary.md)
-8.  [`questionnaire()`](https://ipeagit.github.io/censobr/reference/questionnaire.md)
-9.  [`interview_manual()`](https://ipeagit.github.io/censobr/reference/interview_manual.md)
+7.  [`data_dictionary()`](https://ipea.github.io/censobr/reference/data_dictionary.md)
+8.  [`questionnaire()`](https://ipea.github.io/censobr/reference/questionnaire.md)
+9.  [`interview_manual()`](https://ipea.github.io/censobr/reference/interview_manual.md)
 
 Finally, the package includes three functions to help users manage the
 data cached locally.
 
-10. [`censobr_cache()`](https://ipeagit.github.io/censobr/reference/censobr_cache.md)
-11. [`set_censobr_cache_dir()`](https://ipeagit.github.io/censobr/reference/set_censobr_cache_dir.md)
-12. [`get_censobr_cache_dir()`](https://ipeagit.github.io/censobr/reference/get_censobr_cache_dir.md)
+10. [`censobr_cache()`](https://ipea.github.io/censobr/reference/censobr_cache.md)
+11. [`set_censobr_cache_dir()`](https://ipea.github.io/censobr/reference/set_censobr_cache_dir.md)
+12. [`get_censobr_cache_dir()`](https://ipea.github.io/censobr/reference/get_censobr_cache_dir.md)
 
 The syntax of all **{censobr}** functions to read data operate on the
 same logic so it becomes intuitive to download any data set using a
 single line of code. Like this:
 
-    read_households(
-      year,          # year of reference
-      columns,       # select columns to read
-      add_labels,    # add labels to categorical variables
-      as_data_frame, # return an Arrow DataSet or a data.frame
-      showProgress,  # show download progress bar
-      cache,         # cache data for faster access later
-      verbose        # whether to print informative messages
+    read_population(
+      year,             # year of reference
+      columns,          # select columns to read
+      add_labels,       # add labels to categorical variables
+      merge_households, # bring in household-level variables
+      as_data_frame,    # return an Arrow DataSet or a data.frame
+      showProgress,     # show download progress bar
+      cache,            # cache data for faster access later
+      verbose           # whether to print informative messages
       )
 
 ***Note:*** all data sets in **{censobr}** are enriched with geography
@@ -86,11 +87,11 @@ file and store it locally. This way, the data only needs to be
 downloaded once. When the `cache` parameter is set to `TRUE` (Default),
 the function will read the cached data, which is much faster.
 
-- [`censobr_cache()`](https://ipeagit.github.io/censobr/reference/censobr_cache.md):
+- [`censobr_cache()`](https://ipea.github.io/censobr/reference/censobr_cache.md):
   can be used to list and/or delete data files cached locally
-- [`set_censobr_cache_dir()`](https://ipeagit.github.io/censobr/reference/set_censobr_cache_dir.md):
+- [`set_censobr_cache_dir()`](https://ipea.github.io/censobr/reference/set_censobr_cache_dir.md):
   can be used to set custom cache directory for **{censobr}** files
-- [`get_censobr_cache_dir()`](https://ipeagit.github.io/censobr/reference/get_censobr_cache_dir.md):
+- [`get_censobr_cache_dir()`](https://ipea.github.io/censobr/reference/get_censobr_cache_dir.md):
   returns the path of the cache directory in use
 
 ## Larger-than-memory Data

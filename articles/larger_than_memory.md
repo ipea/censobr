@@ -63,20 +63,34 @@ rio <- df |>
 
 head(rio) |> 
   collect()
-#> # A tibble: 6 × 26
-#>   code_muni code_state abbrev_state name_state     code_region name_region
-#> *     <dbl>      <dbl> <chr>        <chr>                <dbl> <chr>      
-#> 1   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
-#> 2   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
-#> 3   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
-#> 4   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
-#> 5   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
-#> 6   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
-#> # ℹ 20 more variables: code_weighting <dbl>, V0001 <chr>, V0002 <chr>,
-#> #   V0011 <chr>, V0300 <dbl>, V0010 <dbl>, V1001 <chr>, V1002 <chr>,
-#> #   V1003 <chr>, V1004 <chr>, V1006 <chr>, V0703 <chr>, V0704 <chr>,
-#> #   V7051 <dbl>, V7052 <dbl>, M0703 <chr>, M0704 <chr>, M7051 <chr>,
-#> #   M7052 <chr>, V1005 <chr>
+#>   code_region name_region code_state abbrev_state     name_state code_muni
+#> 1           3     Sudeste         33           RJ Rio de Janeiro   3300100
+#> 2           3     Sudeste         33           RJ Rio de Janeiro   3300100
+#> 3           3     Sudeste         33           RJ Rio de Janeiro   3300100
+#> 4           3     Sudeste         33           RJ Rio de Janeiro   3300100
+#> 5           3     Sudeste         33           RJ Rio de Janeiro   3300100
+#> 6           3     Sudeste         33           RJ Rio de Janeiro   3300100
+#>   code_weighting V0001 V0002      V0011   V0300    V0010 V1001 V1002 V1003
+#> 1     3.3001e+12    33   100 3.3001e+12 1285657 13.51819     3     5    13
+#> 2     3.3001e+12    33   100 3.3001e+12 6084726 12.76395     3     5    13
+#> 3     3.3001e+12    33   100 3.3001e+12  898500 10.68108     3     5    13
+#> 4     3.3001e+12    33   100 3.3001e+12 2581116 11.61204     3     5    13
+#> 5     3.3001e+12    33   100 3.3001e+12 3768175 12.93833     3     5    13
+#> 6     3.3001e+12    33   100 3.3001e+12 4125020 10.66262     3     5    13
+#>   V1004  V1006             V0703     V0704 V7051 V7052 M0703 M0704 M7051 M7052
+#> 1     0 Urbana     Março de 2010 Masculino    69    NA     2     2     2     2
+#> 2     0 Urbana Fevereiro de 2010 Masculino    84    NA     2     2     2     2
+#> 3     0 Urbana     Abril de 2010 Masculino    38    NA     2     2     2     2
+#> 4     0 Urbana      Maio de 2010 Masculino    54    NA     2     2     2     2
+#> 5     0  Rural    Agosto de 2009 Masculino    31    NA     2     2     2     2
+#> 6     0 Urbana  Setembro de 2009 Masculino    28    NA     2     2     2     2
+#>                                   V1005
+#> 1                       Área urbanizada
+#> 2                   Área não urbanizada
+#> 3                       Área urbanizada
+#> 4                       Área urbanizada
+#> 5 Área rural exclusive aglomerado rural
+#> 6                       Área urbanizada
 ```
 
 ### 2. `{duckdb}`
@@ -109,19 +123,19 @@ rio1 <- df |>
 head(rio1) |> 
   collect()
 #> # A tibble: 6 × 26
-#>   code_muni code_state abbrev_state name_state     code_region name_region
-#>       <dbl>      <dbl> <chr>        <chr>                <dbl> <chr>      
-#> 1   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
-#> 2   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
-#> 3   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
-#> 4   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
-#> 5   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
-#> 6   3300100         33 RJ           Rio de Janeiro           3 Sudeste    
-#> # ℹ 20 more variables: code_weighting <dbl>, V0001 <chr>, V0002 <chr>,
-#> #   V0011 <chr>, V0300 <dbl>, V0010 <dbl>, V1001 <chr>, V1002 <chr>,
-#> #   V1003 <chr>, V1004 <chr>, V1006 <chr>, V0703 <chr>, V0704 <chr>,
-#> #   V7051 <dbl>, V7052 <dbl>, M0703 <chr>, M0704 <chr>, M7051 <chr>,
-#> #   M7052 <chr>, V1005 <chr>
+#>   code_region name_region code_state abbrev_state name_state     code_muni
+#>         <int> <chr>            <int> <chr>        <chr>              <int>
+#> 1           3 Sudeste             33 RJ           Rio de Janeiro   3300100
+#> 2           3 Sudeste             33 RJ           Rio de Janeiro   3300100
+#> 3           3 Sudeste             33 RJ           Rio de Janeiro   3300100
+#> 4           3 Sudeste             33 RJ           Rio de Janeiro   3300100
+#> 5           3 Sudeste             33 RJ           Rio de Janeiro   3300100
+#> 6           3 Sudeste             33 RJ           Rio de Janeiro   3300100
+#> # ℹ 20 more variables: code_weighting <dbl>, V0001 <int>, V0002 <int>,
+#> #   V0011 <dbl>, V0300 <int>, V0010 <dbl>, V1001 <int>, V1002 <int>,
+#> #   V1003 <int>, V1004 <int>, V1006 <chr>, V0703 <chr>, V0704 <chr>,
+#> #   V7051 <int>, V7052 <int>, M0703 <int>, M0704 <int>, M7051 <int>,
+#> #   M7052 <int>, V1005 <chr>
 ```
 
 #### 2.2 Using `{duckdb}` with `SQL`
@@ -137,7 +151,7 @@ library(DBI)
 # create databse connection
 con <- duckdb::dbConnect(duckdb::duckdb())
 #> duckdb keeps downloaded extensions and secrets in a temporary directory:
-#> ℹ /tmp/RtmpPTJdMl/duckdb
+#> ℹ /tmp/RtmpjJNSEr/duckdb
 #> This is removed when the R session ends.
 #> • Extensions are re-downloaded each session.
 #> • Secrets are lost.
@@ -155,27 +169,27 @@ query <- glue::glue("SELECT * FROM 'mortality_2010_tbl'
 rio2 <- DBI::dbGetQuery(con, query)
 
 head(rio2)
-#>   code_muni code_state abbrev_state     name_state code_region name_region
-#> 1   3300100         33           RJ Rio de Janeiro           3     Sudeste
-#> 2   3300100         33           RJ Rio de Janeiro           3     Sudeste
-#> 3   3300100         33           RJ Rio de Janeiro           3     Sudeste
-#> 4   3300100         33           RJ Rio de Janeiro           3     Sudeste
-#> 5   3300100         33           RJ Rio de Janeiro           3     Sudeste
-#> 6   3300100         33           RJ Rio de Janeiro           3     Sudeste
-#>   code_weighting V0001 V0002         V0011   V0300    V0010 V1001 V1002 V1003
-#> 1     3.3001e+12    33 00100 3300100003001 1285657 13.51819     3    05   013
-#> 2     3.3001e+12    33 00100 3300100003001 6084726 12.76395     3    05   013
-#> 3     3.3001e+12    33 00100 3300100003002  898500 10.68108     3    05   013
-#> 4     3.3001e+12    33 00100 3300100003002 2581116 11.61204     3    05   013
-#> 5     3.3001e+12    33 00100 3300100003002 3768175 12.93833     3    05   013
-#> 6     3.3001e+12    33 00100 3300100003002 4125020 10.66262     3    05   013
+#>   code_region name_region code_state abbrev_state     name_state code_muni
+#> 1           3     Sudeste         33           RJ Rio de Janeiro   3300100
+#> 2           3     Sudeste         33           RJ Rio de Janeiro   3300100
+#> 3           3     Sudeste         33           RJ Rio de Janeiro   3300100
+#> 4           3     Sudeste         33           RJ Rio de Janeiro   3300100
+#> 5           3     Sudeste         33           RJ Rio de Janeiro   3300100
+#> 6           3     Sudeste         33           RJ Rio de Janeiro   3300100
+#>   code_weighting V0001 V0002      V0011   V0300    V0010 V1001 V1002 V1003
+#> 1     3.3001e+12    33   100 3.3001e+12 1285657 13.51819     3     5    13
+#> 2     3.3001e+12    33   100 3.3001e+12 6084726 12.76395     3     5    13
+#> 3     3.3001e+12    33   100 3.3001e+12  898500 10.68108     3     5    13
+#> 4     3.3001e+12    33   100 3.3001e+12 2581116 11.61204     3     5    13
+#> 5     3.3001e+12    33   100 3.3001e+12 3768175 12.93833     3     5    13
+#> 6     3.3001e+12    33   100 3.3001e+12 4125020 10.66262     3     5    13
 #>   V1004  V1006             V0703     V0704 V7051 V7052 M0703 M0704 M7051 M7052
-#> 1    00 Urbana     Março de 2010 Masculino    69    NA     2     2     2     2
-#> 2    00 Urbana Fevereiro de 2010 Masculino    84    NA     2     2     2     2
-#> 3    00 Urbana     Abril de 2010 Masculino    38    NA     2     2     2     2
-#> 4    00 Urbana      Maio de 2010 Masculino    54    NA     2     2     2     2
-#> 5    00  Rural    Agosto de 2009 Masculino    31    NA     2     2     2     2
-#> 6    00 Urbana  Setembro de 2009 Masculino    28    NA     2     2     2     2
+#> 1     0 Urbana     Março de 2010 Masculino    69    NA     2     2     2     2
+#> 2     0 Urbana Fevereiro de 2010 Masculino    84    NA     2     2     2     2
+#> 3     0 Urbana     Abril de 2010 Masculino    38    NA     2     2     2     2
+#> 4     0 Urbana      Maio de 2010 Masculino    54    NA     2     2     2     2
+#> 5     0  Rural    Agosto de 2009 Masculino    31    NA     2     2     2     2
+#> 6     0 Urbana  Setembro de 2009 Masculino    28    NA     2     2     2     2
 #>                                   V1005
 #> 1                       Área urbanizada
 #> 2                   Área não urbanizada

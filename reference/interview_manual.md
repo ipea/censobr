@@ -6,12 +6,7 @@ Brazil's censuses
 ## Usage
 
 ``` r
-interview_manual(
-  year = NULL,
-  showProgress = TRUE,
-  cache = TRUE,
-  verbose = TRUE
-)
+interview_manual(year, showProgress = TRUE, cache = TRUE, verbose = TRUE)
 ```
 
 ## Arguments
@@ -41,12 +36,14 @@ interview_manual(
 
 ## Value
 
-Opens a `.pdf` file on the browser
+Returns the path to the downloaded file. When `verbose = TRUE` and the
+session is interactive, the file is also opened and the path is returned
+invisibly.
 
 ## See also
 
 Other Census documentation:
-[`data_dictionary()`](https://ipeagit.github.io/censobr/reference/data_dictionary.md)
+[`data_dictionary()`](https://ipea.github.io/censobr/reference/data_dictionary.md)
 
 ## Examples
 
@@ -57,4 +54,5 @@ interview_manual(
   showProgress = FALSE
   )
 #> ℹ Downloading data and storing it locally for future use.
+#> /home/runner/.cache/R/censobr/data_release_v1.0.0/2010_interview_manual.pdf
 ```

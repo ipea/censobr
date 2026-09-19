@@ -25,35 +25,35 @@ remotes::install_github("ipea/censobr", ref="dev")
 
 The package currently includes 6 main functions to download census data:
 
-1.  [`read_population()`](https://ipeagit.github.io/censobr/reference/read_population.md)
-2.  [`read_households()`](https://ipeagit.github.io/censobr/reference/read_households.md)
-3.  [`read_mortality()`](https://ipeagit.github.io/censobr/reference/read_mortality.md)
-4.  [`read_families()`](https://ipeagit.github.io/censobr/reference/read_families.md)
-5.  [`read_emigration()`](https://ipeagit.github.io/censobr/reference/read_emigration.md)
-6.  [`read_tracts()`](https://ipeagit.github.io/censobr/reference/read_tracts.md)
+1.  [`read_population()`](https://ipea.github.io/censobr/reference/read_population.md)
+2.  [`read_households()`](https://ipea.github.io/censobr/reference/read_households.md)
+3.  [`read_mortality()`](https://ipea.github.io/censobr/reference/read_mortality.md)
+4.  [`read_families()`](https://ipea.github.io/censobr/reference/read_families.md)
+5.  [`read_emigration()`](https://ipea.github.io/censobr/reference/read_emigration.md)
+6.  [`read_tracts()`](https://ipea.github.io/censobr/reference/read_tracts.md)
 
 | Função | Origem | Unidade | Definição | Disponibilidade |  |  |  |  |  |  |
 |----|----|----|----|----|----|----|----|----|----|----|
 |  |  |  |  | 1960 | 70 | 80 | 91 | 2000 | 10 | 22 |
-| read_population() | Amostra | Microdado | Lê os microdados de pessoas. | X | X | X | X |  | X | *em breve* |
-| read_households() | Amostra | Microdado | Lê os microdados de domicílios. | X | X | X | X | X | X | *em breve* |
-| read_families() | Amostra | Microdado | Lê os microdados de famílias do censo de 2000. |  |  |  | X |  |  |  |
-| read_emigration() | Amostra | Microdado | Lê os microdados de emigração. |  |  |  |  | X |  | *em breve* |
-| read_mortality() | Amostra | Microdado | Lê os microdados de mortalidade. |  |  |  |  |  | X | *em breve* |
-| read_tracts() | Universo | Setor Censitário | Lê os dados do Universo agregados por setores censitários. |  |  |  |  | *X* | X | *X* |
+| read_population() | Amostra | Microdado | Lê os microdados de pessoas. | X | X | X | X | X | X | X |
+| read_households() | Amostra | Microdado | Lê os microdados de domicílios. | X | X | X | X | X | X | X |
+| read_families() | Amostra | Microdado | Lê os microdados de famílias. |  |  |  | X |  |  | X |
+| read_emigration() | Amostra | Microdado | Lê os microdados de emigração. |  |  |  |  | X |  |  |
+| read_mortality() | Amostra | Microdado | Lê os microdados de mortalidade. |  |  |  |  |  | X | X |
+| read_tracts() | Universo | Setor Censitário | Lê os dados do Universo agregados por setores censitários. |  |  |  |  | X | X | X |
 
 **{censobr}** also includes a few support functions to help users
 navigate the documentation Brazilian censuses, providing convenient
 information on data variables and methodology.:
 
-7.  [`data_dictionary()`](https://ipeagit.github.io/censobr/reference/data_dictionary.md)
-8.  [`questionnaire()`](https://ipeagit.github.io/censobr/reference/questionnaire.md)
-9.  [`interview_manual()`](https://ipeagit.github.io/censobr/reference/interview_manual.md)
+7.  [`data_dictionary()`](https://ipea.github.io/censobr/reference/data_dictionary.md)
+8.  [`questionnaire()`](https://ipea.github.io/censobr/reference/questionnaire.md)
+9.  [`interview_manual()`](https://ipea.github.io/censobr/reference/interview_manual.md)
 
 Finally, the package includes a function to help users to manage the
 data cached locally.
 
-10. [`censobr_cache()`](https://ipeagit.github.io/censobr/reference/censobr_cache.md)
+10. [`censobr_cache()`](https://ipea.github.io/censobr/reference/censobr_cache.md)
 
 The syntax of all **{censobr}** functions to read data operate on the
 same logic so it becomes intuitive to download any data set using a
@@ -61,14 +61,15 @@ single line of code. Like this:
 
 ``` r
 
-read_households(
-  year,          # year of reference
-  columns,       # select columns to read
-  add_labels,    # add labels to categorical variables
-  as_data_frame, # return an Arrow DataSet or a data.frame
-  showProgress,  # show download progress bar
-  cache,         # cache data for faster access later
-  verbose        # whether to print informative messages
+read_population(
+  year,             # year of reference
+  columns,          # select columns to read
+  add_labels,       # add labels to categorical variables
+  merge_households, # bring in household-level variables
+  as_data_frame,    # return an Arrow DataSet or a data.frame
+  showProgress,     # show download progress bar
+  cache,            # cache data for faster access later
+  verbose           # whether to print informative messages
   )
 ```
 
@@ -114,8 +115,9 @@ library(ggplot2)
 In this example we’ll be calculating the proportion of people with
 higher education in different racial groups in the state of Rio de
 Janeiro. First, we need to use the
-[`read_population()`](https://ipeagit.github.io/censobr/reference/read_population.md)
-function to download the population data set.
+[`read_population()`](https://ipea.github.io/censobr/reference/read_population.md)
+function to download the population data set. Here, we will be using the
+public data of the 2022 census.
 
 Since we don’t need to load to memory all columns from the data, we can
 pass a vector with the names of the columns we’re going to use. This
@@ -126,8 +128,8 @@ categorical variables.
 ``` r
 
 pop <- read_population(
-  year = 2010,
-  columns = c('abbrev_state', 'V0606', 'V0010', 'V6400'),
+  year = 2022,
+  columns = c('abbrev_state', 'P0210', 'P0110', 'P0770'),
   add_labels = 'pt',
   showProgress = FALSE
   )
@@ -153,11 +155,11 @@ package. For example, one can have a quick peak into the data set with
 
 dplyr::glimpse(pop)
 #> FileSystemDataset with 1 Parquet file (query)
-#> 20,635,472 rows x 4 columns
-#> $ abbrev_state <string> "RO", "RO", "RO", "RO", "RO", "RO", "RO", "RO", "RO", "R…
-#> $ V0606        <string> "Parda", "Parda", "Branca", "Branca", "Parda", "Parda", …
-#> $ V0010        <double> 8.705865, 8.705865, 9.818689, 9.495608, 9.495608, 9.4956…
-#> $ V6400        <string> "Sem instrução e fundamental incompleto", "Sem instrução…
+#> 21,538,508 rows x 4 columns
+#> $ abbrev_state <string> "AC", "AC", "AC", "AC", "AC", "AC", "AC", "AC", "AC", "A…
+#> $ P0210        <string> "Parda", "Parda", "Parda", "Parda", "Branca", "Parda", "…
+#> $ P0110        <double> 6.188037, 5.179654, 5.179654, 5.179654, 5.179654, 5.1796…
+#> $ P0770        <string> "Médio completo e superior incompleto", "Médio completo …
 #> Call `print()` for query details
 ```
 
@@ -173,31 +175,31 @@ at the end of our query.
 df <- pop |>
       filter(abbrev_state == "RJ") |>                                                    # (a)
       compute() |>
-      group_by(V0606) |>                                                                 # (b)
-      summarize(higher_edu = sum(V0010[which(V6400=="Superior completo")]) / sum(V0010), # (c)
-                pop = sum(V0010) ) |>
+      group_by(P0210) |>                                                                 # (b)
+      summarize(higher_edu = sum(P0110[which(P0770=="Superior completo")]) / sum(P0110), # (c)
+                pop = sum(P0110) ) |>
       collect()
 
 head(df)
 #> # A tibble: 6 × 3
-#>   V0606    higher_edu      pop
+#>   P0210    higher_edu      pop
 #>   <chr>         <dbl>    <dbl>
-#> 1 Amarela      0.0782  122552.
-#> 2 Branca       0.151  7579023.
-#> 3 Ignorado     0         3397.
-#> 4 Indígena     0.109    15258.
-#> 5 Parda        0.0443 6332408.
-#> 6 Preta        0.0405 1937291.
+#> 1 Amarela      0.290    19605.
+#> 2 Branca       0.216  6712792.
+#> 3 Ignorado     0.148     2728.
+#> 4 Indígena     0.175    17032.
+#> 5 Parda        0.0849 6679235.
+#> 6 Preta        0.0848 2623783.
 ```
 
 Now we only need to plot the results.
 
 ``` r
 
-df <- subset(df, V0606 != 'Ignorado')
+df <- subset(df, P0210 != 'Ignorado')
 
 ggplot() +
-  geom_col(data = df, aes(x=V0606, y=higher_edu), fill = '#5c997e') +
+  geom_col(data = df, aes(x=P0210, y=higher_edu), fill = '#5c997e') +
   scale_y_continuous(name = 'Proportion with higher education',
                      labels = scales::percent) +
   labs(x = 'Cor/raça') +
@@ -211,9 +213,9 @@ ggplot() +
 ##### Sewage coverage:
 
 In this example, we are going to map the proportion of households
-connected to a sewage network in Brazilian municipalities First, we can
-easily download the households data set with the
-[`read_households()`](https://ipeagit.github.io/censobr/reference/read_households.md)
+connected to a sewage network in Brazilian municipalities in the year
+2010. First, we can easily download the households data set with the
+[`read_households()`](https://ipea.github.io/censobr/reference/read_households.md)
 function.
 
 ``` r
@@ -233,7 +235,7 @@ proportion of households connected, and (d) collect the results.
 esg <- hs |> 
         compute() |>
         group_by(code_muni) |>                                             # (a)
-        summarize(rede = sum(V0010[which(V0207=='1')]),                    # (b)
+        summarize(rede = sum(V0010[which(V0207==1)]),                      # (b)
                   total = sum(V0010)) |>                                   # (b)
         mutate(cobertura = rede / total) |>                                # (c)
         collect()                                                          # (d)
@@ -241,7 +243,7 @@ esg <- hs |>
 head(esg)
 #> # A tibble: 6 × 4
 #>   code_muni     rede  total cobertura
-#>       <dbl>    <dbl>  <dbl>     <dbl>
+#>       <int>    <dbl>  <dbl>     <dbl>
 #> 1   1100015     0     7443.   0      
 #> 2   1100023   182.   27654.   0.00660
 #> 3   1100031     0     1979.   0      
@@ -302,8 +304,8 @@ ggplot() +
 ##### Spatial distribution of rents:
 
 In this final example, we’re going to visualize how the amount of money
-people spend on rent varies spatially across the metropolitan area of
-São Paulo.
+people used to spend on rent in 2010 varies spatially across the
+metropolitan area of São Paulo.
 
 First, let’s download the municipalities of the metro area of São Paulo.
 
@@ -312,7 +314,7 @@ First, let’s download the municipalities of the metro area of São Paulo.
 metro_muni <- geobr::read_metro_area(
   year = 2010, 
   showProgress = FALSE) |>
-  subset(name_metro == "RM São Paulo")
+  subset(name_metro == "Rm São Paulo")
 ```
 
 We also need the polygons of the weighting areas (áreas de ponderação).
@@ -330,14 +332,22 @@ wt_areas <- geobr::read_weighting_area(
 
 wt_areas <- subset(wt_areas, code_muni %in% metro_muni$code_muni)
 head(wt_areas)
-#> Simple feature collection with 0 features and 9 fields
+#> Simple feature collection with 6 features and 9 fields
 #> Geometry type: MULTIPOLYGON
-#> Bounding box:  xmin: NA ymin: NA xmax: NA ymax: NA
+#> Dimension:     XY
+#> Bounding box:  xmin: -46.88991 ymin: -23.55051 xmax: -46.24768 ymax: -23.32145
 #> Geodetic CRS:  SIRGAS 2000
-#> # A tibble: 0 × 10
-#> # ℹ 10 variables: code_weighting <dbl>, code_muni <dbl>, name_muni <chr>,
-#> #   code_state <dbl>, abbrev_state <chr>, name_state <chr>, code_region <dbl>,
-#> #   name_region <chr>, year <dbl>, geometry <MULTIPOLYGON [°]>
+#> # A tibble: 6 × 10
+#>   code_weighting code_muni name_muni code_state abbrev_state name_state
+#>            <dbl>     <dbl> <chr>          <dbl> <chr>        <chr>     
+#> 1  3503901003001   3503901 Arujá             35 SP           São Paulo 
+#> 2  3503901003002   3503901 Arujá             35 SP           São Paulo 
+#> 3  3503901003003   3503901 Arujá             35 SP           São Paulo 
+#> 4  3505708005001   3505708 Barueri           35 SP           São Paulo 
+#> 5  3505708005002   3505708 Barueri           35 SP           São Paulo 
+#> 6  3505708005003   3505708 Barueri           35 SP           São Paulo 
+#> # ℹ 4 more variables: code_region <dbl>, name_region <chr>, year <dbl>,
+#> #   geometry <MULTIPOLYGON [°]>
 ```
 
 Now we need to calculate the average rent spent in each weighting area.
@@ -356,8 +366,15 @@ rent <- hs |>
         collect()                                                          # (d)
 
 head(rent)
-#> # A tibble: 0 × 2
-#> # ℹ 2 variables: code_weighting <dbl>, avgrent <dbl>
+#> # A tibble: 6 × 2
+#>   code_weighting avgrent
+#>            <dbl>   <dbl>
+#> 1  3503901003001    355.
+#> 2  3503901003002    627.
+#> 3  3503901003003    358.
+#> 4  3505708005001    577.
+#> 5  3505708005002    397.
+#> 6  3505708005003    327.
 ```
 
 Finally, we can merge the spatial data with our rent estimates and map
@@ -385,7 +402,7 @@ downloaded once. When the `cache` parameter is set to `TRUE` (Default),
 the function will read the cached data, which is much faster.
 
 Users can manage the cached data sets using the
-[`censobr_cache()`](https://ipeagit.github.io/censobr/reference/censobr_cache.md)
+[`censobr_cache()`](https://ipea.github.io/censobr/reference/censobr_cache.md)
 function. For example, users can:
 
 List cached files in tree format:
@@ -412,9 +429,9 @@ Delete all files:
 censobr::censobr_cache(delete_file = "all")
 ```
 
-By default, **{censobr}** files are saved in the ‘User’ directory.
-However, users can run the function
-[`set_censobr_cache_dir()`](https://ipeagit.github.io/censobr/reference/set_censobr_cache_dir.md)
+By default, **{censobr}** files are saved in the sytem ‘User’ directory.
+However, you can run the function
+[`set_censobr_cache_dir()`](https://ipea.github.io/censobr/reference/set_censobr_cache_dir.md)
 to set custom cache directory. This directory is persistent across R
 sessions.
 
@@ -424,7 +441,7 @@ tempf <- fs::path_temp(pattern = "my_temp_dir")
 
 censobr::set_censobr_cache_dir(path = tempf)
 #> ℹ censobr files will be cached at
-#> /tmp/RtmpJGbMMZ/my_temp_dir.
+#> /tmp/Rtmpd834pd/my_temp_dir.
 ```
 
 Mind you that the data is saved in a directory inside the cache
@@ -441,13 +458,13 @@ censobr::censobr_cache(
   list_files = TRUE, 
   print_tree = TRUE
   )
-#> /tmp/RtmpJGbMMZ/my_temp_dir
-#> └── data_release_v0.6.0
-#>     └── 2010_emigration_v0.6.0.parquet
+#> /tmp/Rtmpd834pd/my_temp_dir
+#> └── data_release_v1.0.0
+#>     └── 2010_emigration_v1.0.0.parquet
 ```
 
 If you do not remember the location of the cache, you can always run
-[`get_censobr_cache_dir()`](https://ipeagit.github.io/censobr/reference/get_censobr_cache_dir.md)
+[`get_censobr_cache_dir()`](https://ipea.github.io/censobr/reference/get_censobr_cache_dir.md)
 to return the path of the cache directory in use, or run
 `set_censobr_cache_dir(path = NULL)` to set the default cache directory
 back.

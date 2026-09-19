@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">censobr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,6 +42,7 @@
 <li><a class="dropdown-item" href="../articles/census_tracts_data.html">Census tract-level data</a></li>
     <li><a class="dropdown-item" href="../articles/documentation.html">Census documentation</a></li>
     <li><a class="dropdown-item" href="../articles/larger_than_memory.html">Working with larger-than-memory data</a></li>
+    <li><a class="dropdown-item" href="../articles/microdata_2022.html">Working with 2022 microdata</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -73,7 +74,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Introduction to censobr</h1>
             
-            <h4 data-toc-skip class="date">2026-07-29</h4>
+            <h4 data-toc-skip class="date">2026-09-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipea/censobr/blob/main/vignettes/censobr.Rmd" class="external-link"><code>vignettes/censobr.Rmd</code></a></small>
       <div class="d-none name"><code>censobr.Rmd</code></div>
@@ -192,12 +193,13 @@ X
 X
 </td>
 <td>
+X
 </td>
 <td>
 X
 </td>
 <td>
-<i>em breve</i>
+X
 </td>
 </tr>
 <tr>
@@ -232,7 +234,7 @@ X
 X
 </td>
 <td>
-<i>em breve</i>
+X
 </td>
 </tr>
 <tr>
@@ -246,7 +248,7 @@ Amostra
 Microdado
 </td>
 <td>
-Lê os microdados de famílias do censo de 2000.
+Lê os microdados de famílias.
 </td>
 <td>
 </td>
@@ -262,6 +264,7 @@ X
 <td>
 </td>
 <td>
+X
 </td>
 </tr>
 <tr>
@@ -291,7 +294,6 @@ X
 <td>
 </td>
 <td>
-<i>em breve</i>
 </td>
 </tr>
 <tr>
@@ -321,7 +323,7 @@ Lê os microdados de mortalidade.
 X
 </td>
 <td>
-<i>em breve</i>
+X
 </td>
 </tr>
 <tr>
@@ -346,13 +348,13 @@ Lê os dados do Universo agregados por setores censitários.
 <td>
 </td>
 <td>
-<i>X</i>
+X
 </td>
 <td>
 X
 </td>
 <td>
-<i>X</i>
+X
 </td>
 </tr>
 </tbody>
@@ -374,14 +376,15 @@ data cached locally.</p>
 operate on the same logic so it becomes intuitive to download any data
 set using a single line of code. Like this:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/read_households.html">read_households</a></span><span class="op">(</span></span>
-<span>  <span class="va">year</span>,          <span class="co"># year of reference</span></span>
-<span>  <span class="va">columns</span>,       <span class="co"># select columns to read</span></span>
-<span>  <span class="va">add_labels</span>,    <span class="co"># add labels to categorical variables</span></span>
-<span>  <span class="va">as_data_frame</span>, <span class="co"># return an Arrow DataSet or a data.frame</span></span>
-<span>  <span class="va">showProgress</span>,  <span class="co"># show download progress bar</span></span>
-<span>  <span class="va">cache</span>,         <span class="co"># cache data for faster access later</span></span>
-<span>  <span class="va">verbose</span>        <span class="co"># whether to print informative messages</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/read_population.html">read_population</a></span><span class="op">(</span></span>
+<span>  <span class="va">year</span>,             <span class="co"># year of reference</span></span>
+<span>  <span class="va">columns</span>,          <span class="co"># select columns to read</span></span>
+<span>  <span class="va">add_labels</span>,       <span class="co"># add labels to categorical variables</span></span>
+<span>  <span class="va">merge_households</span>, <span class="co"># bring in household-level variables</span></span>
+<span>  <span class="va">as_data_frame</span>,    <span class="co"># return an Arrow DataSet or a data.frame</span></span>
+<span>  <span class="va">showProgress</span>,     <span class="co"># show download progress bar</span></span>
+<span>  <span class="va">cache</span>,            <span class="co"># cache data for faster access later</span></span>
+<span>  <span class="va">verbose</span>           <span class="co"># whether to print informative messages</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p><strong><em>Note:</em></strong> all data sets in
 <strong>{censobr}</strong> are enriched with geography columns following
@@ -392,7 +395,7 @@ columns are:
 <p><strong><em>Data Cache:</em></strong></p>
 <p>The first time the user runs a function, <strong>{censobr}</strong>
 will download the file and store it locally. This way, the data only
-needs to be downloaded once. More info in the <a href="https://ipea.github.io/censobr/articles/censobr.html#data-cache" class="external-link">Data
+needs to be downloaded once. More info in the <a href="https://ipea.github.io/censobr/articles/censobr.html#data-cache">Data
 cache section</a> below.</p>
 </div>
 <div class="section level2">
@@ -422,7 +425,8 @@ examples:</p>
 <p>In this example we’ll be calculating the proportion of people with
 higher education in different racial groups in the state of Rio de
 Janeiro. First, we need to use the <code><a href="../reference/read_population.html">read_population()</a></code>
-function to download the population data set.</p>
+function to download the population data set. Here, we will be using the
+public data of the 2022 census.</p>
 <p>Since we don’t need to load to memory all columns from the data, we
 can pass a vector with the names of the columns we’re going to use. This
 might be necessary in more constrained computing environments. Note that
@@ -430,8 +434,8 @@ by setting <code>add_labels = 'pt'</code>, the function returns labeled
 values for categorical variables.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_population.html">read_population</a></span><span class="op">(</span></span>
-<span>  year <span class="op">=</span> <span class="fl">2010</span>,</span>
-<span>  columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'abbrev_state'</span>, <span class="st">'V0606'</span>, <span class="st">'V0010'</span>, <span class="st">'V6400'</span><span class="op">)</span>,</span>
+<span>  year <span class="op">=</span> <span class="fl">2022</span>,</span>
+<span>  columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'abbrev_state'</span>, <span class="st">'P0210'</span>, <span class="st">'P0110'</span>, <span class="st">'P0770'</span><span class="op">)</span>,</span>
 <span>  add_labels <span class="op">=</span> <span class="st">'pt'</span>,</span>
 <span>  showProgress <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
@@ -453,11 +457,11 @@ into the data set with <code><a href="https://pillar.r-lib.org/reference/glimpse
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">pop</span><span class="op">)</span></span>
 <span><span class="co">#&gt; FileSystemDataset with 1 Parquet file (query)</span></span>
-<span><span class="co">#&gt; 20,635,472 rows x 4 columns</span></span>
-<span><span class="co">#&gt; $ abbrev_state <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "RO", "RO", "RO", "RO", "RO", "RO", "RO", "RO", "RO", "R…</span></span>
-<span><span class="co">#&gt; $ V0606        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Parda", "Parda", "Branca", "Branca", "Parda", "Parda", …</span></span>
-<span><span class="co">#&gt; $ V0010        <span style="color: #949494; font-style: italic;">&lt;double&gt;</span> 8.705865, 8.705865, 9.818689, 9.495608, 9.495608, 9.4956…</span></span>
-<span><span class="co">#&gt; $ V6400        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Sem instrução e fundamental incompleto", "Sem instrução…</span></span>
+<span><span class="co">#&gt; 21,538,508 rows x 4 columns</span></span>
+<span><span class="co">#&gt; $ abbrev_state <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "AC", "AC", "AC", "AC", "AC", "AC", "AC", "AC", "AC", "A…</span></span>
+<span><span class="co">#&gt; $ P0210        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Parda", "Parda", "Parda", "Parda", "Branca", "Parda", "…</span></span>
+<span><span class="co">#&gt; $ P0110        <span style="color: #949494; font-style: italic;">&lt;double&gt;</span> 6.188037, 5.179654, 5.179654, 5.179654, 5.179654, 5.1796…</span></span>
+<span><span class="co">#&gt; $ P0770        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Médio completo e superior incompleto", "Médio completo …</span></span>
 <span><span class="co">#&gt; Call `print()` for query details</span></span></code></pre></div>
 <p>In the example below, we use the <code>dplyr</code> syntax to (a)
 filter observations for the state of Rio de Janeiro, (b) group
@@ -468,27 +472,27 @@ add a <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">pop</span> <span class="op">|&gt;</span></span>
 <span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">abbrev_state</span> <span class="op">==</span> <span class="st">"RJ"</span><span class="op">)</span> <span class="op">|&gt;</span>                                                    <span class="co"># (a)</span></span>
 <span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">V0606</span><span class="op">)</span> <span class="op">|&gt;</span>                                                                 <span class="co"># (b)</span></span>
-<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>higher_edu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">V0010</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">V6400</span><span class="op">==</span><span class="st">"Superior completo"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">V0010</span><span class="op">)</span>, <span class="co"># (c)</span></span>
-<span>                pop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">V0010</span><span class="op">)</span> <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">P0210</span><span class="op">)</span> <span class="op">|&gt;</span>                                                                 <span class="co"># (b)</span></span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>higher_edu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">P0110</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">P0770</span><span class="op">==</span><span class="st">"Superior completo"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">P0110</span><span class="op">)</span>, <span class="co"># (c)</span></span>
+<span>                pop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">P0110</span><span class="op">)</span> <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
-<span><span class="co">#&gt;   V0606    higher_edu      pop</span></span>
+<span><span class="co">#&gt;   P0210    higher_edu      pop</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Amarela      0.078<span style="text-decoration: underline;">2</span>  <span style="text-decoration: underline;">122</span>552.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Branca       0.151  7<span style="text-decoration: underline;">579</span>023.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Ignorado     0         <span style="text-decoration: underline;">3</span>397.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Indígena     0.109    <span style="text-decoration: underline;">15</span>258.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Parda        0.044<span style="text-decoration: underline;">3</span> 6<span style="text-decoration: underline;">332</span>408.</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Preta        0.040<span style="text-decoration: underline;">5</span> 1<span style="text-decoration: underline;">937</span>291.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Amarela      0.290    <span style="text-decoration: underline;">19</span>605.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Branca       0.216  6<span style="text-decoration: underline;">712</span>792.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Ignorado     0.148     <span style="text-decoration: underline;">2</span>728.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Indígena     0.175    <span style="text-decoration: underline;">17</span>032.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Parda        0.084<span style="text-decoration: underline;">9</span> 6<span style="text-decoration: underline;">679</span>235.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Preta        0.084<span style="text-decoration: underline;">8</span> 2<span style="text-decoration: underline;">623</span>783.</span></span></code></pre></div>
 <p>Now we only need to plot the results.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">V0606</span> <span class="op">!=</span> <span class="st">'Ignorado'</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">df</span>, <span class="va">P0210</span> <span class="op">!=</span> <span class="st">'Ignorado'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">V0606</span>, y<span class="op">=</span><span class="va">higher_edu</span><span class="op">)</span>, fill <span class="op">=</span> <span class="st">'#5c997e'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">P0210</span>, y<span class="op">=</span><span class="va">higher_edu</span><span class="op">)</span>, fill <span class="op">=</span> <span class="st">'#5c997e'</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">'Proportion with higher education'</span>,</span>
 <span>                     labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">'Cor/raça'</span><span class="op">)</span> <span class="op">+</span></span>
@@ -502,8 +506,8 @@ add a <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="
 <h5 id="sewage-coverage">Sewage coverage:<a class="anchor" aria-label="anchor" href="#sewage-coverage"></a>
 </h5>
 <p>In this example, we are going to map the proportion of households
-connected to a sewage network in Brazilian municipalities First, we can
-easily download the households data set with the
+connected to a sewage network in Brazilian municipalities in the year
+2010. First, we can easily download the households data set with the
 <code><a href="../reference/read_households.html">read_households()</a></code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_households.html">read_households</a></span><span class="op">(</span></span>
@@ -517,7 +521,7 @@ the proportion of households connected, and (d) collect the results.</p>
 <code class="sourceCode R"><span><span class="va">esg</span> <span class="op">&lt;-</span> <span class="va">hs</span> <span class="op">|&gt;</span> </span>
 <span>        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">compute</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">code_muni</span><span class="op">)</span> <span class="op">|&gt;</span>                                             <span class="co"># (a)</span></span>
-<span>        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>rede <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">V0010</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">V0207</span><span class="op">==</span><span class="st">'1'</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>,                    <span class="co"># (b)</span></span>
+<span>        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>rede <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">V0010</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">V0207</span><span class="op">==</span><span class="fl">1</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>,                      <span class="co"># (b)</span></span>
 <span>                  total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">V0010</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span>                                   <span class="co"># (b)</span></span>
 <span>        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>cobertura <span class="op">=</span> <span class="va">rede</span> <span class="op">/</span> <span class="va">total</span><span class="op">)</span> <span class="op">|&gt;</span>                                <span class="co"># (c)</span></span>
 <span>        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span>                                                          <span class="co"># (d)</span></span>
@@ -525,7 +529,7 @@ the proportion of households connected, and (d) collect the results.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">esg</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
 <span><span class="co">#&gt;   code_muni     rede  total cobertura</span></span>
-<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>   1<span style="text-decoration: underline;">100</span>015     0     <span style="text-decoration: underline;">7</span>443.   0      </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>   1<span style="text-decoration: underline;">100</span>023   182.   <span style="text-decoration: underline;">27</span>654.   0.006<span style="text-decoration: underline;">60</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>   1<span style="text-decoration: underline;">100</span>031     0     <span style="text-decoration: underline;">1</span>979.   0      </span></span>
@@ -577,15 +581,15 @@ the results.</p>
 <h5 id="spatial-distribution-of-rents">Spatial distribution of rents:<a class="anchor" aria-label="anchor" href="#spatial-distribution-of-rents"></a>
 </h5>
 <p>In this final example, we’re going to visualize how the amount of
-money people spend on rent varies spatially across the metropolitan area
-of São Paulo.</p>
+money people used to spend on rent in 2010 varies spatially across the
+metropolitan area of São Paulo.</p>
 <p>First, let’s download the municipalities of the metro area of São
 Paulo.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">metro_muni</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/geobr/man/read_metro_area.html" class="external-link">read_metro_area</a></span><span class="op">(</span></span>
 <span>  year <span class="op">=</span> <span class="fl">2010</span>, </span>
 <span>  showProgress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">name_metro</span> <span class="op">==</span> <span class="st">"RM São Paulo"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">name_metro</span> <span class="op">==</span> <span class="st">"Rm São Paulo"</span><span class="op">)</span></span></code></pre></div>
 <p>We also need the polygons of the weighting areas (áreas de
 ponderação). With the code below, we download all weighting areas in the
 state of São Paulo, and then keep only the ones in the metropolitan
@@ -599,14 +603,22 @@ region of São Paulo.</p>
 <span></span>
 <span><span class="va">wt_areas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">wt_areas</span>, <span class="va">code_muni</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">metro_muni</span><span class="op">$</span><span class="va">code_muni</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">wt_areas</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Simple feature collection with 0 features and 9 fields</span></span>
+<span><span class="co">#&gt; Simple feature collection with 6 features and 9 fields</span></span>
 <span><span class="co">#&gt; Geometry type: MULTIPOLYGON</span></span>
-<span><span class="co">#&gt; Bounding box:  xmin: NA ymin: NA xmax: NA ymax: NA</span></span>
+<span><span class="co">#&gt; Dimension:     XY</span></span>
+<span><span class="co">#&gt; Bounding box:  xmin: -46.88991 ymin: -23.55051 xmax: -46.24768 ymax: -23.32145</span></span>
 <span><span class="co">#&gt; Geodetic CRS:  SIRGAS 2000</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 0 × 10</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 10 variables: code_weighting &lt;dbl&gt;, code_muni &lt;dbl&gt;, name_muni &lt;chr&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   code_state &lt;dbl&gt;, abbrev_state &lt;chr&gt;, name_state &lt;chr&gt;, code_region &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   name_region &lt;chr&gt;, year &lt;dbl&gt;, geometry &lt;MULTIPOLYGON [°]&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 10</span></span></span>
+<span><span class="co">#&gt;   code_weighting code_muni name_muni code_state abbrev_state name_state</span></span>
+<span><span class="co">#&gt;            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  3<span style="text-decoration: underline;">503</span>901<span style="text-decoration: underline;">003</span>001   3<span style="text-decoration: underline;">503</span>901 Arujá             35 SP           São Paulo </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  3<span style="text-decoration: underline;">503</span>901<span style="text-decoration: underline;">003</span>002   3<span style="text-decoration: underline;">503</span>901 Arujá             35 SP           São Paulo </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  3<span style="text-decoration: underline;">503</span>901<span style="text-decoration: underline;">003</span>003   3<span style="text-decoration: underline;">503</span>901 Arujá             35 SP           São Paulo </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>  3<span style="text-decoration: underline;">505</span>708<span style="text-decoration: underline;">005</span>001   3<span style="text-decoration: underline;">505</span>708 Barueri           35 SP           São Paulo </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>  3<span style="text-decoration: underline;">505</span>708<span style="text-decoration: underline;">005</span>002   3<span style="text-decoration: underline;">505</span>708 Barueri           35 SP           São Paulo </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>  3<span style="text-decoration: underline;">505</span>708<span style="text-decoration: underline;">005</span>003   3<span style="text-decoration: underline;">505</span>708 Barueri           35 SP           São Paulo </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: code_region &lt;dbl&gt;, name_region &lt;chr&gt;, year &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   geometry &lt;MULTIPOLYGON [°]&gt;</span></span></span></code></pre></div>
 <p>Now we need to calculate the average rent spent in each weighting
 area. Using the national household data set, we’re going to (a) filter
 only observations in our municipalities of interest, (b) group
@@ -621,8 +633,15 @@ collect the results.</p>
 <span>        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span>                                                          <span class="co"># (d)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">rent</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 0 × 2</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 variables: code_weighting &lt;dbl&gt;, avgrent &lt;dbl&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
+<span><span class="co">#&gt;   code_weighting avgrent</span></span>
+<span><span class="co">#&gt;            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  3<span style="text-decoration: underline;">503</span>901<span style="text-decoration: underline;">003</span>001    355.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  3<span style="text-decoration: underline;">503</span>901<span style="text-decoration: underline;">003</span>002    627.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  3<span style="text-decoration: underline;">503</span>901<span style="text-decoration: underline;">003</span>003    358.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>  3<span style="text-decoration: underline;">505</span>708<span style="text-decoration: underline;">005</span>001    577.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>  3<span style="text-decoration: underline;">505</span>708<span style="text-decoration: underline;">005</span>002    397.</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>  3<span style="text-decoration: underline;">505</span>708<span style="text-decoration: underline;">005</span>003    327.</span></span></code></pre></div>
 <p>Finally, we can merge the spatial data with our rent estimates and
 map the results.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -659,8 +678,8 @@ data, which is much faster.</p>
 <p>Delete all files:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">censobr</span><span class="fu">::</span><span class="fu"><a href="../reference/censobr_cache.html">censobr_cache</a></span><span class="op">(</span>delete_file <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
-<p>By default, <strong>{censobr}</strong> files are saved in the ‘User’
-directory. However, users can run the function
+<p>By default, <strong>{censobr}</strong> files are saved in the sytem
+‘User’ directory. However, you can run the function
 <code><a href="../reference/set_censobr_cache_dir.html">set_censobr_cache_dir()</a></code> to set custom cache directory. This
 directory is persistent across R sessions.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -668,7 +687,7 @@ directory is persistent across R sessions.</p>
 <span></span>
 <span><span class="fu">censobr</span><span class="fu">::</span><span class="fu"><a href="../reference/set_censobr_cache_dir.html">set_censobr_cache_dir</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">tempf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> censobr files will be cached at</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">/tmp/RtmpJGbMMZ/my_temp_dir</span>.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #0000BB;">/tmp/Rtmpd834pd/my_temp_dir</span>.</span></span></code></pre></div>
 <p>Mind you that the data is saved in a directory inside the cache
 directory set by the user and which is versioned according to the
 version of the latest data release.</p>
@@ -681,9 +700,9 @@ version of the latest data release.</p>
 <span>  list_files <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>  print_tree <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpJGbMMZ/my_temp_dir</span></span></span>
-<span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">data_release_v0.6.0</span></span></span>
-<span><span class="co">#&gt;     └── 2010_emigration_v0.6.0.parquet</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/Rtmpd834pd/my_temp_dir</span></span></span>
+<span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">data_release_v1.0.0</span></span></span>
+<span><span class="co">#&gt;     └── 2010_emigration_v1.0.0.parquet</span></span></code></pre></div>
 <p>If you do not remember the location of the cache, you can always run
 <code><a href="../reference/get_censobr_cache_dir.html">get_censobr_cache_dir()</a></code> to return the path of the cache
 directory in use, or run <code>set_censobr_cache_dir(path = NULL)</code>
