@@ -25,7 +25,7 @@ test_that("censobr_years() returns registered keys and aborts on unknown ones", 
     c(1960, 1970, 1980, 1991, 2000, 2010, 2022)
   )
   testthat::expect_identical(censobr_years("emigration"), 2010)
-  testthat::expect_identical(censobr_years("merge_households"), c(1970, 1980, 1991, 2000, 2010, 2022))
+  testthat::expect_identical(censobr_years("merge_households"), c(1960, 1970, 1980, 1991, 2000, 2010, 2022))
 
   testthat::expect_error(censobr_years("nope"), "no year list registered")
   testthat::expect_error(censobr_years("populatio"), "no year list registered")

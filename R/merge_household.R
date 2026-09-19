@@ -3,8 +3,7 @@
 #' Streams the main table through DuckDB's native parquet reader and joins it to
 #' the (already downloaded, already labelled) household table, writing the result
 #' to a temporary parquet file so a wide main table never round-trips through
-#' memory. See `quality_reports/plans/2026-08-30_merge-households-read-population.md`
-#' for the design rationale and the memory measurements behind it.
+#' memory.
 #'
 #' @param df An arrow `Dataset` passed from function above. Must be a plain
 #'        `FileSystemDataset` backed by a single local parquet file, i.e. called
@@ -96,6 +95,12 @@ merge_household_var <- function(
   # set vars to merge. `key_main` / `key_hou` name the household identifier on
   # each side of the join; `key_geo` are the extra (identically named) columns
   # the join is qualified on, where the identifier is only unique within them
+  if (year == 1960) {
+    key_geo <- c('code_state', 'code_muni')
+    key_main <- key_hou <- 'censobr_idhousehold'
+  }
+
+
   if (year == 1970) {
     key_geo <- c('code_state', 'code_muni')
     key_main <- key_hou <- 'id_household'

@@ -46,7 +46,6 @@ merge failed.
 Streams the main table through DuckDB's native parquet reader and joins it to
 the (already downloaded, already labelled) household table, writing the result
 to a temporary parquet file so a wide main table never round-trips through
-memory. See \verb{quality_reports/plans/2026-08-30_merge-households-read-population.md}
-for the design rationale and the memory measurements behind it.
+memory.
 }
 \keyword{internal}

@@ -81,7 +81,7 @@ test_that("read_households reading", {
   # labelled query must stay lazy
   testthat::expect_warning(
     test1960 <- tester(year = 1960, add_labels = 'pt',
-                       columns = c('uf', 'V102', 'V105')),
+                       columns = c('code_region', 'V102', 'V105')),
     'two different releases'
     )
   testthat::expect_s3_class(test1960, 'arrow_dplyr_query')

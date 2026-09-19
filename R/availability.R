@@ -11,7 +11,7 @@
   # keys are chosen per year in merge_household_var(); 1980 and 1991 are
   # accepted but not merged, because their population microdata already carry
   # every household variable -- the function says so and returns the data
-  merge_households = c(1970, 1980, 1991, 2000, 2010, 2022),
+  merge_households = c(1960, 1970, 1980, 1991, 2000, 2010, 2022),
   tracts = c(2000, 2010, 2022),
   questionnaire = c(1960, 1970, 1980, 1991, 2000, 2010, 2022),
   interview_manual = c(1960, 1970, 1980, 1991, 2000, 2010, 2022),

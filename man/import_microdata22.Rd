@@ -43,12 +43,12 @@ used by \code{censobr}:\tabular{ll}{
 }
 
 
-The \verb{<data release>} suffix is the release of the \code{censobr} data pinned
-by the installed version of the package. A version of \code{censobr} that points
-to a newer data release will not find files imported under the previous one,
-so the zip file will have to be imported again in eventual updates of the
-censobr data versions. We strongly recommend you store the original zip file
-in a save place so you can import it again in the future if necessary.
+After that the tables sit in the cache and are read from disk, with no
+further processing. The data imported via \code{import_microdata22()} lives
+in the cache directory even if censobr  updates to a new data release.
+This means you only need to import the data \strong{once}. Nonetheless, we
+strongly recommend you \strong{store the original \code{.zip} from IBGE somewhere safe}
+in case you need to import that data again.
 }
 \examples{
 \dontrun{

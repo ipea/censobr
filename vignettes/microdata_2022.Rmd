@@ -90,16 +90,11 @@ mor <- censobr::read_mortality(year = 2022)
 
 ## Keep the original zip file
 
-You only need to import the data **once**. After that the tables sit in the
-cache and are read from disk, with no further processing.
+After that the tables sit in the cache and are read from disk, with no 
+further processing. The data imported via `import_microdata22()` lives 
+in the cache directory even if censobr  updates to a new data release. 
+This means you only need to import the data **once**. 
 
-There is one case where you have to import them again. The **{censobr}** cache is
-versioned by data release, and each release lives in its own subdirectory. When a
-new version of the package points to a newer data release, it will not find the
-files you imported under the previous one.
-
-So **store the original `.zip` from IBGE somewhere safe**. It is the only copy
-you have, the package cannot download it for you, and you will need it if
-you upgrade **{censobr}** or move to another machine. Deleting your cache with
-`censobr_cache(delete_file = "all")` has the same consequence.
+Nonetheless, we strongly recommend you **store the original `.zip` from 
+IBGE somewhere safe** in case you need to import that data again
 

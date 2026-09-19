@@ -1,7 +1,7 @@
 Type: Package
 Package: censobr
 Title: Download Data from Brazil's Population Census
-Version: 0.6.0.903
+Version: 1.0.0
 Authors@R: 
     c(person(given="Rafael H. M.", family="Pereira", 
              email="rafa.pereira.br@gmail.com", 
@@ -11,6 +11,9 @@ Authors@R:
              email="antrologos@gmail.com", 
              role=c("aut"), 
              comment = c(ORCID = "0000-0002-6796-4547")),
+      person(given="Pedro Herculano", family="Souza", 
+             email="pedro.souza@ipea.gov.br", 
+             role=c("ctb")),
       person(given="Diego Rabatone", family="Oliveira", 
              email="diraol@diraol.eng.br", 
              role=c("ctb")),
@@ -49,13 +52,14 @@ Suggests:
     covr,
     DBI,
     dbplyr,
-    geobr,
+    geobr (>= 2.0.1),
     ggplot2 (>= 3.3.1),
     rmarkdown,
     kableExtra,
     knitr,
     scales,
-    testthat
+    testthat,
+    withr
 VignetteBuilder: 
     knitr
 Encoding: UTF-8

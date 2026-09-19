@@ -75,9 +75,9 @@ The package currently includes 6 main functions to download census data:
       <td>X</td>
       <td>X</td>
       <td>X</td>
-      <td></td>
       <td>X</td>
-      <td><i>em breve</i></td>
+      <td>X</td>
+      <td>X</td>
     </tr>
     <tr>
       <td>read_households()</td>
@@ -90,20 +90,20 @@ The package currently includes 6 main functions to download census data:
       <td>X</td>
       <td>X</td>
       <td>X</td>
-      <td><i>em breve</i></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>read_families()</td>
       <td>Amostra</td>
       <td>Microdado</td>
-      <td>Lê os microdados de famílias do censo de 2000.</td>
+      <td>Lê os microdados de famílias.</td>
       <td></td>
       <td></td>
       <td></td>
       <td>X</td>
       <td></td>
       <td></td>
-      <td></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>read_emigration()</td>
@@ -116,7 +116,7 @@ The package currently includes 6 main functions to download census data:
       <td></td>
       <td>X</td>
       <td></td>
-      <td><i>em breve</i></td>
+      <td></td>
     </tr>
     <tr>
       <td>read_mortality()</td>
@@ -129,7 +129,7 @@ The package currently includes 6 main functions to download census data:
       <td></td>
       <td></td>
       <td>X</td>
-      <td><i>em breve</i></td>
+      <td>X</td>
     </tr>
     <tr>
       <td>read_tracts()</td>
@@ -140,9 +140,9 @@ The package currently includes 6 main functions to download census data:
       <td></td>
       <td></td>
       <td></td>
-      <td><i>X</i></td>
       <td>X</td>
-      <td><i>X</i></td>
+      <td>X</td>
+      <td>X</td>
     </tr>
   </tbody>
 </table>
@@ -200,14 +200,14 @@ library(ggplot2)
 
 ### Using Population data:
 
-In this example we'll be calculating the proportion of people with higher education in different racial groups in the state of Rio de Janeiro. First, we need to use the `read_population()` function to download the population data set.
+In this example we'll be calculating the proportion of people with higher education in different racial groups in the state of Rio de Janeiro. First, we need to use the `read_population()` function to download the population data set. Here, we will be using the public data of the 2022 census.
 
 Since we don't need to load to memory all columns from the data, we can pass a vector with the names of the columns we're going to use. This might be necessary in more constrained computing environments. Note that by setting `add_labels = 'pt'`, the function returns labeled values for categorical variables.
 
 ```{r warning = FALSE, message=FALSE}
 pop <- read_population(
-  year = 2010,
-  columns = c('abbrev_state', 'V0606', 'V0010', 'V6400'),
+  year = 2022,
+  columns = c('abbrev_state', 'P0210', 'P0110', 'P0770'),
   add_labels = 'pt',
   showProgress = FALSE
   )
@@ -229,9 +229,9 @@ In the example below, we use the `dplyr` syntax to (a) filter observations for t
 df <- pop |>
       filter(abbrev_state == "RJ") |>                                                    # (a)
       compute() |>
-      group_by(V0606) |>                                                                 # (b)
-      summarize(higher_edu = sum(V0010[which(V6400=="Superior completo")]) / sum(V0010), # (c)
-                pop = sum(V0010) ) |>
+      group_by(P0210) |>                                                                 # (b)
+      summarize(higher_edu = sum(P0110[which(P0770=="Superior completo")]) / sum(P0110), # (c)
+                pop = sum(P0110) ) |>
       collect()
 
 head(df)
@@ -239,10 +239,10 @@ head(df)
 Now we only need to plot the results.
 
 ```{r, message=FALSE}
-df <- subset(df, V0606 != 'Ignorado')
+df <- subset(df, P0210 != 'Ignorado')
 
 ggplot() +
-  geom_col(data = df, aes(x=V0606, y=higher_edu), fill = '#5c997e') +
+  geom_col(data = df, aes(x=P0210, y=higher_edu), fill = '#5c997e') +
   scale_y_continuous(name = 'Proportion with higher education',
                      labels = scales::percent) +
   labs(x = 'Cor/raça') +
@@ -254,7 +254,7 @@ ggplot() +
 
 #### Sewage coverage:
 
-In this example, we are going to map the proportion of households connected to a sewage network in Brazilian municipalities First, we can easily download the households data set with the `read_households()` function.
+In this example, we are going to map the proportion of households connected to a sewage network in Brazilian municipalities in the year 2010. First, we can easily download the households data set with the `read_households()` function.
 
 ```{r, message=FALSE}
 hs <- read_households(
@@ -307,14 +307,14 @@ ggplot() +
 
 #### Spatial distribution of rents:
 
-In this final example, we're going to visualize how the amount of money people spend on rent varies spatially across the metropolitan area of São Paulo.
+In this final example, we're going to visualize how the amount of money people used to spend on rent in 2010 varies spatially across the metropolitan area of São Paulo.
 
 First, let's download the municipalities of the metro area of São Paulo.
 ```{r warning = FALSE, message=FALSE}
 metro_muni <- geobr::read_metro_area(
   year = 2010, 
   showProgress = FALSE) |>
-  subset(name_metro == "RM São Paulo")
+  subset(name_metro == "Rm São Paulo")
 
 ```
 We also need the polygons of the weighting areas (áreas de ponderação). With the code below, we download all weighting areas in the state of São Paulo, and then keep only the ones in the metropolitan region of São Paulo.
@@ -385,7 +385,7 @@ censobr::censobr_cache(delete_file = "all")
 
 ```
 
-By default, **{censobr}** files are saved in the 'User' directory. However, users can run the function `set_censobr_cache_dir()` to set custom cache directory. This directory is persistent across R sessions.
+By default, **{censobr}** files are saved in the sytem 'User' directory. However, you can run the function `set_censobr_cache_dir()` to set custom cache directory. This directory is persistent across R sessions.
 
 ```{r, warning=FALSE, include=FALSE}
 # set_censobr_cache_dir() records the path in a config file that persists across

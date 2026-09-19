@@ -1,4 +1,4 @@
-url: https://ipeagit.github.io/censobr/
+url: https://ipea.github.io/censobr/
 
 development:
   mode: auto
@@ -32,4 +32,4 @@ reference:
     - set_censobr_cache_dir
   - title: "Support functions"
   - contents:
-    - import_microdata22_controlado
+    - import_microdata22

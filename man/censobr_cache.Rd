@@ -21,8 +21,10 @@ Defaults to \code{FALSE}.}
 
 \item{delete_file}{String. The file name or a string pattern that matches the
 file path of a file cached locally and which should be deleted.
-Defaults to \code{NULL}, so that no file is deleted. If \code{delete_file = "all"},
-then all of the cached files are deleted.}
+Defaults to \code{NULL}, so that no file is deleted. Two values are read as
+keywords rather than as patterns: \code{delete_file = "all"} deletes all of
+the cached files, and \code{delete_file = "old"} deletes only the files
+cached from previous data releases.}
 
 \item{verbose}{A logical. Whether the function should print informative
 messages. Defaults to \code{TRUE}.}
@@ -33,6 +35,16 @@ deleted from the local cache directory.
 }
 \description{
 Manage cached files from the censobr package
+}
+\details{
+censobr caches data in a directory versioned by data release, so a new data
+release does not read files downloaded from the previous one. Files from
+previous releases are deleted automatically the first time data is downloaded
+in a session, and can be deleted at any time with \code{delete_file = "old"}. Set
+\code{options(censobr.keep_old_cache = TRUE)} to keep them, for example to go on
+working with an older data release. Microdata imported with
+\code{import_microdata22()} are never deleted automatically, because
+censobr cannot download them again.
 }
 \examples{
 \dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) withAutoprint(\{ # examplesIf}
