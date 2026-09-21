@@ -2,6 +2,8 @@
 
 ## censobr v1.0.0
 
+CRAN release: 2026-09-21
+
 - New data release
   [v1.0.0](https://github.com/ipea/censobr_prep_data/releases/tag/v1.0.0),
   which includes the following news files or edits:
@@ -45,6 +47,9 @@
     vignette [Working with 2022
     microdata](https://ipea.github.io/censobr/articles/microdata_2022.html).
     Closes [\#79](https://github.com/ipea/censobr/issues/79).
+
+- Major changes
+
   - `add_labels = "pt"` now works for all years and tables since 1960.
     Closes [\#25](https://github.com/ipea/censobr/issues/25),
     [\#26](https://github.com/ipea/censobr/issues/26), and
@@ -56,9 +61,6 @@
     be set** – naming the columns you need keeps the operation to a few
     seconds and a few dozen MB. Closes
     [\#31](https://github.com/ipea/censobr/issues/31).
-
-- Major changes
-
   - [`data_dictionary()`](https://ipea.github.io/censobr/reference/data_dictionary.md)
     now takes only two values in `dataset`: `"microdata"`, which opens a
     single Excel file covering every variable of the microdata and is

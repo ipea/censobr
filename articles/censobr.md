@@ -156,10 +156,10 @@ package. For example, one can have a quick peak into the data set with
 dplyr::glimpse(pop)
 #> FileSystemDataset with 1 Parquet file (query)
 #> 21,538,508 rows x 4 columns
-#> $ abbrev_state <string> "AC", "AC", "AC", "AC", "AC", "AC", "AC", "AC", "AC", "A…
-#> $ P0210        <string> "Parda", "Parda", "Parda", "Parda", "Branca", "Parda", "…
-#> $ P0110        <double> 6.188037, 5.179654, 5.179654, 5.179654, 5.179654, 5.1796…
-#> $ P0770        <string> "Médio completo e superior incompleto", "Médio completo …
+#> $ abbrev_state <string> "RR", "RR", "RR", "RR", "RR", "RR", "RR", "RR", "RR", "R…
+#> $ P0210        <string> "Parda", "Parda", "Parda", "Parda", "Parda", "Parda", "P…
+#> $ P0110        <double> 9.682247, 9.682247, 9.682247, 9.682247, 10.535917, 10.53…
+#> $ P0770        <string> "Sem instrução e fundamental incompleto", "Sem instrução…
 #> Call `print()` for query details
 ```
 
@@ -441,7 +441,7 @@ tempf <- fs::path_temp(pattern = "my_temp_dir")
 
 censobr::set_censobr_cache_dir(path = tempf)
 #> ℹ censobr files will be cached at
-#> /tmp/Rtmpd834pd/my_temp_dir.
+#> /tmp/RtmpipmveV/my_temp_dir.
 ```
 
 Mind you that the data is saved in a directory inside the cache
@@ -458,7 +458,7 @@ censobr::censobr_cache(
   list_files = TRUE, 
   print_tree = TRUE
   )
-#> /tmp/Rtmpd834pd/my_temp_dir
+#> /tmp/RtmpipmveV/my_temp_dir
 #> └── data_release_v1.0.0
 #>     └── 2010_emigration_v1.0.0.parquet
 ```

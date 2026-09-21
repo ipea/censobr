@@ -46,7 +46,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.0" id="censobr-v100">censobr v1.0.0<a class="anchor" aria-label="anchor" href="#censobr-v100"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.0.0" id="censobr-v100">censobr v1.0.0<a class="anchor" aria-label="anchor" href="#censobr-v100"></a></h2><p class="text-muted">CRAN release: 2026-09-21</p>
 <ul><li>
 <p>New data release <a href="https://github.com/ipea/censobr_prep_data/releases/tag/v1.0.0" class="external-link">v1.0.0</a>, which includes the following news files or edits:</p>
 <ul><li>Census 2022. Closes <a href="https://github.com/ipea/censobr/issues/65" class="external-link">#65</a>
@@ -67,14 +67,14 @@
 <li>
 <p>New features</p>
 <ul><li>New function <code><a href="../reference/import_microdata22.html">import_microdata22()</a></code> to import to censobr the controlled-access microdata of 2022. Once the <code>.zip</code> file with the original data is imported <code>read_(year = 2022)</code> functions always read the controlled-access microdata. If the controlled-access microdata have not been imported yet, these functions return an informative warning and download the public microdata set, which has fewer variables. See the new vignette <a href="https://ipea.github.io/censobr/articles/microdata_2022.html">Working with 2022 microdata</a>. Closes <a href="https://github.com/ipea/censobr/issues/79" class="external-link">#79</a>.</li>
-<li>
-<code>add_labels = "pt"</code> now works for all years and tables since 1960. Closes <a href="https://github.com/ipea/censobr/issues/25" class="external-link">#25</a>, <a href="https://github.com/ipea/censobr/issues/26" class="external-link">#26</a>, and <a href="https://github.com/ipea/censobr/issues/27" class="external-link">#27</a>.</li>
-<li>
-<code>merge_households</code> parameter now works for all census years since 1960. Because merging all ~300 population + househols columns can require more than 20GB of memory, <code>read_population(merge_households = TRUE)</code> <strong>requires <code>columns</code> to be set</strong> – naming the columns you need keeps the operation to a few seconds and a few dozen MB. Closes <a href="https://github.com/ipea/censobr/issues/31" class="external-link">#31</a>.</li>
 </ul></li>
 <li>
 <p>Major changes</p>
 <ul><li>
+<code>add_labels = "pt"</code> now works for all years and tables since 1960. Closes <a href="https://github.com/ipea/censobr/issues/25" class="external-link">#25</a>, <a href="https://github.com/ipea/censobr/issues/26" class="external-link">#26</a>, and <a href="https://github.com/ipea/censobr/issues/27" class="external-link">#27</a>.</li>
+<li>
+<code>merge_households</code> parameter now works for all census years since 1960. Because merging all ~300 population + househols columns can require more than 20GB of memory, <code>read_population(merge_households = TRUE)</code> <strong>requires <code>columns</code> to be set</strong> – naming the columns you need keeps the operation to a few seconds and a few dozen MB. Closes <a href="https://github.com/ipea/censobr/issues/31" class="external-link">#31</a>.</li>
+<li>
 <code><a href="../reference/data_dictionary.html">data_dictionary()</a></code> now takes only two values in <code>dataset</code>: <code>"microdata"</code>, which opens a single Excel file covering every variable of the microdata and is now available for <strong>all</strong> censuses since 1960, and <code>"tracts"</code>, available since 1970.</li>
 <li>Microdata dictionary now includes in a single file all supplementary dictionaries of variable codes (e.g. occupation, religion, education categories etc). Closes <a href="https://github.com/ipea/censobr/issues/53" class="external-link">53</a>.</li>
 </ul></li>

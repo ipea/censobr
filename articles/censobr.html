@@ -74,7 +74,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Introduction to censobr</h1>
             
-            <h4 data-toc-skip class="date">2026-09-19</h4>
+            <h4 data-toc-skip class="date">2026-09-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipea/censobr/blob/main/vignettes/censobr.Rmd" class="external-link"><code>vignettes/censobr.Rmd</code></a></small>
       <div class="d-none name"><code>censobr.Rmd</code></div>
@@ -458,10 +458,10 @@ into the data set with <code><a href="https://pillar.r-lib.org/reference/glimpse
 <code class="sourceCode R"><span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">pop</span><span class="op">)</span></span>
 <span><span class="co">#&gt; FileSystemDataset with 1 Parquet file (query)</span></span>
 <span><span class="co">#&gt; 21,538,508 rows x 4 columns</span></span>
-<span><span class="co">#&gt; $ abbrev_state <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "AC", "AC", "AC", "AC", "AC", "AC", "AC", "AC", "AC", "A…</span></span>
-<span><span class="co">#&gt; $ P0210        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Parda", "Parda", "Parda", "Parda", "Branca", "Parda", "…</span></span>
-<span><span class="co">#&gt; $ P0110        <span style="color: #949494; font-style: italic;">&lt;double&gt;</span> 6.188037, 5.179654, 5.179654, 5.179654, 5.179654, 5.1796…</span></span>
-<span><span class="co">#&gt; $ P0770        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Médio completo e superior incompleto", "Médio completo …</span></span>
+<span><span class="co">#&gt; $ abbrev_state <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "RR", "RR", "RR", "RR", "RR", "RR", "RR", "RR", "RR", "R…</span></span>
+<span><span class="co">#&gt; $ P0210        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Parda", "Parda", "Parda", "Parda", "Parda", "Parda", "P…</span></span>
+<span><span class="co">#&gt; $ P0110        <span style="color: #949494; font-style: italic;">&lt;double&gt;</span> 9.682247, 9.682247, 9.682247, 9.682247, 10.535917, 10.53…</span></span>
+<span><span class="co">#&gt; $ P0770        <span style="color: #949494; font-style: italic;">&lt;string&gt;</span> "Sem instrução e fundamental incompleto", "Sem instrução…</span></span>
 <span><span class="co">#&gt; Call `print()` for query details</span></span></code></pre></div>
 <p>In the example below, we use the <code>dplyr</code> syntax to (a)
 filter observations for the state of Rio de Janeiro, (b) group
@@ -540,9 +540,9 @@ the proportion of households connected, and (d) collect the results.</p>
 <a href="https://ipea.github.io/geobr/" class="external-link">{geobr} package</a> to download
 the geometries of Brazilian municipalities.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ipeagit.github.io/geobr/" class="external-link">geobr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ipea.github.io/geobr/" class="external-link">geobr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">muni_sf</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/geobr/man/read_municipality.html" class="external-link">read_municipality</a></span><span class="op">(</span></span>
+<span><span class="va">muni_sf</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://ipea.github.io/geobr/reference/read_municipality.html" class="external-link">read_municipality</a></span><span class="op">(</span></span>
 <span>  year <span class="op">=</span> <span class="fl">2010</span>,</span>
 <span>  showProgress <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
@@ -586,7 +586,7 @@ metropolitan area of São Paulo.</p>
 <p>First, let’s download the municipalities of the metro area of São
 Paulo.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">metro_muni</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/geobr/man/read_metro_area.html" class="external-link">read_metro_area</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">metro_muni</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://ipea.github.io/geobr/reference/read_metro_area.html" class="external-link">read_metro_area</a></span><span class="op">(</span></span>
 <span>  year <span class="op">=</span> <span class="fl">2010</span>, </span>
 <span>  showProgress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">name_metro</span> <span class="op">==</span> <span class="st">"Rm São Paulo"</span><span class="op">)</span></span></code></pre></div>
@@ -595,7 +595,7 @@ ponderação). With the code below, we download all weighting areas in the
 state of São Paulo, and then keep only the ones in the metropolitan
 region of São Paulo.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">wt_areas</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/geobr/man/read_weighting_area.html" class="external-link">read_weighting_area</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">wt_areas</span> <span class="op">&lt;-</span> <span class="fu">geobr</span><span class="fu">::</span><span class="fu"><a href="https://ipea.github.io/geobr/reference/read_weighting_area.html" class="external-link">read_weighting_area</a></span><span class="op">(</span></span>
 <span>  code_weighting <span class="op">=</span> <span class="st">"SP"</span>, </span>
 <span>  showProgress <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  year <span class="op">=</span> <span class="fl">2010</span></span>
@@ -687,7 +687,7 @@ directory is persistent across R sessions.</p>
 <span></span>
 <span><span class="fu">censobr</span><span class="fu">::</span><span class="fu"><a href="../reference/set_censobr_cache_dir.html">set_censobr_cache_dir</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">tempf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> censobr files will be cached at</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">/tmp/Rtmpd834pd/my_temp_dir</span>.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #0000BB;">/tmp/RtmpipmveV/my_temp_dir</span>.</span></span></code></pre></div>
 <p>Mind you that the data is saved in a directory inside the cache
 directory set by the user and which is versioned according to the
 version of the latest data release.</p>
@@ -700,7 +700,7 @@ version of the latest data release.</p>
 <span>  list_files <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>  print_tree <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/Rtmpd834pd/my_temp_dir</span></span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">/tmp/RtmpipmveV/my_temp_dir</span></span></span>
 <span><span class="co">#&gt; └── <span style="color: #0000BB; font-weight: bold;">data_release_v1.0.0</span></span></span>
 <span><span class="co">#&gt;     └── 2010_emigration_v1.0.0.parquet</span></span></code></pre></div>
 <p>If you do not remember the location of the cache, you can always run
