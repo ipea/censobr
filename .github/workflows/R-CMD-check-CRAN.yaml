@@ -30,7 +30,7 @@ jobs:
       - uses: r-lib/actions/setup-r@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2.13.0
         with:
           r-version: ${{ matrix.config.r }}
-          use-public-rspm: true
+          use-public-rspm: always
 
       - uses: r-lib/actions/setup-pandoc@465b7d8e732ca3921382b1674c59bada9cbf3399 # v2.13.0
 

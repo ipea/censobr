@@ -3,8 +3,6 @@
   "permissions": {
     "allow": [
       "Edit(**)",
-      "Write(**)",
-      "MultiEdit(**)",
       "Bash(*)",
       "WebFetch(*)",
       "WebSearch",
