@@ -29,15 +29,15 @@ which includes the following news files or edits:
   microdata. If the controlled-access microdata have not  been imported yet, 
   these functions return an informative warning  and download the public 
   microdata set, which has fewer variables. See the new vignette [Working with 2022 microdata](https://ipea.github.io/censobr/articles/microdata_2022.html). Closes [#79](https://github.com/ipea/censobr/issues/79).
+
+* Major changes
+
   * `add_labels = "pt"` now works for all years and tables since 1960. Closes [#25](https://github.com/ipea/censobr/issues/25), [#26](https://github.com/ipea/censobr/issues/26), and [#27](https://github.com/ipea/censobr/issues/27).
   * `merge_households` parameter now works for all census years since 1960. Because 
   merging all ~300 population + househols columns can require more than 20GB 
   of memory, `read_population(merge_households = TRUE)` **requires `columns` to 
   be set** -- naming the columns you need keeps the operation to a few seconds 
   and a few dozen MB. Closes [#31](https://github.com/ipea/censobr/issues/31).
-
-* Major changes
-
   * `data_dictionary()` now takes only two values in `dataset`: `"microdata"`,
     which opens a single Excel file covering every variable of the microdata and
     is now available for **all** censuses since 1960, and `"tracts"`, available
