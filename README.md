@@ -89,6 +89,77 @@ More info in the package [vignette](https://ipea.github.io/censobr/).
 ## Contributing to censobr
 If you would like to contribute to **{censobr}**, you're welcome to open an issue to explain the proposed a contribution.
 
+#### Faster dependency builds (optional)
+
+Setting up a development environment means installing the packages used by the test suite and by `devtools`, and some of them (notably `duckdb` and `arrow`) compile C++ code from source, which can take a long time on Linux. Two settings speed this up a lot. Neither is required by the package itself. The commands below are for Linux; macOS and Windows are covered further down.
+
+##### Linux
+
+**1. Parallel compilation.** By default `make` compiles one file at a time. Create `~/.R/Makevars` and tell it to use several cores (leave one or two free; each `duckdb` compile job can use 1-2 GB of memory):
+
+```make
+MAKEFLAGS = -j6
+```
+
+**2. Compiler cache with [ccache](https://ccache.dev/).** `ccache` stores compiled objects, so reinstalling or updating a package you have already built takes seconds. Install it (e.g. `sudo apt install ccache`), then point R at it in the same `~/.R/Makevars`. Take the compiler names from `R CMD config CC`, `CXX`, `CXX17` and `CXX20`, since they differ between systems:
+
+```make
+CC    = ccache x86_64-linux-gnu-gcc
+CXX   = ccache x86_64-linux-gnu-g++ -std=gnu++20
+CXX17 = ccache x86_64-linux-gnu-g++
+CXX20 = ccache x86_64-linux-gnu-g++
+```
+
+Optionally, set the cache size and make R's timestamped headers cacheable in `~/.config/ccache/ccache.conf`:
+
+```ini
+max_size = 10G
+compression = true
+sloppiness = include_file_ctime,include_file_mtime,time_macros
+```
+
+Do not add the `ccache` lines before `ccache` is installed, otherwise every package compilation fails. Use `ccache -s` to check the hit rate, and remove the lines (or the file) to go back to the default toolchain. These settings apply to every R package you install, not only **{censobr}**.
+
+##### macOS
+
+CRAN provides precompiled binaries for macOS, so you only need this when a package has to be built from source (for example when a binary is not yet available for your R version). The steps are the same as on Linux, with a different compiler and installer. You need the Xcode command line tools (`xcode-select --install`).
+
+```bash
+brew install ccache        # Homebrew
+```
+
+Then in `~/.R/Makevars`, using the compilers reported by `R CMD config CC` and `R CMD config CXX` (usually `clang` and `clang++`):
+
+```make
+MAKEFLAGS = -j6
+
+CC    = ccache clang
+CXX   = ccache clang++
+CXX17 = ccache clang++
+CXX20 = ccache clang++
+```
+
+Use `sysctl -n hw.ncpu` to see how many cores you have. If R was installed from CRAN and you use Homebrew's `ccache`, make sure `ccache` is on the `PATH` seen by R (`Sys.which("ccache")`); on Apple Silicon it lives in `/opt/homebrew/bin`.
+
+##### Windows
+
+CRAN also provides binaries for Windows, so this is only needed for packages built from source. Source builds require [Rtools](https://cran.r-project.org/bin/windows/Rtools/) matching your R version. The user-level file is `Makevars.ucrt` (R 4.2 and later; `Makevars.win` on older versions) inside the `.R` folder of your home directory, i.e. `%USERPROFILE%\Documents\.R\Makevars.ucrt`, or `~/.R/Makevars.ucrt` as seen from R (check with `path.expand("~")`).
+
+```make
+MAKEFLAGS = -j6
+```
+
+To add `ccache`, install it inside Rtools from the Rtools shell (`pacman -S mingw-w64-ucrt-x86_64-ccache`) or with a package manager such as `scoop install ccache`, and make sure it is on the `PATH` that R uses (`Sys.which("ccache")`). Then prefix the compilers reported by `R CMD config CC` and `R CMD config CXX` in the same file, for example:
+
+```make
+CC  = ccache gcc
+CXX = ccache g++
+```
+
+Use `Sys.getenv("NUMBER_OF_PROCESSORS")` to see how many cores you have.
+
+> The macOS and Windows instructions follow the documentation of R, Rtools and ccache but were not tested by the maintainers. If a step does not work on your system, please open an issue.
+
 -----
 
 #### **Related projects**
