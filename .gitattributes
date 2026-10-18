@@ -4,6 +4,7 @@
 # Interpretar .rmd como R
 *.Rmd linguist-language=R
 
-# YAML requires spaces for indentation.
+# YAML requires spaces for indentation; do not apply the repository's global
+# indent-with-non-tab rule to declarative configuration files.
 *.yml whitespace=-indent-with-non-tab
 *.yaml whitespace=-indent-with-non-tab

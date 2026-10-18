@@ -4,6 +4,7 @@ censobr_env <- new.env(parent = emptyenv()) # nocov start
 .onLoad <- function(libname, pkgname) {
   # data release
   censobr_env$data_release <- 'v1.0.0'
+  censobr_env$label_config_cache <- new.env(parent = emptyenv())
 
   # cache dir already checked for files from previous data releases. The check
   # runs at download time and not here, because the cache dir is only known

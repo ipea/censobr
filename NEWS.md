@@ -1,3 +1,40 @@
+# censobr dev
+
+* New features
+  * `label_variable_metadata()` returns the optional aliases and descriptions
+  declared for variables in the label configuration. These metadata help users
+  interpret the original variable names and do not rename, add or remove data
+  columns.
+  * New function `import_microdata22_controlado()`, which brings the microdata of
+  the **2022** Population Census into censobr. IBGE releases the sample microdata
+  of 2022 under controlled access, so censobr is not allowed to redistribute them
+  and has nothing to download on the user's behalf. Users request the data in
+  `.csv` format at https://microdados.ibge.gov.br/ and pass the zip file to this
+  function once. It converts the four tables (`Domicilios`, `Familia`,
+  `Mortalidade` and `Pessoas`) to Parquet, adds the same geography columns
+  provided for the other censuses, and stores them in the censobr cache, where
+  they are read like any other census year. The zip file should be kept, because
+  the cache is versioned by data release and a censobr version that points to a
+  newer release will not find files imported under the previous one. See the new
+  vignette [Working with 2022 microdata](https://ipea.github.io/censobr/articles/microdata_2022.html).
+  Closes [#79](https://github.com/ipea/censobr/issues/79).
+  * `read_population()`, `read_households()`, `read_families()` and
+  `read_mortality()` now accept `year = 2022`, reading the data imported with
+  `import_microdata22_controlado()`. When the data have not been imported yet,
+  these functions return an informative error explaining how to obtain them
+  instead of attempting a download that cannot succeed.
+  * `data_dictionary()` now accepts `year = 2022` for `dataset = "microdata"`
+  * `read_population()` now accepts a `merge_households` parameter, bringing in
+  household-level variables from `read_households()` -- previously only `read_mortality()`
+  and `read_emigration()` supported this. Because merging all ~300 population + household
+  columns can require more than 20GB of memory, `read_population(merge_households = TRUE)`
+  **requires `columns` to be set** -- naming the columns you need keeps the operation to a few
+  seconds and a few dozen MB. It is only available for census years 1970, 2000 and 2010 -- 1960
+  has no documented household join key, 1980's household variables are already present in the
+  population microdata, and 1991's household key is not unique in the source data and would
+  multiply rows.
+
+
 # censobr v1.0.0
 
 * New data release [v1.0.0](https://github.com/ipea/censobr_prep_data/releases/tag/v1.0.0), 

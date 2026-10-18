@@ -18,8 +18,8 @@ add_labels_population <- function(
 
   # ALL YEARS ------------------------------------------------------------------
 
-  # urban vs rural
-  if ('V1006' %in% cols) {
+  # urban vs rural (2010 'pt' is labelled by the YAML configuration below)
+  if ('V1006' %in% cols && !isTRUE(year == 2010 && lang == 'pt')) {
     arrw <- dplyr::mutate(
       arrw,
       V1006 = dplyr::case_when(
@@ -1015,57 +1015,10 @@ add_labels_population <- function(
 
   # YEAR 2010 ------------------------------------------------------------------
   if (year == 2010 & lang == 'pt') {
-    # RELACAO DE PARENTESCO OU DE CONVIVENCIA COM A PESSOA RESPONSAVEL PELO DOMICILIO
-    if ('V0502' %in% cols) {
-      arrw <- dplyr::mutate(
-        arrw,
-        V0502 = dplyr::case_when(
-          V0502 == 1 ~ 'Pessoa respons\u00e1vel pelo domic\u00edlio ',
-          V0502 == 2 ~ 'C\u00f4njuge ou companheiro(a) de sexo diferente',
-          V0502 == 3 ~ 'C\u00f4njuge ou companheiro(a) do mesmo sexo',
-          V0502 == 4 ~ 'Filho(a) do respons\u00e1vel e do c\u00f4njuge',
-          V0502 == 5 ~ 'Filho(a) somente do respons\u00e1vel',
-          V0502 == 6 ~ 'Enteado(a)',
-          V0502 == 7 ~ 'Genro ou nora',
-          V0502 == 8 ~ 'Pai, m\u00e3e, padrasto ou madrasta',
-          V0502 == 9 ~ 'Sogro(a)',
-          V0502 == 10 ~ 'Neto(a)',
-          V0502 == 11 ~ 'Bisneto(a)',
-          V0502 == 12 ~ 'Irm\u00e3o ou irm\u00e3',
-          V0502 == 13 ~ 'Av\u00f4 ou av\u00f3',
-          V0502 == 14 ~ 'Outro parente',
-          V0502 == 15 ~ 'Agregado(a)',
-          V0502 == 16 ~ 'Convivente',
-          V0502 == 17 ~ 'Pensionista',
-          V0502 == 18 ~ 'Empregado(a) dom\u00e9stico(a)',
-          V0502 == 19 ~ 'Parente do(a) empregado(a)  dom\u00e9stico(a)',
-          V0502 == 20 ~ 'Individual em domic\u00edlio coletivo'
-        )
-      )
-    }
 
-    # sex
-    if ('V0601' %in% cols) {
-      arrw <- arrw |>
-        mutate(
-          V0601 = dplyr::case_when(
-            V0601 == 1 ~ 'Masculino',
-            V0601 == 2 ~ 'Feminino',
-            V0601 == 9 ~ 'Ignorado'
-          )
-        )
-    }
-
-    # FORMA DE DECLARACAO DA IDADE:
-    if ('V6040' %in% cols) {
-      arrw <- arrw |>
-        mutate(
-          V6040 = dplyr::case_when(
-            V6040 == 1 ~ 'Data de nascimento',
-            V6040 == 2 ~ 'Idade declarada'
-          )
-        )
-    }
+    # YAML-backed pilot: these maps are compiled into one mutate().
+    config <- load_label_config(dataset = "population", year = year, lang = lang)
+    arrw <- apply_label_config(arrw, config)
 
     # COR OU RACA
     if ('V0606' %in% cols) {

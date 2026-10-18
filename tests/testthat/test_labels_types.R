@@ -44,7 +44,23 @@ labelled_vars <- function(fn, year) {
     unlist(lapply(parts, walk))
   }
   strs <- unique(walk(block))
-  setdiff(strs[grepl("^[A-Za-z][A-Za-z0-9_.]*$", strs)], "pt")
+  legacy <- setdiff(strs[grepl("^[A-Za-z][A-Za-z0-9_.]*$", strs)], "pt")
+  union(legacy, configured_vars(fn, year))
+}
+
+# Columns labelled through the YAML configurations (inst/labels). Those names
+# are data, not string constants in the function body, so the scan above
+# cannot see them.
+configured_vars <- function(fn, year) {
+  dataset <- names(fleet)[vapply(fleet, function(f) identical(f$fn, fn), logical(1))]
+  config <- tryCatch(
+    censobr:::load_label_config(dataset, year, "pt"),
+    error = function(e) NULL
+  )
+  if (is.null(config)) return(character())
+  unlist(lapply(config$mappings, function(mapping) {
+    vapply(censobr:::label_variable_specs(mapping$variables), `[[`, character(1), "name")
+  }))
 }
 
 # A one-row arrow Dataset with every column stored as int32. A Dataset (not

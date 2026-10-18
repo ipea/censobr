@@ -1,0 +1,22 @@
+schema_version: 1
+dataset: population
+year: 2010
+language: pt
+mappings:
+  - variables:
+      - V0601
+    unmatched: null
+    levels:
+      - code: "1"
+        label: "Masculino"
+      - code: "2"
+        label: "Feminino"
+      - code: "9"
+        label: "Ignorado"
+  - variables:
+      - V0617
+      - V0627
+    unmatched: "Não"
+    levels:
+      - code: "1"
+        label: "Sim"

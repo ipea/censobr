@@ -113,6 +113,20 @@ data_dictionary(
   )
 ```
 
+## Variable metadata
+
+Some labelled variables have an optional alias and description to make their
+meaning easier to identify. Use `label_variable_metadata()` to inspect this
+catalogue. It is metadata only: the columns returned by the data-reading
+functions keep their original names.
+
+```{r, eval = FALSE}
+label_variable_metadata(
+  dataset = "population",
+  year = 2010
+)
+```
+
 
 # Questionnaires
 
@@ -149,4 +163,3 @@ interview_manual(year = 2022)
 interview_manual(year = 1960)
 
 ```
-
